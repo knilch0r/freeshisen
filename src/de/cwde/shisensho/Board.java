@@ -1,4 +1,4 @@
-package org.proofofconcept.shisensho;
+package de.cwde.shisensho;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -276,7 +276,6 @@ public class Board {
 			}                                                                                     
 
 		int nresults=0;                                                                         
-		int k=0;                                                                                
 		for (List<Point> points : piecePoints) {                                     
 			int n=(int)points.size();                                                           
 			for (int i=0;i<n;i++) {                                                               
@@ -291,7 +290,6 @@ public class Board {
 				}                                                                                   
 				if (nresults==maxResults) break;                                                   
 			}                                                                                     
-			k++;                                                                                  
 			if (nresults==maxResults) break;                                                     
 		}                                                                                       
 		return result;                                                                          

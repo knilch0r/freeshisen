@@ -1,4 +1,4 @@
-package org.proofofconcept.shisensho;
+package de.cwde.shisensho;
 
 public class Move {
 	public Move(Point a, Point b, char piece) {

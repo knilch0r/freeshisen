@@ -1,4 +1,4 @@
-package org.proofofconcept.shisensho;
+package de.cwde.shisensho;
 
 class Point {
 	public Point(int i, int j) {

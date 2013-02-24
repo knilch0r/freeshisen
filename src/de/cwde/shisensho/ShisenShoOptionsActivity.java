@@ -1,6 +1,8 @@
-package org.proofofconcept.shisensho;
+package de.cwde.shisensho;
 
 import java.io.Serializable;
+
+import de.cwde.shisensho.R;
 
 import android.app.Activity;
 import android.os.Bundle;

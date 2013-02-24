@@ -1,4 +1,4 @@
-package org.proofofconcept.shisensho;
+package de.cwde.shisensho;
 
 public class Line {
 	public Line(Point a, Point b) {

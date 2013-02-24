@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, ShisenSho!</string>
     <string name="app_name">ShisenSho</string>
     <string name="clean">Clean</string>
     <string name="hint">Hint</string>
@@ -8,12 +7,13 @@
     <string name="options">Options</string>
     <string name="about">About</string>
     <string name="aboutText">\n
-(C) 2013 contact.proofofconcept@gmail.com\n
+&#169; 2013 knilch. Originally:\n
+&#169; 2013 contact.proofofconcept@gmail.com\n
 Images taken from kshisen (Shisen Sho 1.5.1), from the package kdegames\n
-(C) 1997 Mario Weilguni\n
+&#169; 1997 Mario Weilguni\n
 Distributed under GPL v2:\n
 http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt\n
-Get the source code: http://db.tt/Imh8zH4M  
+Get the source code: TODO
     </string>
     <string name="size">Size</string>
     <string name="difficulty">Difficulty</string>

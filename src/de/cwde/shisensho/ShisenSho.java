@@ -1,7 +1,4 @@
-package org.proofofconcept.shisensho;
-
-import java.util.Observable;
-import java.util.Observer;
+package de.cwde.shisensho;
 
 import android.app.Application;
 import android.os.Bundle;

@@ -1,8 +1,11 @@
-package org.proofofconcept.shisensho;
+package de.cwde.shisensho;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import de.cwde.shisensho.R;
 
 import android.app.Activity;
 import android.content.Context;
@@ -45,7 +48,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private long playTime;
 	private long baseTime;
 	private Timer timer;
-	private Handler timerHandler;
+	private static Handler timerHandler;
 
 	private boolean timerRegistered=false;
 	private ShisenSho app;
@@ -53,8 +56,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private StatePaint pstate;
 	private Canvas canvas = null;
 	private SurfaceHolder surfaceHolder = null;
-	private String debugMessage = "";
-
 	public ShisenShoView(ShisenSho shishenSho) {
 		super((Context)shishenSho);
 		this.app = shishenSho;
@@ -449,7 +450,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 				int hours=(int)(playTime/(60*60));
 				int minutes=(int)((playTime/60)%60);
 				int seconds=(int)(playTime%60);
-				String time=String.format("%01d:%02d:%02d", hours, minutes, seconds);
+				String time=String.format(Locale.US, "%01d:%02d:%02d", hours, minutes, seconds);
 
 				int timePosX=screenWidth-120;
 				int timePosY=screenHeight-10;
