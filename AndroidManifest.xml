@@ -16,7 +16,7 @@
 			</intent-filter>
 		</activity>
 		<activity 
-		    android:name=".ShisenShoOptionsActivity"
+		    android:name=".SettingsActivity"
 			android:screenOrientation="landscape">
 			<intent-filter>
 				<action android:name="de.cwde.shisensho.SETTINGS"/>

@@ -1,7 +1,8 @@
 package de.cwde.shisensho;
 
 import android.app.Application;
-import android.os.Bundle;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class ShisenSho extends Application {	
@@ -70,22 +71,16 @@ public class ShisenSho extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
     
-	public Bundle getOptions() {
-		Bundle options = new Bundle();
-		options.putInt("size", size);
-		options.putInt("difficulty", difficulty);
-		options.putBoolean("gravity", gravity);
-		options.putBoolean("timeCounter", timeCounter);
-		return options;
-	}
-
-	public void setOptions(Bundle options) {
-		int size = options.getInt("size");
-		int difficulty = options.getInt("difficulty");
-		boolean gravity = options.getBoolean("gravity");
-		boolean timeCounter = options.getBoolean("timeCounter");
+	public void setOptions() {
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		int size = sharedPref.getInt("size", 1);
+		int difficulty = sharedPref.getInt("difficulty", 1);
+		boolean gravity = sharedPref.getBoolean("gravity", true);
+		boolean timeCounter = sharedPref.getBoolean("timeCounter", true);
 
 		boolean needsReset = false;
 		

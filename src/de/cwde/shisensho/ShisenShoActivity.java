@@ -1,7 +1,5 @@
 package de.cwde.shisensho;
 
-import de.cwde.shisensho.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -9,6 +7,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.util.Linkify;
 import android.view.Menu;
@@ -25,6 +24,8 @@ public class ShisenShoActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

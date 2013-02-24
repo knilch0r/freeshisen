@@ -17,8 +17,8 @@ Get the source code: TODO
     </string>
     <string name="size">Size</string>
     <string name="difficulty">Difficulty</string>
-    <string name="size_label">Size:</string>
-    <string name="difficulty_label">Difficulty:</string>
-    <string name="gravity_label">Gravity:</string>
-    <string name="time_counter_label">Time counter:</string>
+    <string name="size_default">2</string>
+    <string name="difficulty_default">1</string>
+    <string name="time_counter">Time Counter</string>
+    <string name="gravity">Gravity</string>
 </resources>

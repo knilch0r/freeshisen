@@ -5,8 +5,6 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import de.cwde.shisensho.R;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -62,6 +60,11 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		cstate = StatePlay.UNINITIALIZED;
 		surfaceHolder = getHolder();
 		surfaceHolder.addCallback(this);
+	}
+
+	public ShisenShoView(Context ctx) {
+		super((Context)ctx);
+		// silence lint?
 	}
 
 	private void paint(StatePaint pstate) {
@@ -229,6 +232,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	    }
 	}
 
+	@SuppressWarnings("deprecation")
 	public void drawMessage(Canvas canvas, int x, int y, boolean centered, String message, String color, float textSize)  {
 		Paint paint = new Paint();
 		paint.setColor(Color.parseColor(color));

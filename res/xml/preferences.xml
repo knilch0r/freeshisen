@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <ListPreference 
+        android:title="@string/size" 
+        android:entryValues="@array/size_values" 
+        android:key="pref_size" 
+        android:dialogTitle="@string/size" 
+        android:entries="@array/sizes" android:defaultValue="@string/size_default"/>
+    <ListPreference 
+        android:title="@string/difficulty" 
+        android:entryValues="@array/difficulty_values" 
+        android:key="pref_diff" 
+        android:dialogTitle="@string/difficulty" 
+        android:entries="@array/difficulties" android:defaultValue="@string/difficulty_default"/>
+    <CheckBoxPreference 
+        android:defaultValue="true" 
+        android:title="@string/gravity"
+        android:key="pref_grav"/>
+    <CheckBoxPreference 
+        android:defaultValue="true" 
+        android:title="@string/time_counter"
+        android:key="prev_time"/>
+</PreferenceScreen>

@@ -9,5 +9,14 @@
         <item>Easy</item>
         <item>Hard</item>
     </string-array>
+    <string-array name="difficulty_values">
+        
+        <item >2</item><item>1</item>
+    </string-array>
+    <string-array name="size_values">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+    </string-array>
     
 </resources>
