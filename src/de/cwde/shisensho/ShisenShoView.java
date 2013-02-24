@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Cap;
@@ -88,10 +89,17 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		tileWidth = tileset.getWidth()/tilesetCols;
 		tileHeight = tileset.getHeight()/tilesetRows;
 		tile = new Bitmap[tilesetRows*tilesetCols];
+		
+		// align to screen
+		Matrix matrix = new Matrix();
+		matrix.setScale(1.0f, 1.0f); // FIXME!
+		
+		// TODO: go on.
+		
 		int k=0;
 		for (int i=0; i<tilesetRows; i++) {
 			for (int j=0; j<tilesetCols; j++) {
-				tile[k] = Bitmap.createBitmap(tileset, j*tileWidth, i*tileHeight, tileWidth, tileHeight, null, false);
+				tile[k] = Bitmap.createBitmap(tileset, j*tileWidth, i*tileHeight, tileWidth, tileHeight, matrix, false);
 				tile[k].setDensity(Bitmap.DENSITY_NONE);
 				k++;
 			}
@@ -151,9 +159,9 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private void initializeGame() {
 		loadBackground();
-		loadTileset();
 		screenWidth=getWidth();
 		screenHeight=getHeight();
+		loadTileset();
 		//undo.sensitive=false;
 		pstate=StatePaint.BOARD;
 		app.newPlay();
