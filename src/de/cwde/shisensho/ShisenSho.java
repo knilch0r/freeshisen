@@ -12,7 +12,7 @@ public class ShisenSho extends Application {
 	
 	public Board board;
 	public int[] boardSize=new int[2];
-	public int difficulty=1; // 1=Hard, 2=Easy
+	public int difficulty=1; // 1=Easy, 2=Hard
 	public int size=3; // 1=Small, 2=Medium, 3=Big
 	public boolean gravity=true;
 	public boolean timeCounter=true;
@@ -68,12 +68,13 @@ public class ShisenSho extends Application {
 	}
 		
 	/** Called when the activity is first created. */
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-    }
-    
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+		setOptions();
+	}
+
 	public void setOptions() {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		
@@ -104,7 +105,7 @@ public class ShisenSho extends Application {
 			view.onTimeCounterActivate();
 		}
 
-		if (needsReset) {
+		if (needsReset && (view != null)) {
 			view.reset();
 		}
 	}
