@@ -71,9 +71,9 @@ public class Board {
 		this.difficulty=difficulty;
 		this.gravity=gravity;
 
-		int numDifferentPieces=((boardSize[0]-2)*(boardSize[1]-2)/((difficulty+1)*2))+1;
-		for (int n=0;n<((difficulty+1)*2);n++) {
-			for (int k=0;k<numDifferentPieces;k++) {
+		int numDifferentPieces=((boardSize[0]-2)*(boardSize[1]-2)/((4-difficulty)*2))+1;
+		for (int n=0; n<((4-difficulty)*2); n++) {
+			for (int k=0; k<numDifferentPieces; k++) {
 				int i,j;
 				do {
 					j=(myrand() % (boardSize[1]-2))+1;
