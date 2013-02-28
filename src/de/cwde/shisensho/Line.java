@@ -2,25 +2,25 @@ package de.cwde.shisensho;
 
 public class Line {
 	public Line(Point a, Point b) {
-		this.a=a;                    
-		this.b=b;                    
-	}                              
+		this.a=a;
+		this.b=b;
+	}
 
-	public boolean equals(Line l) {   
+	public boolean equals(Line l) {
 		return (a.equals(l.a) && b.equals(l.b));
-	}                                         
+	}
 
-	public boolean isHorizontal() {             
-		return (a.i==b.i);                      
-	}                                         
+	public boolean isHorizontal() {
+		return (a.i==b.i);
+	}
 
-	public boolean isVertical() {               
-		return (a.j==b.j);                      
-	}                                         
+	public boolean isVertical() {
+		return (a.j==b.j);
+	}
 
 	public boolean contains(Point p) {
 		return (p.i==a.i && p.i==b.i && p.j>=getMin().j && p.j<=getMax().j)
-		|| (p.j==a.j && p.j==b.j && p.i>=getMin().i && p.i<=getMax().i);
+				|| (p.j==a.j && p.j==b.j && p.i>=getMin().i && p.i<=getMax().i);
 	}
 
 	public Point cuts(Line l) {

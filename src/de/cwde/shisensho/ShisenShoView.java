@@ -89,13 +89,13 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		tileWidth = tileset.getWidth()/tilesetCols;
 		tileHeight = tileset.getHeight()/tilesetRows;
 		tile = new Bitmap[tilesetRows*tilesetCols];
-		
+
 		// align to screen
 		Matrix matrix = new Matrix();
 		matrix.setScale(1.0f, 1.0f); // FIXME!
-		
+
 		// TODO: go on.
-		
+
 		int k=0;
 		for (int i=0; i<tilesetRows; i++) {
 			for (int j=0; j<tilesetCols; j++) {
@@ -123,18 +123,18 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			}
 		};
 		timer=new Timer();
-    	timer.scheduleAtFixedRate(new TimerTask() {
-    		public void run() {
-    			timerHandler.sendEmptyMessage(Activity.RESULT_OK);
-    		}
-    	}, 0, 1000);
+		timer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				timerHandler.sendEmptyMessage(Activity.RESULT_OK);
+			}
+		}, 0, 1000);
 		timerRegistered=true;
 	}
 
 	private void unregisterTimer() {
 		if (timer==null) return; // Already unregistered
 		timer.cancel();
-    	timer = null;
+		timer = null;
 		timerHandler = null;
 		timerRegistered=false;
 	}
@@ -176,24 +176,24 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle item selection
-	    switch (item.getItemId()) {
-	    case R.id.hint:
-	    	this.postDelayed(new Runnable() { public void run() { onHintActivate(); } }, 100);
-	        return true;
-	    case R.id.undo:
-	    	this.postDelayed(new Runnable() { public void run() { onUndoActivate(); } }, 100);
-	        return true;
-	    case R.id.clean:
-	    	this.postDelayed(new Runnable() { public void run() { reset(); } }, 100);
-	        return true;
-	    case R.id.options:
-	        return true;
-	    case R.id.about:
-	        return true;
-	    default:
-	        return false;
-	    }
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.hint:
+			this.postDelayed(new Runnable() { public void run() { onHintActivate(); } }, 100);
+			return true;
+		case R.id.undo:
+			this.postDelayed(new Runnable() { public void run() { onUndoActivate(); } }, 100);
+			return true;
+		case R.id.clean:
+			this.postDelayed(new Runnable() { public void run() { reset(); } }, 100);
+			return true;
+		case R.id.options:
+			return true;
+		case R.id.about:
+			return true;
+		default:
+			return false;
+		}
 	}
 
 	public void reset() {
@@ -235,9 +235,9 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private void onUpdateTime() {
 		paint(pstate);
-	    if (!(app.timeCounter && cstate!=StatePlay.GAMEOVER)) {
-	    	unregisterTimer();
-	    }
+		if (!(app.timeCounter && cstate!=StatePlay.GAMEOVER)) {
+			unregisterTimer();
+		}
 	}
 
 	@SuppressWarnings("deprecation")
@@ -483,7 +483,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					l+=30;
 				}
 			}
-			*/
+			 */
 
 			// Double buffer dumping
 			// canvas.drawBitmap(buffer, 0, 0, null);
@@ -510,9 +510,9 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			switch (cstate) {
 			case IDLE:
 				if (i>=0 &&
-						i<app.board.boardSize[0] &&
-						j>=0 && j<app.board.boardSize[1] &&
-						app.board.board[i][j]!=0) {
+				i<app.board.boardSize[0] &&
+				j>=0 && j<app.board.boardSize[1] &&
+				app.board.board[i][j]!=0) {
 					selection1[0]=i;
 					selection1[1]=j;
 					paint(StatePaint.SELECTED1);
@@ -521,8 +521,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 				break;
 			case SELECTED1:
 				if (i>=0 && i<app.board.boardSize[0] &&
-						j>=0 && j<app.board.boardSize[1] &&
-						app.board.board[i][j]!=0) {
+				j>=0 && j<app.board.boardSize[1] &&
+				app.board.board[i][j]!=0) {
 					if (i==selection1[0] && j==selection1[1]) {
 						paint(StatePaint.BOARD);
 						control(StatePlay.IDLE);
@@ -670,5 +670,5 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		paint.setColor(Color.parseColor("#006666"));
 		paint.setFlags(Paint.ANTI_ALIAS_FLAG);
 	}
-*/
+	 */
 }

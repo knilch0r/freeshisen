@@ -7,15 +7,15 @@ import android.os.Bundle;
 import android.preference.*;
 
 public class SettingsActivity extends PreferenceActivity
-	implements OnSharedPreferenceChangeListener {
-	
+implements OnSharedPreferenceChangeListener {
+
 	private ShisenSho app;
-	
+
 	private static final String KEY_PREF_DIFF = "pref_diff";
 	private static final String KEY_PREF_SIZE = "pref_size";
 	//private static final String KEY_PREF_GRAV = "pref_grav";
 	//private static final String KEY_PREF_TIME = "pref_time";
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class SettingsActivity extends PreferenceActivity
 		app = ShisenSho.app();
 		addPreferencesFromResource(R.xml.preferences);
 		SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
-		
+
 		sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 		updateSummary(sharedPreferences, KEY_PREF_DIFF, KEY_PREF_DIFF, R.array.difficulties);
 		updateSummary(sharedPreferences, KEY_PREF_SIZE, KEY_PREF_SIZE, R.array.sizes);
@@ -40,7 +40,7 @@ public class SettingsActivity extends PreferenceActivity
 	protected void onResume() {
 		super.onResume();
 		getPreferenceScreen().getSharedPreferences()
-				.registerOnSharedPreferenceChangeListener(this);
+		.registerOnSharedPreferenceChangeListener(this);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -48,10 +48,10 @@ public class SettingsActivity extends PreferenceActivity
 	protected void onPause() {
 		super.onPause();
 		getPreferenceScreen().getSharedPreferences()
-			.unregisterOnSharedPreferenceChangeListener(this);
+		.unregisterOnSharedPreferenceChangeListener(this);
 	}
-	
-	
+
+
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		updateSummary(sharedPreferences, key, KEY_PREF_DIFF, R.array.difficulties);
 		updateSummary(sharedPreferences, key, KEY_PREF_SIZE, R.array.sizes);

@@ -9,7 +9,7 @@ public class ShisenSho extends Application {
 	private static ShisenSho instance = null; 
 	private ShisenShoView view = null;
 	public ShisenShoActivity activity = null;
-	
+
 	public Board board;
 	public int[] boardSize=new int[2];
 	public int difficulty=1; // 1=Easy, 2=Hard
@@ -57,16 +57,16 @@ public class ShisenSho extends Application {
 		instance = this;
 		setSize(size);
 	}
-	
+
 	public static synchronized ShisenSho app() {
 		return instance;
 	}
-	
+
 	public ShisenShoView getView() {
 		if (view == null) view = new ShisenShoView(this);
 		return view;
 	}
-		
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate() {
@@ -77,19 +77,19 @@ public class ShisenSho extends Application {
 
 	public void setOptions() {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-		
+
 		int size = sharedPref.getInt("size", 1);
 		int difficulty = sharedPref.getInt("difficulty", 1);
 		boolean gravity = sharedPref.getBoolean("gravity", true);
 		boolean timeCounter = sharedPref.getBoolean("timeCounter", true);
 
 		boolean needsReset = false;
-		
+
 		if (size != this.size) {
 			setSize(size);
 			needsReset = true;
 		}
-		
+
 		if (difficulty != this.difficulty) {
 			this.difficulty = difficulty;
 			needsReset = true;
@@ -99,7 +99,7 @@ public class ShisenSho extends Application {
 			this.gravity = gravity;
 			needsReset = true;
 		}
-		
+
 		if (timeCounter != this.timeCounter) {
 			this.timeCounter = timeCounter;
 			view.onTimeCounterActivate();
