@@ -15,9 +15,9 @@
     <CheckBoxPreference 
         android:defaultValue="true" 
         android:title="@string/gravity"
-        android:key="pref_grav"/>
+        android:key="pref_grav" android:summaryOn="@string/gravity_pref_on" android:summaryOff="@string/gravity_pref_off"/>
     <CheckBoxPreference 
         android:defaultValue="true" 
         android:title="@string/time_counter"
-        android:key="prev_time"/>
+        android:key="pref_time" android:summaryOn="@string/time_pref_on" android:summaryOff="@string/time_pref_off"/>
 </PreferenceScreen>

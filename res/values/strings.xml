@@ -21,4 +21,8 @@ Get the source code: TODO
     <string name="difficulty_default">1</string>
     <string name="time_counter">Time Counter</string>
     <string name="gravity">Gravity</string>
+    <string name="gravity_pref_on">Gravity is active.</string>
+    <string name="gravity_pref_off">Gravity is disabled</string>
+    <string name="time_pref_on">Time Counter active</string>
+    <string name="time_pref_off">Time Counter disabled</string>
 </resources>
