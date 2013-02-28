@@ -78,10 +78,11 @@ public class ShisenSho extends Application {
 	public void setOptions() {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
-		int size = sharedPref.getInt("size", 1);
-		int difficulty = sharedPref.getInt("difficulty", 1);
-		boolean gravity = sharedPref.getBoolean("gravity", true);
-		boolean timeCounter = sharedPref.getBoolean("timeCounter", true);
+		// FIXME: handle NumberFormatException here?
+		int size = Integer.parseInt(sharedPref.getString("pref_size", "1"));
+		int difficulty = Integer.parseInt(sharedPref.getString("pref_diff", "1"));
+		boolean gravity = sharedPref.getBoolean("pref_grav", true);
+		boolean timeCounter = sharedPref.getBoolean("pref_time", true);
 
 		boolean needsReset = false;
 
