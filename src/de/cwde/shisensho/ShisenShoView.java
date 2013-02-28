@@ -86,20 +86,28 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		// The tile set has 4 rows x 9 columns
 		tilesetRows = 4;
 		tilesetCols = 9;
-		tileWidth = tileset.getWidth()/tilesetCols;
-		tileHeight = tileset.getHeight()/tilesetRows;
+		int loadedtileWidth = tileset.getWidth()/tilesetCols;
+		int loadedtileHeight = tileset.getHeight()/tilesetRows;
 		tile = new Bitmap[tilesetRows*tilesetCols];
 
-		// align to screen
+		// align to screen:
+		// "large" is 16x6, and we want to have a nice border, so we use 17x7 and
+		// choose the lowest scale so everything fits
+		float scalex = ((float) screenWidth/17) / loadedtileWidth;
+		float scaley = ((float) screenHeight/7) / loadedtileHeight;
+		if (scaley < scalex) {
+			scalex = scaley;
+		} else {
+			scaley = scalex;
+		}
 		Matrix matrix = new Matrix();
-		matrix.setScale(1.0f, 1.0f); // FIXME!
-
-		// TODO: go on.
+		matrix.setScale(scalex, scaley);
 
 		int k=0;
 		for (int i=0; i<tilesetRows; i++) {
 			for (int j=0; j<tilesetCols; j++) {
-				tile[k] = Bitmap.createBitmap(tileset, j*tileWidth, i*tileHeight, tileWidth, tileHeight, matrix, false);
+				tile[k] = Bitmap.createBitmap(tileset, j*loadedtileWidth, i*loadedtileHeight,
+						loadedtileWidth, loadedtileHeight, matrix, false);
 				tile[k].setDensity(Bitmap.DENSITY_NONE);
 				k++;
 			}
