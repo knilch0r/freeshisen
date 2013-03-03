@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="@string/hint" android:id="@+id/hint" android:icon="@android:drawable/ic_menu_directions"></item>
-    <item android:title="@string/undo" android:id="@+id/undo" android:icon="@android:drawable/ic_menu_revert"></item>
-    <item android:title="@string/clean" android:id="@+id/clean" android:icon="@android:drawable/ic_menu_delete"></item>
-    <item android:title="@string/options" android:id="@+id/options" android:icon="@android:drawable/ic_menu_preferences"></item>
-    <item android:title="@string/about" android:id="@+id/about" android:icon="@android:drawable/ic_menu_info_details"></item>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/hint"
+        android:icon="@android:drawable/ic_menu_directions"
+        android:title="@string/hint">
+    </item>
+    <item
+        android:id="@+id/undo"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:title="@string/undo">
+    </item>
+    <item
+        android:id="@+id/clean"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="@string/clean">
+    </item>
+    <item
+        android:id="@+id/options"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/options">
+    </item>
+<!-- <item
+        android:id="@+id/hiscore"
+        android:title="@string/besttimes">
+    </item>
+ -->
+    <item
+        android:id="@+id/about"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="@string/about">
+    </item>
+
 </menu>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">ShisenSho</string>
     <string name="clean">Clean</string>
     <string name="hint">Hint</string>
@@ -13,8 +14,7 @@ Images taken from kshisen (Shisen Sho 1.5.1), from the package kdegames\n
 &#169; 1997 Mario Weilguni\n
 Distributed under GPL v2:\n
 http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt\n
-Get the source code: TODO
-    </string>
+Get the source code: TODO</string>
     <string name="size">Size</string>
     <string name="difficulty">Difficulty</string>
     <string name="size_default">2</string>
@@ -22,7 +22,18 @@ Get the source code: TODO
     <string name="time_counter">Time Counter</string>
     <string name="gravity">Gravity</string>
     <string name="gravity_pref_on">Gravity is active.</string>
-    <string name="gravity_pref_off">Gravity is disabled</string>
-    <string name="time_pref_on">Time Counter active</string>
-    <string name="time_pref_off">Time Counter disabled</string>
+    <string name="gravity_pref_off">Gravity disabled.</string>
+    <string name="time_pref_on">Time Counter is active.</string>
+    <string name="time_pref_off">Time Counter disabled.</string>
+    <string name="besttimes">Fastest Times</string>
+    <string name="diff_hard">Difficulty: Hard</string>
+    <string name="diff_easy">Difficulty: Easy</string>
+    <string name="reset_hiscore">Clear</string>
+    <string name="reset_hiscore_hint">Clears all saved times</string>
+    <string name="hiscore_large1">"Large: 1st "</string>
+    <string name="hiscore_2nd">", 2nd "</string>
+    <string name="hiscore_medium1st">"Medium: 1st "</string>
+    <string name="hiscore_small1">"Small: 1st "</string>
+    <string name="zerotime">00:00:00</string>
+
 </resources>

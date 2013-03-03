@@ -1,28 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="de.cwde.shisensho"
-      android:versionCode="3"
-      android:versionName="0.3">
-    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="10"></uses-sdk>
+    package="de.cwde.shisensho"
+    android:versionCode="3"
+    android:versionName="0.3" >
 
+    <uses-sdk
+        android:minSdkVersion="5"
+        android:targetSdkVersion="10" >
+    </uses-sdk>
 
-	<application android:icon="@drawable/icon" android:label="@string/app_name"
-		android:name=".ShisenSho" android:allowBackup="true">
-		<activity android:name=".ShisenShoActivity"
-			android:screenOrientation="landscape">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
-		<activity 
-		    android:name=".SettingsActivity"
-			android:screenOrientation="landscape">
-			<intent-filter>
-				<action android:name="de.cwde.shisensho.SETTINGS"/>
-				<category android:name="android.intent.category.DEFAULT"></category>
-			</intent-filter>
-		</activity>
+    <application
+        android:name="de.cwde.shisensho.ShisenSho"
+        android:allowBackup="true"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <activity
+            android:name="de.cwde.shisensho.ShisenShoActivity"
+            android:screenOrientation="landscape" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-	</application>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="de.cwde.shisensho.SettingsActivity"
+            android:parentActivityName="de.cwde.shisensho.ShisenShoActivity"
+            android:screenOrientation="landscape" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.cwde.shisensho.ShisenShoActivity" />
+            <intent-filter>
+                <action android:name="de.cwde.shisensho.SETTINGS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="de.cwde.shisensho.HighscoreActivity"
+            android:parentActivityName="de.cwde.shisensho.ShisenShoActivity"
+            android:screenOrientation="landscape" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.cwde.shisensho.ShisenShoActivity" />
+        </activity>
+    </application>
+
 </manifest>
