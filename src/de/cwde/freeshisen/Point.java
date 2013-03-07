@@ -1,4 +1,4 @@
-package de.cwde.shisensho;
+package de.cwde.freeshisen;
 
 class Point {
 	public Point(int i, int j) {

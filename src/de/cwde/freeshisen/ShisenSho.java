@@ -1,4 +1,4 @@
-package de.cwde.shisensho;
+package de.cwde.freeshisen;
 
 import android.app.Application;
 import android.content.SharedPreferences;

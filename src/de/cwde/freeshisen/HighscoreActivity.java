@@ -1,4 +1,4 @@
-package de.cwde.shisensho;
+package de.cwde.freeshisen;
 
 import android.os.Bundle;
 import android.view.View;

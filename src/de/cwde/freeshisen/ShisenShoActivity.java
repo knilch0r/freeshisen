@@ -1,4 +1,4 @@
-package de.cwde.shisensho;
+package de.cwde.freeshisen;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -76,7 +76,7 @@ public class ShisenShoActivity extends Activity {
 		case R.id.clean:
 			return view.onOptionsItemSelected(item);
 		case R.id.options:
-			startActivityForResult(new Intent("de.cwde.shisensho.SETTINGS", null), 0);
+			startActivityForResult(new Intent("de.cwde.freeshisen.SETTINGS", null), 0);
 			return true;
 		case R.id.about:
 			onAboutActivate();

@@ -1,4 +1,4 @@
-package de.cwde.shisensho;
+package de.cwde.freeshisen;
 
 import java.util.List;
 import java.util.Locale;

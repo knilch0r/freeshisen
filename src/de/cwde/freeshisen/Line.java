@@ -1,4 +1,4 @@
-package de.cwde.shisensho;
+package de.cwde.freeshisen;
 
 public class Line {
 	public Line(Point a, Point b) {

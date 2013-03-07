@@ -1,4 +1,4 @@
-package de.cwde.shisensho;
+package de.cwde.freeshisen;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
