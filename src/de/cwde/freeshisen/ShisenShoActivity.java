@@ -75,8 +75,11 @@ public class ShisenShoActivity extends Activity {
 		case R.id.undo:
 		case R.id.clean:
 			return view.onOptionsItemSelected(item);
+		case R.id.hiscore:
+			startActivity(new Intent("de.cwde.freeshisen.HISCORE", null));
+			return true;
 		case R.id.options:
-			startActivityForResult(new Intent("de.cwde.freeshisen.SETTINGS", null), 0);
+			startActivity(new Intent("de.cwde.freeshisen.SETTINGS", null));
 			return true;
 		case R.id.about:
 			onAboutActivate();

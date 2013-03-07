@@ -21,11 +21,11 @@
         android:icon="@android:drawable/ic_menu_preferences"
         android:title="@string/options">
     </item>
-<!-- <item
+    <item
         android:id="@+id/hiscore"
+        android:icon="@android:drawable/ic_menu_myplaces"
         android:title="@string/besttimes">
     </item>
- -->
     <item
         android:id="@+id/about"
         android:icon="@android:drawable/ic_menu_info_details"
