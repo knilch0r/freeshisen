@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ShisenSho</string>
+    <string name="app_name">FreeShisen</string>
     <string name="clean">Clean</string>
     <string name="hint">Hint</string>
     <string name="undo">Undo</string>
