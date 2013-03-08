@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">FreeShisen</string>
     <string name="clean">Clean</string>
     <string name="hint">Hint</string>
@@ -35,5 +34,9 @@ Get the source code: https://code.google.com/p/freeshisen/</string>
     <string name="hiscore_medium1st">"Medium: 1st "</string>
     <string name="hiscore_small1">"Small: 1st "</string>
     <string name="zerotime">00:00:00</string>
+    <string name="clearhiscore_confirm_title">Really clear best times?</string>
+    <string name="clearhiscore_confirm_text">This will clear all saved times. Hit &quot;OK&quot; if you really want to do this.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
