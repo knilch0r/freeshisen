@@ -28,6 +28,11 @@ import android.view.SurfaceView;
 
 class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
+	private static final String COLOR_TEXT = "#FFFFFF";
+	private static final String COLOR_TEXT_SHADOW = "#000000";
+	private static final String COLOR_HINT = "#F0C000";
+	private static final String COLOR_SELECTED = "#FF0000";
+
 	private enum StatePlay { UNINITIALIZED, IDLE, SELECTED1, SELECTED2, GAMEOVER };
 	private enum StatePaint { BOARD, SELECTED1, SELECTED2, MATCHED, WIN, LOSE, HINT, TIME };
 
@@ -249,15 +254,18 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void drawMessage(Canvas canvas, int x, int y, boolean centered, String message, String color, float textSize)  {
+	public static void drawMessage(Canvas canvas, int x, int y,
+			boolean centered, String message, float textSize) {
 		Paint paint = new Paint();
-		paint.setColor(Color.parseColor(color));
 		paint.setLinearText(true);
 		paint.setAntiAlias(true);
-		paint.setTextAlign(centered?Align.CENTER:Align.LEFT);
+		paint.setTextAlign(centered ? Align.CENTER : Align.LEFT);
 		paint.setTypeface(Typeface.SANS_SERIF);
 		paint.setFakeBoldText(true);
 		paint.setTextSize(textSize);
+		paint.setColor(Color.parseColor(COLOR_TEXT_SHADOW));
+		canvas.drawText(message, x + 1, y + 1, paint);
+		paint.setColor(Color.parseColor(COLOR_TEXT));
 		canvas.drawText(message, x, y, paint);
 	}
 
@@ -297,8 +305,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 				y0=(screenHeight-app.board.boardSize[0]*tileHeight)/2;
 			}
 
-			int red = Color.parseColor("#FF0000");
-			int orange = Color.parseColor("#F0C000");
+			int selectcolor = Color.parseColor(COLOR_SELECTED);
+			int hintcolor = Color.parseColor(COLOR_HINT);
 			Paint paint = new Paint();
 			paint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
@@ -342,7 +350,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			case SELECTED1:
 			case SELECTED2:
 			case MATCHED:
-				paint.setColor(red);
+				paint.setColor(selectcolor);
 				paint.setStyle(Style.STROKE);
 				paint.setStrokeCap(Cap.ROUND);
 				paint.setStrokeJoin(Join.ROUND);
@@ -360,7 +368,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			switch (pstate) {
 			case SELECTED2:
 			case MATCHED:
-				paint.setColor(red);
+				paint.setColor(selectcolor);
 				paint.setStyle(Style.STROKE);
 				paint.setStrokeCap(Cap.ROUND);
 				paint.setStrokeJoin(Join.ROUND);
@@ -377,7 +385,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			// Matching path
 			switch (pstate) {
 			case MATCHED:
-				paint.setColor(red);
+				paint.setColor(selectcolor);
 				paint.setStyle(Style.STROKE);
 				paint.setStrokeCap(Cap.ROUND);
 				paint.setStrokeJoin(Join.ROUND);
@@ -408,7 +416,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					Point a=pair.a;
 					Point b=pair.b;
 					path=app.board.getPath(a,b);
-					paint.setColor(orange);
+					paint.setColor(hintcolor);
 					paint.setStyle(Style.STROKE);
 					paint.setStrokeCap(Cap.ROUND);
 					paint.setStrokeJoin(Join.ROUND);
@@ -450,10 +458,12 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			// Win & loose notifications
 			switch (pstate) {
 			case WIN:
-				drawMessage(cbuffer, screenWidth/2,screenHeight/2,true,"You Win!", "#FFFFFF", 100);
+				drawMessage(cbuffer, screenWidth / 2, screenHeight / 2, true,
+						"You Win!", 100);
 				break;
 			case LOSE:
-				drawMessage(cbuffer, screenWidth/2,screenHeight/2,true,"Game Over", "#FFFFFF", 100);
+				drawMessage(cbuffer, screenWidth / 2, screenHeight / 2, true,
+						"Game Over", 100);
 				break;
 			}
 
@@ -467,16 +477,16 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			case HINT:
 			case TIME:
 				updateTime();
-				int hours=(int)(playTime/(60*60));
-				int minutes=(int)((playTime/60)%60);
-				int seconds=(int)(playTime%60);
-				String time=String.format(Locale.US, "%01d:%02d:%02d", hours, minutes, seconds);
+				int hours = (int) (playTime / (60 * 60));
+				int minutes = (int) ((playTime / 60) % 60);
+				int seconds = (int) (playTime % 60);
+				String time = String.format(Locale.US, "%01d:%02d:%02d",
+						hours, minutes, seconds);
 
 				int timePosX=screenWidth-120;
 				int timePosY=screenHeight-10;
 
-				drawMessage(cbuffer, timePosX+1,timePosY+1,false,time,"#000000",30);
-				drawMessage(cbuffer, timePosX,timePosY,false,time,"#FFFFFF",30);
+				drawMessage(cbuffer, timePosX, timePosY, false, time, 30);
 				break;
 			}
 
