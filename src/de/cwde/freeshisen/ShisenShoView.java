@@ -44,8 +44,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private int tileWidth;
 	private Bitmap bg;
 	private Bitmap tile[];
-	private int[] selection1=new int[2];
-	private int[] selection2=new int[2];
+	private Point selection1 = new Point(0,0);
+	private Point selection2 = new Point(0,0);
 	private List<Point> path=null;
 	private List<Line> pairs=null;
 	private long startTime;
@@ -60,8 +60,9 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private StatePaint pstate;
 	private Canvas canvas = null;
 	private SurfaceHolder surfaceHolder = null;
+
 	public ShisenShoView(ShisenSho shishenSho) {
-		super((Context)shishenSho);
+		super((Context) shishenSho);
 		this.app = shishenSho;
 		cstate = StatePlay.UNINITIALIZED;
 		surfaceHolder = getHolder();
@@ -69,7 +70,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public ShisenShoView(Context ctx) {
-		super((Context)ctx);
+		super((Context) ctx);
 		// silence lint?
 	}
 
@@ -350,17 +351,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			case SELECTED1:
 			case SELECTED2:
 			case MATCHED:
-				paint.setColor(selectcolor);
-				paint.setStyle(Style.STROKE);
-				paint.setStrokeCap(Cap.ROUND);
-				paint.setStrokeJoin(Join.ROUND);
-				paint.setStrokeWidth(3);
-				cbuffer.drawRect(new Rect(
-						x0+selection1[1]*tileWidth-2,
-						y0+selection1[0]*tileHeight-2,
-						x0+selection1[1]*tileWidth-2+tileWidth+2*2,
-						y0+selection1[0]*tileHeight-2+tileHeight+2*2),
-						paint);
+				highlightTile(cbuffer, x0, y0, selection1, selectcolor);
 				break;
 			}
 
@@ -368,17 +359,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			switch (pstate) {
 			case SELECTED2:
 			case MATCHED:
-				paint.setColor(selectcolor);
-				paint.setStyle(Style.STROKE);
-				paint.setStrokeCap(Cap.ROUND);
-				paint.setStrokeJoin(Join.ROUND);
-				paint.setStrokeWidth(3);
-				cbuffer.drawRect(new Rect(
-						x0+selection2[1]*tileWidth-2,
-						y0+selection2[0]*tileHeight-2,
-						x0+selection2[1]*tileWidth-2+tileWidth+2*2,
-						y0+selection2[0]*tileHeight-2+tileHeight+2*2),
-						paint);
+				highlightTile(cbuffer, x0, y0, selection2, selectcolor);
 				break;
 			}
 
@@ -395,12 +376,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					Point p0=null;
 					for (Point p1 : path) {
 						if (p0!=null) {
-							cbuffer.drawLine(
-									x0+p0.j*tileWidth-2+(tileWidth/2),
-									y0+p0.i*tileHeight-2+(tileHeight/2),
-									x0+p1.j*tileWidth-2+(tileWidth/2),
-									y0+p1.i*tileHeight-2+(tileHeight/2),
-									paint);
+							drawLine(cbuffer, x0, y0, p0, p1, paint);
 						}
 						p0=p1;
 					}
@@ -411,46 +387,31 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			// Orange hint rectangles
 			switch (pstate) {
 			case HINT:
-				if (pairs!=null && pairs.size()>0) {
-					Line pair=pairs.get(0);
-					Point a=pair.a;
-					Point b=pair.b;
-					path=app.board.getPath(a,b);
+				if (pairs != null && pairs.size() > 0) {
+					Line pair = pairs.get(0);
+					Point a = pair.a;
+					Point b = pair.b;
+					path = app.board.getPath(a, b);
 					paint.setColor(hintcolor);
 					paint.setStyle(Style.STROKE);
 					paint.setStrokeCap(Cap.ROUND);
 					paint.setStrokeJoin(Join.ROUND);
 					paint.setStrokeWidth(3);
 
-					cbuffer.drawRect(new Rect(
-							x0+a.j*tileWidth-2,
-							y0+a.i*tileHeight-2,
-							x0+a.j*tileWidth-2+tileWidth+2*2,
-							y0+a.i*tileHeight-2+tileHeight+2*2),
-							paint);
+					highlightTile(cbuffer, x0, y0, a, hintcolor);
 
-					if (path!=null) {
-						Point p0=null;
+					if (path != null) {
+						Point p0 = null;
 						for (Point p1 : path) {
-							if (p0!=null) {
-								cbuffer.drawLine(
-										x0+p0.j*tileWidth-2+(tileWidth/2),
-										y0+p0.i*tileHeight-2+(tileHeight/2),
-										x0+p1.j*tileWidth-2+(tileWidth/2),
-										y0+p1.i*tileHeight-2+(tileHeight/2),
-										paint);
+							if (p0 != null) {
+								drawLine(cbuffer, x0, y0, p0, p1, paint);
 							}
-							p0=p1;
+							p0 = p1;
 						}
-						path=null;
+						path = null;
 					}
 
-					cbuffer.drawRect(new Rect(
-							x0+b.j*tileWidth-2,
-							y0+b.i*tileHeight-2,
-							x0+b.j*tileWidth-2+tileWidth+2*2,
-							y0+b.i*tileHeight-2+tileHeight+2*2),
-							paint);
+					highlightTile(cbuffer, x0, y0, b, hintcolor);
 				}
 				break;
 			}
@@ -512,6 +473,31 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	}
 
+	private void drawLine(Canvas cbuffer, int x0, int y0, Point p0, Point p1,
+			Paint paint) {
+		cbuffer.drawLine(
+				x0 + p0.j * tileWidth - 2 + (tileWidth / 2),
+				y0 + p0.i * tileHeight - 2 + (tileHeight / 2),
+				x0 + p1.j * tileWidth - 2 + (tileWidth / 2),
+				y0 + p1.i * tileHeight - 2 + (tileHeight / 2), paint);
+	}
+
+	private void highlightTile(Canvas cbuffer, int x0, int y0, Point p, int color) {
+		Paint paint = new Paint();
+		paint.setFlags(Paint.ANTI_ALIAS_FLAG);
+		paint.setColor(color);
+		paint.setStyle(Style.STROKE);
+		paint.setStrokeCap(Cap.ROUND);
+		paint.setStrokeJoin(Join.ROUND);
+		paint.setStrokeWidth(3);
+		Rect r = new Rect(
+				x0 + p.j * tileWidth - 2,
+				y0 + p.i * tileHeight - 2,
+				x0 + p.j * tileWidth * 2 + 2,
+				y0 + p.i * tileHeight * 2 + 2);
+		cbuffer.drawRect(r, paint);
+	}
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction()==MotionEvent.ACTION_DOWN) {
@@ -527,43 +513,40 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 			switch (cstate) {
 			case IDLE:
-				if (i>=0 &&
-				i<app.board.boardSize[0] &&
-				j>=0 && j<app.board.boardSize[1] &&
-				app.board.board[i][j]!=0) {
-					selection1[0]=i;
-					selection1[1]=j;
+				if (i >= 0 && i < app.board.boardSize[0] && j >= 0
+				&& j < app.board.boardSize[1]
+						&& app.board.board[i][j] != 0) {
+					selection1.set(i, j);
 					paint(StatePaint.SELECTED1);
 					control(StatePlay.SELECTED1);
 				}
 				break;
 			case SELECTED1:
-				if (i>=0 && i<app.board.boardSize[0] &&
-				j>=0 && j<app.board.boardSize[1] &&
-				app.board.board[i][j]!=0) {
-					if (i==selection1[0] && j==selection1[1]) {
+				if (i >= 0 && i < app.board.boardSize[0] && j >= 0
+				&& j < app.board.boardSize[1]
+						&& app.board.board[i][j] != 0) {
+					if (selection1.equals(i, j)) {
 						paint(StatePaint.BOARD);
 						control(StatePlay.IDLE);
 					} else {
-						selection2[0]=i;
-						selection2[1]=j;
+						selection2.set(i, j);
 						paint(StatePaint.SELECTED2);
 
-						Point a=new Point(selection1[0],selection1[1]);
-						Point b=new Point(selection2[0],selection2[1]);
-						path=app.board.getPath(a,b);
+						Point a = selection1.copy();
+						Point b = selection2.copy();
+						path = app.board.getPath(a, b);
 						paint(StatePaint.MATCHED);
 						app.sleep(2);
 						paint(StatePaint.BOARD);
-						if (path.size()>0) {
-							app.board.play(a,b);
+						if (path.size() > 0) {
+							app.board.play(a, b);
 						}
-						path=null;
+						path = null;
 						paint(StatePaint.BOARD);
 
-						pairs=app.board.getPairs(1);
-						if (pairs.size()==0) {
-							if (app.board.getNumPieces()==0) {
+						pairs = app.board.getPairs(1);
+						if (pairs.size() == 0) {
+							if (app.board.getNumPieces() == 0) {
 								paint(StatePaint.WIN);
 							} else {
 								paint(StatePaint.LOSE);
@@ -606,87 +589,4 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			unregisterTimer();
 		}
 	}
-
-	/*
-	@Override
-	protected void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
-
-		if (!initialized) initialize();
-
-		long currTime = System.currentTimeMillis();
-
-		a = (float)(currTime - startTime) / (float)duration;
-		if (a > (float)1.0) a = (float)1.0;
-
-		x = Math.round(nextx*a + prevx*(1-a));
-		y = Math.round(nexty*a + prevy*(1-a));
-
-		if (a == (float)1.0) computeNextTarget();
-
-		int bgWidth = bg.getWidth();
-		int bgHeight = bg.getHeight();
-		for (int i=0; i<height/bgHeight+1; i++) {
-			for (int j=0; j<width/bgWidth+1; j++) {
-				canvas.drawBitmap(bg, j*bgWidth, i*bgHeight, paint);
-			}
-		}
-
-		canvas.drawBitmap(tile[randomtile], x, y, paint);
-
-		repaint();
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		if (event.getActionMasked()==MotionEvent.ACTION_DOWN) {
-			//computeNextTarget();
-			//nextx=Math.round(event.getX());
-			//nexty=Math.round(event.getY());
-		}
-		return super.onTouchEvent(event);
-	}
-
-	private void initialize() {
-		width = getWidth();
-		height = getHeight();
-
-		bg = BitmapFactory.decodeResource(getResources(), R.drawable.kshisen_bgnd);
-		Bitmap tileset = BitmapFactory.decodeResource(getResources(), R.drawable.tileset);
-
-		// The tile set has 4 rows x 9 columns
-		tsrows = 4;
-		tscols = 9;
-		twidth = tileset.getWidth()/tscols;
-		theight = tileset.getHeight()/tsrows;
-		tile = new Bitmap[tsrows*tscols];
-		int k=0;
-		for (int i=0; i<tsrows; i++) {
-			for (int j=0; j<tscols; j++) {
-				tile[k] = Bitmap.createBitmap(tileset, j*twidth, i*theight, twidth, theight, null, false);
-				k++;
-			}
-		}
-
-		x = width/2;
-		y = height/2;
-
-		computeNextTarget();
-
-		initialized = true;
-	}
-
-	private void computeNextTarget() {
-		startTime = System.currentTimeMillis();
-		prevx = x;
-		prevy = y;
-		nextx = (int) Math.floor(Math.random() * width);
-		nexty = (int) Math.floor(Math.random() * height);
-		randomtile = (int) Math.floor(Math.random() * tile.length);
-
-		paint = new Paint();
-		paint.setColor(Color.parseColor("#006666"));
-		paint.setFlags(Paint.ANTI_ALIAS_FLAG);
-	}
-	 */
 }

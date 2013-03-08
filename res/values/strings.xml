@@ -28,7 +28,7 @@ Get the source code: https://code.google.com/p/freeshisen/</string>
     <string name="besttimes">Fastest Times</string>
     <string name="diff_hard">Difficulty: Hard</string>
     <string name="diff_easy">Difficulty: Easy</string>
-    <string name="reset_hiscore">Clear</string>
+    <string name="reset_hiscore">Clear Times</string>
     <string name="reset_hiscore_hint">Clears all saved times</string>
     <string name="hiscore_large1">"Large: 1st "</string>
     <string name="hiscore_2nd">", 2nd "</string>
