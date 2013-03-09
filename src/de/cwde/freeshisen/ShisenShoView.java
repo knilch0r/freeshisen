@@ -304,8 +304,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 			int selectcolor = Color.parseColor(COLOR_SELECTED);
 			int hintcolor = Color.parseColor(COLOR_HINT);
-			Paint paint = new Paint();
-			paint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
 			// Background & board painting
 			switch (pstate) {
@@ -322,7 +320,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 				int bgHeight = bg.getHeight();
 				for (int i=0; i<screenHeight/bgHeight+1; i++) {
 					for (int j=0; j<screenWidth/bgWidth+1; j++) {
-						canvas.drawBitmap(bg, j*bgWidth, i*bgHeight, paint);
+						canvas.drawBitmap(bg, j*bgWidth, i*bgHeight, null);
 					}
 				}
 
@@ -334,7 +332,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 							// Tiles are 56px height, 40px width each
 							char piece=app.board.board[i][j];
 							if (piece!=0) {
-								canvas.drawBitmap(tile[piece], x0+j*tileWidth, y0+i*tileHeight, paint);
+								canvas.drawBitmap(tile[piece], x0+j*tileWidth, y0+i*tileHeight, null);
 							}
 						}
 					}
@@ -362,17 +360,11 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			// Matching path
 			switch (pstate) {
 			case MATCHED:
-				paint.setColor(selectcolor);
-				paint.setStyle(Style.STROKE);
-				paint.setStrokeCap(Cap.ROUND);
-				paint.setStrokeJoin(Join.ROUND);
-				paint.setStrokeWidth(3);
-
 				if (path!=null) {
 					Point p0=null;
 					for (Point p1 : path) {
 						if (p0!=null) {
-							drawLine(canvas, x0, y0, p0, p1, paint);
+							drawLine(canvas, x0, y0, p0, p1, selectcolor);
 						}
 						p0=p1;
 					}
@@ -388,11 +380,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					Point a = pair.a;
 					Point b = pair.b;
 					path = app.board.getPath(a, b);
-					paint.setColor(hintcolor);
-					paint.setStyle(Style.STROKE);
-					paint.setStrokeCap(Cap.ROUND);
-					paint.setStrokeJoin(Join.ROUND);
-					paint.setStrokeWidth(3);
 
 					highlightTile(canvas, x0, y0, a, hintcolor);
 
@@ -400,7 +387,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 						Point p0 = null;
 						for (Point p1 : path) {
 							if (p0 != null) {
-								drawLine(canvas, x0, y0, p0, p1, paint);
+								drawLine(canvas, x0, y0, p0, p1, hintcolor);
 							}
 							p0 = p1;
 						}
@@ -459,8 +446,14 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	}
 
-	private void drawLine(Canvas canvas, int x0, int y0, Point p0, Point p1,
-			Paint paint) {
+	private void drawLine(Canvas canvas, int x0, int y0, Point p0, Point p1, int color) {
+		Paint paint = new Paint();
+		paint.setFlags(Paint.ANTI_ALIAS_FLAG);
+		paint.setColor(color);
+		paint.setStyle(Style.STROKE);
+		paint.setStrokeCap(Cap.ROUND);
+		paint.setStrokeJoin(Join.ROUND);
+		paint.setStrokeWidth(3);
 		canvas.drawLine(
 				x0 + p0.j * tileWidth - 2 + (tileWidth / 2),
 				y0 + p0.i * tileHeight - 2 + (tileHeight / 2),
