@@ -493,8 +493,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		Rect r = new Rect(
 				x0 + p.j * tileWidth - 2,
 				y0 + p.i * tileHeight - 2,
-				x0 + p.j * tileWidth * 2 + 2,
-				y0 + p.i * tileHeight * 2 + 2);
+				x0 + p.j * tileWidth + tileWidth + 2,
+				y0 + p.i * tileHeight + tileHeight + 2);
 		cbuffer.drawRect(r, paint);
 	}
 
