@@ -28,6 +28,7 @@ import android.view.SurfaceView;
 
 class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
+	private static final String INVALID_TIME = "9:99:99";
 	private static final String COLOR_TEXT = "#FFFFFF";
 	private static final String COLOR_TEXT_SHADOW = "#000000";
 	private static final String COLOR_HINT = "#F0C000";
@@ -60,6 +61,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private StatePaint pstate;
 	private Canvas canvas = null;
 	private SurfaceHolder surfaceHolder = null;
+	private String time = INVALID_TIME;
 
 	public ShisenShoView(ShisenSho shishenSho) {
 		super((Context) shishenSho);
@@ -289,13 +291,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	protected void doDraw(Canvas canvas) {
 		try {
-			// Double buffering
-			// Bitmap buffer = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
-			//Canvas cbuffer = new Canvas(buffer);
-			Canvas cbuffer = canvas;
 			if (canvas == null) return;
-
-			//super.onDraw(canvas);
 
 			// Board upper left corner on screen
 			int x0=0;
@@ -326,7 +322,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 				int bgHeight = bg.getHeight();
 				for (int i=0; i<screenHeight/bgHeight+1; i++) {
 					for (int j=0; j<screenWidth/bgWidth+1; j++) {
-						cbuffer.drawBitmap(bg, j*bgWidth, i*bgHeight, paint);
+						canvas.drawBitmap(bg, j*bgWidth, i*bgHeight, paint);
 					}
 				}
 
@@ -338,7 +334,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 							// Tiles are 56px height, 40px width each
 							char piece=app.board.board[i][j];
 							if (piece!=0) {
-								cbuffer.drawBitmap(tile[piece], x0+j*tileWidth, y0+i*tileHeight, paint);
+								canvas.drawBitmap(tile[piece], x0+j*tileWidth, y0+i*tileHeight, paint);
 							}
 						}
 					}
@@ -346,20 +342,20 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 				break;
 			}
 
-			// Red rectangle for selection 1
+			// rectangle for selection 1
 			switch (pstate) {
 			case SELECTED1:
 			case SELECTED2:
 			case MATCHED:
-				highlightTile(cbuffer, x0, y0, selection1, selectcolor);
+				highlightTile(canvas, x0, y0, selection1, selectcolor);
 				break;
 			}
 
-			// Red rectangle for selection 2
+			// rectangle for selection 2
 			switch (pstate) {
 			case SELECTED2:
 			case MATCHED:
-				highlightTile(cbuffer, x0, y0, selection2, selectcolor);
+				highlightTile(canvas, x0, y0, selection2, selectcolor);
 				break;
 			}
 
@@ -376,7 +372,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					Point p0=null;
 					for (Point p1 : path) {
 						if (p0!=null) {
-							drawLine(cbuffer, x0, y0, p0, p1, paint);
+							drawLine(canvas, x0, y0, p0, p1, paint);
 						}
 						p0=p1;
 					}
@@ -384,7 +380,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 				break;
 			}
 
-			// Orange hint rectangles
+			// hint rectangles
 			switch (pstate) {
 			case HINT:
 				if (pairs != null && pairs.size() > 0) {
@@ -398,20 +394,20 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					paint.setStrokeJoin(Join.ROUND);
 					paint.setStrokeWidth(3);
 
-					highlightTile(cbuffer, x0, y0, a, hintcolor);
+					highlightTile(canvas, x0, y0, a, hintcolor);
 
 					if (path != null) {
 						Point p0 = null;
 						for (Point p1 : path) {
 							if (p0 != null) {
-								drawLine(cbuffer, x0, y0, p0, p1, paint);
+								drawLine(canvas, x0, y0, p0, p1, paint);
 							}
 							p0 = p1;
 						}
 						path = null;
 					}
 
-					highlightTile(cbuffer, x0, y0, b, hintcolor);
+					highlightTile(canvas, x0, y0, b, hintcolor);
 				}
 				break;
 			}
@@ -419,16 +415,16 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			// Win & loose notifications
 			switch (pstate) {
 			case WIN:
-				drawMessage(cbuffer, screenWidth / 2, screenHeight / 2, true,
+				drawMessage(canvas, screenWidth / 2, screenHeight / 2, true,
 						"You Win!", 100);
 				break;
 			case LOSE:
-				drawMessage(cbuffer, screenWidth / 2, screenHeight / 2, true,
+				drawMessage(canvas, screenWidth / 2, screenHeight / 2, true,
 						"Game Over", 100);
 				break;
 			}
 
-			if (app.timeCounter) switch (pstate) {
+			switch (pstate) {
 			case BOARD:
 			case SELECTED1:
 			case SELECTED2:
@@ -441,31 +437,21 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 				int hours = (int) (playTime / (60 * 60));
 				int minutes = (int) ((playTime / 60) % 60);
 				int seconds = (int) (playTime % 60);
-				String time = String.format(Locale.US, "%01d:%02d:%02d",
-						hours, minutes, seconds);
+				if (hours < 10) {
+					time = String.format(Locale.US, "%01d:%02d:%02d",
+							hours, minutes, seconds);
+				} else {
+					time = INVALID_TIME;
+				}
 
 				int timePosX=screenWidth-120;
 				int timePosY=screenHeight-10;
-
-				drawMessage(cbuffer, timePosX, timePosY, false, time, 30);
+				
+				if (app.timeCounter) {
+					drawMessage(canvas, timePosX, timePosY, false, time, 30);
+				}
 				break;
 			}
-
-			// Debug messages
-			/*
-			debugMessage="StatePlay: "+cstate+"\n"+"StatePaint: "+pstate;
-			if (debugMessage!=null && debugMessage.length()>0) {
-				int l = 20;
-				String lines[] = debugMessage.split("\n");
-				for (int i=0; i<lines.length; i++) {
-					drawMessage(cbuffer,1,l,false,lines[i],"#FFFF00",30);
-					l+=30;
-				}
-			}
-			 */
-
-			// Double buffer dumping
-			// canvas.drawBitmap(buffer, 0, 0, null);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -473,16 +459,16 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	}
 
-	private void drawLine(Canvas cbuffer, int x0, int y0, Point p0, Point p1,
+	private void drawLine(Canvas canvas, int x0, int y0, Point p0, Point p1,
 			Paint paint) {
-		cbuffer.drawLine(
+		canvas.drawLine(
 				x0 + p0.j * tileWidth - 2 + (tileWidth / 2),
 				y0 + p0.i * tileHeight - 2 + (tileHeight / 2),
 				x0 + p1.j * tileWidth - 2 + (tileWidth / 2),
 				y0 + p1.i * tileHeight - 2 + (tileHeight / 2), paint);
 	}
 
-	private void highlightTile(Canvas cbuffer, int x0, int y0, Point p, int color) {
+	private void highlightTile(Canvas canvas, int x0, int y0, Point p, int color) {
 		Paint paint = new Paint();
 		paint.setFlags(Paint.ANTI_ALIAS_FLAG);
 		paint.setColor(color);
@@ -493,9 +479,9 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		Rect r = new Rect(
 				x0 + p.j * tileWidth - 2,
 				y0 + p.i * tileHeight - 2,
-				x0 + p.j * tileWidth * 2 + 2,
-				y0 + p.i * tileHeight * 2 + 2);
-		cbuffer.drawRect(r, paint);
+				x0 + p.j * tileWidth + tileWidth + 2,
+				y0 + p.i * tileHeight + tileHeight + 2);
+		canvas.drawRect(r, paint);
 	}
 
 	@Override
