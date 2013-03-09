@@ -28,8 +28,6 @@ public class ShisenShoActivity extends Activity {
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-		//		WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		view = ShisenSho.app().getView();
 		ShisenSho.app().activity = this;

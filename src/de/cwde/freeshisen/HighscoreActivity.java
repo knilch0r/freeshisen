@@ -42,7 +42,7 @@ public class HighscoreActivity extends Activity {
 		builder.setMessage(R.string.clearhiscore_confirm_text);
 		builder.setTitle(R.string.clearhiscore_confirm_title);
 
-		builder.setPositiveButton(R.string.ok,
+		builder.setPositiveButton(android.R.string.ok,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						// User clicked OK button - delete hiscores
@@ -65,7 +65,7 @@ public class HighscoreActivity extends Activity {
 						editor.commit();
 					}
 				});
-		builder.setNegativeButton(R.string.cancel,
+		builder.setNegativeButton(android.R.string.cancel,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						// User cancelled the dialog - nothing to do
