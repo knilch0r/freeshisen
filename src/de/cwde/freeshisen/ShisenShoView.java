@@ -198,7 +198,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		startTime=System.currentTimeMillis();
 		playTime=0;
 		baseTime=0;
-		if (app.timeCounter && !timerRegistered) {
+		if (!timerRegistered) {
 			registerTimer();
 		}
 		pairs=app.board.getPairs(1);
@@ -242,7 +242,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private void onUndoActivate() {
 		if (app.board.getCanUndo()) {
-			if (cstate==StatePlay.GAMEOVER && app.timeCounter && !timerRegistered) {
+			if (cstate==StatePlay.GAMEOVER && !timerRegistered) {
 				// Reprogram the time update that had been
 				// deactivated with the game over status
 				registerTimer();
@@ -255,7 +255,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void onTimeCounterActivate() {
-		if (app.timeCounter && cstate!=StatePlay.GAMEOVER && !timerRegistered) {
+		if (cstate!=StatePlay.GAMEOVER && !timerRegistered) {
 			// Reprogram the time update that had been
 			// deactivated with the time_counter=false
 			registerTimer();
@@ -264,7 +264,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private void onUpdateTime() {
 		paint(pstate);
-		if (!(app.timeCounter && cstate!=StatePlay.GAMEOVER)) {
+		if (cstate==StatePlay.GAMEOVER) {
 			unregisterTimer();
 		}
 	}
@@ -564,7 +564,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 		surfaceHolder = holder;
-		if (cstate!=StatePlay.GAMEOVER && app.timeCounter && !timerRegistered) {
+		if (cstate!=StatePlay.GAMEOVER && !timerRegistered) {
 			registerTimer();
 		}
 		repaint();
