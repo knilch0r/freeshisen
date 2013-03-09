@@ -33,7 +33,7 @@ Get the source code: https://code.google.com/p/freeshisen/</string>
     <string name="hiscore_2nd">", 2nd "</string>
     <string name="hiscore_medium1st">"Medium: 1st "</string>
     <string name="hiscore_small1">"Small: 1st "</string>
-    <string name="zerotime">00:00:00</string>
+    <string name="invalidtime">9:99:99</string>
     <string name="clearhiscore_confirm_title">Really clear best times?</string>
     <string name="clearhiscore_confirm_text">This will clear all saved times. Hit &quot;OK&quot; if you really want to do this.</string>
 
