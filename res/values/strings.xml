@@ -7,9 +7,10 @@
     <string name="options">Options</string>
     <string name="about">About</string>
     <string name="aboutText">\n
-&#169; 2013 knilch. Originally:\n
+&#169; 2013 knilch.\n
+Most of the gameplay code and application structure taken from ShisenSho:\n
 &#169; 2013 contact.proofofconcept@gmail.com\n
-Images taken from kshisen (Shisen Sho 1.5.1), from the package kdegames\n
+Images taken from kshisen (Shisen Sho 1.5.1), from the package kdegames:\n
 &#169; 1997 Mario Weilguni\n
 Distributed under GPL v2:\n
 http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt\n
