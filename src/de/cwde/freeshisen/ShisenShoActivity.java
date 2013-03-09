@@ -92,8 +92,9 @@ public class ShisenShoActivity extends Activity {
 		PackageInfo pInfo;
 		try {
 			pInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
-			String aboutTitle = String.format("About %s", getString(R.string.app_name));
-			String versionString = String.format("Version: %s", pInfo.versionName);
+			String appname = getString(R.string.app_name);
+			String aboutTitle = "About " + appname;
+			String versionString = appname + " "+ pInfo.versionName;
 			String aboutText = getString(R.string.aboutText);
 
 			// Set up the TextView
@@ -104,7 +105,7 @@ public class ShisenShoActivity extends Activity {
 			// Set some padding
 			message.setPadding(5, 5, 5, 5);
 			// Set up the final string
-			message.setText(versionString + "\n" + s);
+			message.setText(versionString + s);
 			// Now linkify the text
 			Linkify.addLinks(message, Linkify.ALL);
 
