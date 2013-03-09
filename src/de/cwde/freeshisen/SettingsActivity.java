@@ -51,7 +51,6 @@ implements OnSharedPreferenceChangeListener {
 		.unregisterOnSharedPreferenceChangeListener(this);
 	}
 
-
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		updateSummary(sharedPreferences, key, KEY_PREF_DIFF, R.array.difficulties);
 		updateSummary(sharedPreferences, key, KEY_PREF_SIZE, R.array.sizes);
