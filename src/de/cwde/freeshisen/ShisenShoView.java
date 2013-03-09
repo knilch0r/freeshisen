@@ -7,7 +7,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -22,6 +24,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -89,8 +92,11 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public ShisenShoView(Context ctx) {
-		super((Context) ctx);
-		// silence lint?
+		super(ctx);
+		this.app = (ShisenSho) ctx;
+		cstate = StatePlay.UNINITIALIZED;
+		surfaceHolder = getHolder();
+		surfaceHolder.addCallback(this);
 	}
 
 	private void paint(StatePaint pstate) {
@@ -540,6 +546,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 						if (pairs.size() == 0) {
 							if (app.board.getNumPieces() == 0) {
 								paint(StatePaint.WIN);
+								checkforhiscore();
 							} else {
 								paint(StatePaint.LOSE);
 							}
@@ -558,6 +565,40 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void checkforhiscore() {
+		if (timerRegistered) {
+			unregisterTimer();
+		}
+		final String[] sizes = { "S", "M", "L" };
+		final String[] diffs = { "E", "H" };
+		String prefname1 = "hiscore_" + diffs[app.difficulty-1] + sizes[app.size-1] + "1";
+		String prefname2 = "hiscore_" + diffs[app.difficulty-1] + sizes[app.size-1] + "2";
+		// get hiscores for current size/difficulty
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(app);
+		String besttime1 = sp.getString(prefname1, INVALID_TIME);
+		String besttime2 = sp.getString(prefname2, INVALID_TIME);
+		// did we win something?
+		if (time.compareTo(besttime2) < 0) {
+			// score!
+			new AlertDialog.Builder(app.activity)
+				.setTitle("Hiscore!")
+				.setCancelable(true)
+				.setIcon(R.drawable.icon)
+				.setPositiveButton(app.getString(android.R.string.ok), null)
+				.setMessage("You've made the highscore list!").create() // FIXME: hardcoded string
+				.show();
+
+			SharedPreferences.Editor editor = sp.edit();
+			if (time.compareTo(besttime1) < 0) {
+				editor.putString(prefname1, time);
+				editor.putString(prefname2, besttime1);
+			} else {
+				editor.putString(prefname2, time);
+			}
+			editor.commit();
 		}
 	}
 
