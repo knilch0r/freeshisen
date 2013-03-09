@@ -1,5 +1,6 @@
 package de.cwde.freeshisen;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -45,17 +46,33 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private int tileWidth;
 	private Bitmap bg;
 	private Bitmap tile[];
-	private Point selection1 = new Point(0,0);
-	private Point selection2 = new Point(0,0);
-	private List<Point> path=null;
-	private List<Line> pairs=null;
+	private Point selection1 = new Point(0, 0);
+	private Point selection2 = new Point(0, 0);
+	private List<Point> path = null;
+	private List<Line> pairs = null;
 	private long startTime;
 	private long playTime;
 	private long baseTime;
 	private Timer timer;
-	private static Handler timerHandler;
 
-	private boolean timerRegistered=false;
+	static class hHandler extends Handler {
+		private final WeakReference<ShisenShoView> mTarget;
+
+		hHandler(ShisenShoView target) {
+			mTarget = new WeakReference<ShisenShoView>(target);
+		}
+
+		@Override
+		public void handleMessage(Message msg) {
+			ShisenShoView target = mTarget.get();
+			if (target != null)
+				target.onUpdateTime();
+		}
+	}
+
+	private Handler timerHandler = new hHandler(this);
+
+	private boolean timerRegistered = false;
 	private ShisenSho app;
 	private StatePlay cstate;
 	private StatePaint pstate;
@@ -132,27 +149,23 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void registerTimer() {
-		if (timer!=null) return; // Already registered
-		timerHandler = new Handler() {
-			public void handleMessage(Message msg) {
-				onUpdateTime();
-			}
-		};
-		timer=new Timer();
+		if (timer != null)
+			return; // Already registered
+		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				timerHandler.sendEmptyMessage(Activity.RESULT_OK);
 			}
 		}, 0, 1000);
-		timerRegistered=true;
+		timerRegistered = true;
 	}
 
 	private void unregisterTimer() {
-		if (timer==null) return; // Already unregistered
+		if (timer == null)
+			return; // Already unregistered
 		timer.cancel();
 		timer = null;
-		timerHandler = null;
-		timerRegistered=false;
+		timerRegistered = false;
 	}
 
 	public void pauseTime() {
