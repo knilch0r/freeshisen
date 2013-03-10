@@ -1,0 +1,22 @@
+TODO list for FreeShisen:
+
+* ask for acknowledge before resetting a game (e.g. when settings were changed)
+
+* provide higher resolution tilesets (the scaled ones look rather ugly)
+** could use current SVGs from libkmahjongg as a basis
+** do this depending on display density?
+
+* allow to choose tilesets (libkmahjongg has several) ;-)
+
+* i18n (lots of!)
+** remove some lefover hardcoded strings
+** add i18n variants for resources
+
+* use actionbar? this will cost some display space, but apparently is the new way to go
+** then we don't have to claim targetSdkVersion 10 any more (which provides a software menu button for devices without a hardware button)
+** may also think of another way to provide some "software menu" button
+
+* save highscores depending on gravity switch?
+
+* ask for name in highscore list?
+
