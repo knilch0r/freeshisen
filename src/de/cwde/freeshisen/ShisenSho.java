@@ -101,7 +101,7 @@ public class ShisenSho extends Application {
 			needsReset = true;
 		}
 
-		if (timeCounter != this.timeCounter) {
+		if ((timeCounter != this.timeCounter) && (view != null)) {
 			this.timeCounter = timeCounter;
 			view.onTimeCounterActivate();
 		}
