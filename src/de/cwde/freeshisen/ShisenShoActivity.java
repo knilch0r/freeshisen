@@ -113,7 +113,7 @@ public class ShisenShoActivity extends Activity {
 			.setTitle(aboutTitle)
 			.setCancelable(true)
 			.setIcon(R.drawable.icon)
-			.setPositiveButton(getString(android.R.string.ok), null)
+			.setPositiveButton(android.R.string.ok, null)
 			.setView(message).create()
 			.show();
 		} catch (NameNotFoundException e) {
