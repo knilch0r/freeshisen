@@ -94,12 +94,7 @@ OnSharedPreferenceChangeListener {
 				editor.commit();
 			}
 		});
-		builder.setNegativeButton(android.R.string.cancel,
-				new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				// User cancelled the dialog - nothing to do
-			}
-		});
+		builder.setNegativeButton(android.R.string.cancel, null);
 
 		AlertDialog dialog = builder.create();
 		dialog.show();
