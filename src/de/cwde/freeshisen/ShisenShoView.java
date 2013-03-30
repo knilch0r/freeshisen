@@ -111,7 +111,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private void loadTileset() {
 		BitmapFactory.Options ops = new BitmapFactory.Options();
 		ops.inScaled = false;
-		Bitmap tileset = BitmapFactory.decodeResource(getResources(), R.drawable.tileset, ops);
+		Bitmap tileset = BitmapFactory.decodeResource(getResources(), R.drawable.traditional, ops);
 		tileset.setDensity(Bitmap.DENSITY_NONE);
 
 		// The tile set has 4 rows x 9 columns
@@ -124,8 +124,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		// align to screen:
 		// "large" is 16x6, and we want to have a nice border, so we use 17x7 and
 		// choose the lowest scale so everything fits
-		float scalex = ((float) screenWidth/17) / loadedtileWidth;
-		float scaley = ((float) screenHeight/7) / loadedtileHeight;
+		float scalex = ((float) (screenWidth - 2)/17) / loadedtileWidth;
+		float scaley = ((float) (screenHeight - 2)/7) / loadedtileHeight;
 		if (scaley < scalex) {
 			scalex = scaley;
 		} else {
