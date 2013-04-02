@@ -13,6 +13,7 @@ implements OnSharedPreferenceChangeListener {
 
 	private static final String KEY_PREF_DIFF = "pref_diff";
 	private static final String KEY_PREF_SIZE = "pref_size";
+	private static final String KEY_PREF_TILE = "pref_tile";
 	//private static final String KEY_PREF_GRAV = "pref_grav";
 	//private static final String KEY_PREF_TIME = "pref_time";
 
@@ -27,6 +28,7 @@ implements OnSharedPreferenceChangeListener {
 		sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 		updateSummary(sharedPreferences, KEY_PREF_DIFF, KEY_PREF_DIFF, R.array.difficulties);
 		updateSummary(sharedPreferences, KEY_PREF_SIZE, KEY_PREF_SIZE, R.array.sizes);
+		updateTileSummary(sharedPreferences, KEY_PREF_TILE);
 	}
 
 	@Override
@@ -54,6 +56,7 @@ implements OnSharedPreferenceChangeListener {
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		updateSummary(sharedPreferences, key, KEY_PREF_DIFF, R.array.difficulties);
 		updateSummary(sharedPreferences, key, KEY_PREF_SIZE, R.array.sizes);
+		updateTileSummary(sharedPreferences, key);
 	}
 
 	private void updateSummary(SharedPreferences sharedPreferences, String changedkey, String mykey, int myresource) {
@@ -69,5 +72,16 @@ implements OnSharedPreferenceChangeListener {
 			Preference myPref = findPreference(changedkey);
 			myPref.setSummary("Currently: " + name);
 		}
-	}	
+	}
+
+	private void updateTileSummary(SharedPreferences sharedPreferences, String changedkey) {
+		if (changedkey.equals(KEY_PREF_TILE)) {
+			String name = sharedPreferences.getString(KEY_PREF_TILE, "classic");
+
+			@SuppressWarnings("deprecation")
+			Preference myPref = findPreference(KEY_PREF_TILE);
+			myPref.setSummary("Current Tileset: " + name);
+		}
+	}
+
 }

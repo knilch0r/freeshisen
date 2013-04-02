@@ -14,6 +14,7 @@ public class ShisenSho extends Application {
 	public int[] boardSize=new int[2];
 	public int difficulty=1; // 1=Easy, 2=Hard
 	public int size=3; // 1=Small, 2=Medium, 3=Big
+	public int tilesetid = R.drawable.classic;
 	public boolean gravity=true;
 	public boolean timeCounter=true;
 
@@ -83,6 +84,7 @@ public class ShisenSho extends Application {
 		int difficulty = Integer.parseInt(sharedPref.getString("pref_diff", "1"));
 		boolean gravity = sharedPref.getBoolean("pref_grav", true);
 		boolean timeCounter = sharedPref.getBoolean("pref_time", true);
+		int tilesetid = tilesetStringToRes(sharedPref.getString("pref_tile", ""));
 
 		boolean needsReset = false;
 
@@ -106,9 +108,29 @@ public class ShisenSho extends Application {
 			view.onTimeCounterActivate();
 		}
 
+		if ((tilesetid != this.tilesetid) && (view != null)) {
+			this.tilesetid = tilesetid;
+			view.loadTileset();
+		}
+
 		if (needsReset && (view != null)) {
 			view.reset();
 		}
+
 	}
 
+	private int tilesetStringToRes(String s)
+	{
+		if (s.equals("classic")) {
+			return R.drawable.classic;
+		} else if (s.equals("jade")) {
+			return R.drawable.jade;
+		} else if (s.equals("traditional")) {
+			return R.drawable.traditional;
+		} else if (s.equals("pixel")) {
+			return R.drawable.pixel;
+		} else {
+			return R.drawable.classic;
+		}
+	}
 }

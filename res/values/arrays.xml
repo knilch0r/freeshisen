@@ -18,4 +18,10 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    <string-array name="tilesets">
+        <item>classic</item>
+        <item>jade</item>
+        <item>traditional</item>
+        <item>pixel</item>
+    </string-array>
 </resources>

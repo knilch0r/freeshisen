@@ -16,6 +16,8 @@ Distributed under GPL v2:\n
 http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt\n
 Get the source code: https://code.google.com/p/freeshisen/</string>
     <string name="size">Size</string>
+    <string name="tileset">Tileset</string>
+    <string name="tileset_default">classic</string>
     <string name="difficulty">Difficulty</string>
     <string name="size_default">2</string>
     <string name="difficulty_default">1</string>

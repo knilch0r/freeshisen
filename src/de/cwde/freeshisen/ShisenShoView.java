@@ -108,10 +108,10 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		this.cstate=cstate;
 	}
 
-	private void loadTileset() {
+	public void loadTileset() {
 		BitmapFactory.Options ops = new BitmapFactory.Options();
 		ops.inScaled = false;
-		Bitmap tileset = BitmapFactory.decodeResource(getResources(), R.drawable.traditional, ops);
+		Bitmap tileset = BitmapFactory.decodeResource(getResources(), app.tilesetid, ops);
 		tileset.setDensity(Bitmap.DENSITY_NONE);
 
 		// The tile set has 4 rows x 9 columns

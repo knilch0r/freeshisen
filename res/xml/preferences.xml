@@ -1,23 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <ListPreference 
-        android:title="@string/size" 
-        android:entryValues="@array/size_values" 
-        android:key="pref_size" 
-        android:dialogTitle="@string/size" 
-        android:entries="@array/sizes" android:defaultValue="@string/size_default"/>
-    <ListPreference 
-        android:title="@string/difficulty" 
-        android:entryValues="@array/difficulty_values" 
-        android:key="pref_diff" 
-        android:dialogTitle="@string/difficulty" 
-        android:entries="@array/difficulties" android:defaultValue="@string/difficulty_default"/>
-    <CheckBoxPreference 
-        android:defaultValue="true" 
-        android:title="@string/gravity"
-        android:key="pref_grav" android:summaryOn="@string/gravity_pref_on" android:summaryOff="@string/gravity_pref_off"/>
-    <CheckBoxPreference 
-        android:defaultValue="true" 
-        android:title="@string/time_counter"
-        android:key="pref_time" android:summaryOn="@string/time_pref_on" android:summaryOff="@string/time_pref_off"/>
+    <ListPreference
+        android:defaultValue="@string/size_default"
+        android:dialogTitle="@string/size"
+        android:entries="@array/sizes"
+        android:entryValues="@array/size_values"
+        android:key="pref_size"
+        android:title="@string/size" />
+    <ListPreference
+        android:defaultValue="@string/difficulty_default"
+        android:dialogTitle="@string/difficulty"
+        android:entries="@array/difficulties"
+        android:entryValues="@array/difficulty_values"
+        android:key="pref_diff"
+        android:title="@string/difficulty" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="pref_grav"
+        android:summaryOff="@string/gravity_pref_off"
+        android:summaryOn="@string/gravity_pref_on"
+        android:title="@string/gravity" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="pref_time"
+        android:summaryOff="@string/time_pref_off"
+        android:summaryOn="@string/time_pref_on"
+        android:title="@string/time_counter" />
+    <ListPreference
+        android:defaultValue="@string/tileset_default"
+        android:dialogTitle="@string/tileset"
+        android:entries="@array/tilesets"
+        android:entryValues="@array/tilesets"
+        android:key="pref_tile"
+        android:title="@string/tileset" />
 </PreferenceScreen>
