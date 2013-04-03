@@ -129,7 +129,13 @@ public class ShisenSho extends Application {
 			return R.drawable.traditional;
 		} else if (s.equals("pixel")) {
 			return R.drawable.pixel;
+		} else if (s.equals("original")) {
+			return R.drawable.original;
+		} else if (s.equals("veit")) {
+			return R.drawable.veit;
 		} else {
+			// shouldn't be reached...
+			Log.e("ShisenSho", "somebody managed to set an invalid tileset string");
 			return R.drawable.classic;
 		}
 	}
