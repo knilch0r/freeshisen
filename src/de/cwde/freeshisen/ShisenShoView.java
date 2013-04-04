@@ -14,7 +14,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Cap;
@@ -43,12 +42,9 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private int screenWidth;
 	private int screenHeight;
-	private int tilesetRows;
-	private int tilesetCols;
 	private int tileHeight;
 	private int tileWidth;
 	private Bitmap bg;
-	private Bitmap tile[];
 	private Point selection1 = new Point(0, 0);
 	private Point selection2 = new Point(0, 0);
 	private List<Point> path = null;
@@ -57,6 +53,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private long playTime;
 	private long baseTime;
 	private Timer timer;
+	private Tileset tileset;
 
 	static class hHandler extends Handler {
 		private final WeakReference<ShisenShoView> mTarget;
@@ -83,12 +80,13 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private SurfaceHolder surfaceHolder = null;
 	private String time = INVALID_TIME;
 
-	public ShisenShoView(ShisenSho shishenSho) {
-		super((Context) shishenSho);
-		this.app = shishenSho;
+	public ShisenShoView(ShisenSho shisenSho) {
+		super((Context) shisenSho);
+		this.app = shisenSho;
 		cstate = StatePlay.UNINITIALIZED;
 		surfaceHolder = getHolder();
 		surfaceHolder.addCallback(this);
+		tileset = new Tileset(shisenSho);
 	}
 
 	public ShisenShoView(Context ctx) {
@@ -106,45 +104,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private void control(StatePlay cstate) {
 		this.cstate=cstate;
-	}
-
-	public void loadTileset() {
-		BitmapFactory.Options ops = new BitmapFactory.Options();
-		ops.inScaled = false;
-		Bitmap tileset = BitmapFactory.decodeResource(getResources(), app.tilesetid, ops);
-		tileset.setDensity(Bitmap.DENSITY_NONE);
-
-		// The tile set has 4 rows x 9 columns
-		tilesetRows = 4;
-		tilesetCols = 9;
-		int loadedtileWidth = tileset.getWidth()/tilesetCols;
-		int loadedtileHeight = tileset.getHeight()/tilesetRows;
-		tile = new Bitmap[tilesetRows*tilesetCols];
-
-		// align to screen:
-		// "large" is 16x6, and we want to have a nice border, so we use 17x7 and
-		// choose the lowest scale so everything fits
-		float scalex = ((float) (screenWidth - 2)/17) / loadedtileWidth;
-		float scaley = ((float) (screenHeight - 2)/7) / loadedtileHeight;
-		if (scaley < scalex) {
-			scalex = scaley;
-		} else {
-			scaley = scalex;
-		}
-		Matrix matrix = new Matrix();
-		matrix.setScale(scalex, scaley);
-
-		int k=0;
-		for (int i=0; i<tilesetRows; i++) {
-			for (int j=0; j<tilesetCols; j++) {
-				tile[k] = Bitmap.createBitmap(tileset, j*loadedtileWidth, i*loadedtileHeight,
-						loadedtileWidth, loadedtileHeight, matrix, false);
-				tile[k].setDensity(Bitmap.DENSITY_NONE);
-				k++;
-			}
-		}
-		tileWidth = tile[0].getWidth();
-		tileHeight = tile[0].getHeight();
 	}
 
 	private void loadBackground() {
@@ -192,6 +151,10 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
+	public void loadTileset() {
+		tileset.loadTileset(screenWidth, screenHeight);
+	}
+	
 	private void initializeGame() {
 		loadBackground();
 		screenWidth=getWidth();
@@ -351,7 +314,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 							// Tiles are 56px height, 40px width each
 							char piece=app.board.board[i][j];
 							if (piece!=0) {
-								canvas.drawBitmap(tile[piece], x0+j*tileWidth, y0+i*tileHeight, null);
+								canvas.drawBitmap(tileset.tile[piece], x0+j*tileWidth, y0+i*tileHeight, null);
 							}
 						}
 					}
