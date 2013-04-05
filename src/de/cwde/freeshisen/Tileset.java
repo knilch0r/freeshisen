@@ -59,7 +59,7 @@ public class Tileset {
 	}
 
 	public void loadTileset(int screenWidth, int screenHeight) {
-		boolean isSVG =false;
+		boolean isSVG = false;
 		int id;
 		String s = app.tilesetid;
 		
@@ -78,7 +78,7 @@ public class Tileset {
 		} else {
 			// shouldn't be reached...
 			Log.e("ShisenSho", "somebody managed to set an invalid tileset string");
-			id = R.drawable.classic;
+			id = R.drawable.original;
 		}
 		
 		if (isSVG) {
