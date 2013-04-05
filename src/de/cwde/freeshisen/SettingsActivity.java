@@ -33,7 +33,7 @@ implements OnSharedPreferenceChangeListener {
 
 	@Override
 	public void onBackPressed() {
-		app.setOptions();
+		app.checkForChangedOptions();
 		super.onBackPressed();
 	}
 
