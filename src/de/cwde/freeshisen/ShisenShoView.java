@@ -42,8 +42,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private int screenWidth;
 	private int screenHeight;
-	private int tileHeight;
-	private int tileWidth;
 	private Bitmap bg;
 	private Point selection1 = new Point(0, 0);
 	private Point selection2 = new Point(0, 0);
@@ -280,8 +278,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			int y0=0;
 
 			if (app!=null && app.board!=null) {
-				x0=(screenWidth-app.board.boardSize[1]*tileWidth)/2;
-				y0=(screenHeight-app.board.boardSize[0]*tileHeight)/2;
+				x0=(screenWidth-app.board.boardSize[1]*tileset.tileWidth)/2;
+				y0=(screenHeight-app.board.boardSize[0]*tileset.tileHeight)/2;
 			}
 
 			int selectcolor = Color.parseColor(COLOR_SELECTED);
@@ -314,7 +312,11 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 							// Tiles are 56px height, 40px width each
 							char piece=app.board.board[i][j];
 							if (piece!=0) {
-								canvas.drawBitmap(tileset.tile[piece], x0+j*tileWidth, y0+i*tileHeight, null);
+								canvas.drawBitmap(
+										tileset.tile[piece],
+										x0+j*tileset.tileWidth,
+										y0+i*tileset.tileHeight,
+										null);
 							}
 						}
 					}
@@ -437,10 +439,10 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		paint.setStrokeJoin(Join.ROUND);
 		paint.setStrokeWidth(3);
 		canvas.drawLine(
-				x0 + p0.j * tileWidth - 2 + (tileWidth / 2),
-				y0 + p0.i * tileHeight - 2 + (tileHeight / 2),
-				x0 + p1.j * tileWidth - 2 + (tileWidth / 2),
-				y0 + p1.i * tileHeight - 2 + (tileHeight / 2), paint);
+				x0 + p0.j * tileset.tileWidth - 2 + (tileset.tileWidth / 2),
+				y0 + p0.i * tileset.tileHeight - 2 + (tileset.tileHeight / 2),
+				x0 + p1.j * tileset.tileWidth - 2 + (tileset.tileWidth / 2),
+				y0 + p1.i * tileset.tileHeight - 2 + (tileset.tileHeight / 2), paint);
 	}
 
 	private void highlightTile(Canvas canvas, int x0, int y0, Point p, int color) {
@@ -452,10 +454,10 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		paint.setStrokeJoin(Join.ROUND);
 		paint.setStrokeWidth(3);
 		Rect r = new Rect(
-				x0 + p.j * tileWidth - 2,
-				y0 + p.i * tileHeight - 2,
-				x0 + p.j * tileWidth + tileWidth + 2,
-				y0 + p.i * tileHeight + tileHeight + 2);
+				x0 + p.j * tileset.tileWidth - 2,
+				y0 + p.i * tileset.tileHeight - 2,
+				x0 + p.j * tileset.tileWidth + tileset.tileWidth + 2,
+				y0 + p.i * tileset.tileHeight + tileset.tileHeight + 2);
 		canvas.drawRect(r, paint);
 	}
 
@@ -469,8 +471,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private void onClick(int x, int y) {
 		try {
-			int i=(y-(screenHeight-app.board.boardSize[0]*tileHeight)/2)/tileHeight;
-			int j=(x-(screenWidth-app.board.boardSize[1]*tileWidth)/2)/tileWidth;
+			int i=(y-(screenHeight-app.board.boardSize[0]*tileset.tileHeight)/2)/tileset.tileHeight;
+			int j=(x-(screenWidth-app.board.boardSize[1]*tileset.tileWidth)/2)/tileset.tileWidth;
 
 			switch (cstate) {
 			case IDLE:
