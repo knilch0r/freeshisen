@@ -1,12 +1,8 @@
 TODO list for FreeShisen:
 
-* ask for acknowledge before resetting a game (e.g. when settings were changed)
-
 * provide higher resolution tilesets (the scaled ones look rather ugly)
 ** could use current SVGs from libkmahjongg as a basis
-** do this depending on display density?
-
-* allow to choose tilesets (libkmahjongg has several) ;-)
+** try to use svg-android (needs SVG Basic 1.1 as format, however...)
 
 * i18n (lots of!)
 ** remove some lefover hardcoded strings
@@ -20,7 +16,7 @@ TODO list for FreeShisen:
 
 * ask for name in highscore list?
 
-* add sound effects?
+* add sound effects
 
-* add music?
+* add music
 
