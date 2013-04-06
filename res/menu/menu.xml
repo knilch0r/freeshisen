@@ -14,7 +14,7 @@
     <item
         android:id="@+id/clean"
         android:icon="@android:drawable/ic_menu_delete"
-        android:title="@string/clean">
+        android:title="@string/newgame">
     </item>
     <item
         android:id="@+id/options"

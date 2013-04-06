@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FreeShisen</string>
-    <string name="clean">Clean</string>
+    <string name="newgame">New Game</string>
     <string name="hint">Hint</string>
     <string name="undo">Undo</string>
     <string name="options">Options</string>
@@ -12,6 +12,8 @@ Most of the gameplay code and application structure taken from ShisenSho:\n
 &#169; 2013 contact.proofofconcept@gmail.com\n
 Images taken from kshisen (Shisen Sho 1.5.1), from the package kdegames:\n
 &#169; 1997 Mario Weilguni\n
+Other tilesets from libkmahjongg:
+&#169; Eugene Trounev, James L. Hammons, Robert Buchholz
 Distributed under GPL v2:\n
 http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt\n
 Get the source code: https://code.google.com/p/freeshisen/</string>
