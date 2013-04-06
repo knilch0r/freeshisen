@@ -549,11 +549,12 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		if (time.compareTo(besttime2) < 0) {
 			// score!
 			new AlertDialog.Builder(app.activity)
-				.setTitle("Hiscore!")
+				.setTitle(R.string.hiscore_title)
 				.setCancelable(true)
 				.setIcon(R.drawable.icon)
-				.setPositiveButton(app.getString(android.R.string.ok), null)
-				.setMessage("You've made the highscore list!").create() // FIXME: hardcoded string
+				.setPositiveButton(android.R.string.ok, null)
+				.setMessage(R.string.hiscore_text)
+				.create()
 				.show();
 
 			SharedPreferences.Editor editor = sp.edit();

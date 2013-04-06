@@ -125,7 +125,7 @@ public class ShisenShoActivity extends Activity {
 	public void onOptionsChanged()
 	{
 		new AlertDialog.Builder(this)
-		.setTitle("Preferences changed!") // FIXME: hardcoded string
+		.setTitle(R.string.prefchange_confirm_title)
 		.setCancelable(true)
 		.setIcon(R.drawable.icon)
 		.setPositiveButton(android.R.string.yes,
@@ -136,10 +136,8 @@ public class ShisenShoActivity extends Activity {
 			}
 		})
 		.setNegativeButton(android.R.string.no, null)
-		.setMessage("Changes in Preferences will only have an effect if" +
-				" a new game is started. Abort current game and start" +
-				" a new one?") // FIXME: hardcoded string
-				.create()
-				.show();
+		.setMessage(R.string.prefchange_confirm_text)
+		.create()
+		.show();
 	}
 }

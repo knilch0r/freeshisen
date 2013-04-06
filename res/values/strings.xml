@@ -41,5 +41,9 @@ Get the source code: https://code.google.com/p/freeshisen/</string>
     <string name="invalidtime">9:99:99</string>
     <string name="clearhiscore_confirm_title">Really clear best times?</string>
     <string name="clearhiscore_confirm_text">This will clear all saved times. Hit &quot;OK&quot; if you really want to do this.</string>
+    <string name="prefchange_confirm_title">Preferences changed!</string>
+    <string name="prefchange_confirm_text">Changes in Preferences will only have an effect if a new game is started. Abort current game and start a new one?</string>
+    <string name="hiscore_title">Hiscore!</string>
+    <string name="hiscore_text">You\'ve made the highscore list!</string>
 
 </resources>
