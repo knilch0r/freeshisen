@@ -1,8 +1,6 @@
 package de.cwde.freeshisen;
 
-import android.app.AlertDialog;
 import android.app.Application;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -21,6 +19,7 @@ public class ShisenSho extends Application {
 	public boolean timeCounter=true;
 
 	public void newPlay() {
+		loadOptions();
 		board = new Board();
 		board.buildRandomBoard(boardSize[0],boardSize[1],difficulty,gravity);
 	}
@@ -120,22 +119,7 @@ public class ShisenSho extends Application {
 		}
 
 		if (needsReset && (view != null) && (activity != null)) {
-			new AlertDialog.Builder(this)
-				.setTitle("Preferences changed!") // FIXME: hardcoded string
-				.setCancelable(true)
-				.setIcon(R.drawable.icon)
-				.setPositiveButton(android.R.string.yes,
-					new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						// User clicked OK button - reset game
-						((ShisenSho) ((AlertDialog) dialog).getContext()).view.reset();
-					}
-				})
-				.setNegativeButton(android.R.string.no, null)
-				.setMessage("Changes in Preferences will only have an effect if" +
-							" a new game is started. Abort current game and start" +
-							" a new one?").create() // FIXME: hardcoded string
-				.show();
+			activity.onOptionsChanged();
 		} else {
 			Log.d("ShisenSho", "Preferences changed, but no view or activity online - huh?");
 		}

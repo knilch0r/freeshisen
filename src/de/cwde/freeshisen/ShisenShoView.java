@@ -257,7 +257,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		try {
 			if (canvas == null) canvas = surfaceHolder.lockCanvas(null);
 			if (canvas == null) return;
-			if (cstate==StatePlay.UNINITIALIZED) initializeGame();
+			if (cstate == StatePlay.UNINITIALIZED) initializeGame();
 			synchronized (surfaceHolder) {
 				doDraw(canvas);
 			}
