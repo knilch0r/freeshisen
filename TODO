@@ -1,6 +1,8 @@
 TODO list for FreeShisen:
 
-* provide higher resolution tilesets (the scaled ones look rather ugly)
+* provide a new icon
+
+* provide scalable tilesets (the scaled ones look rather ugly)
 ** could use current SVGs from libkmahjongg as a basis
 ** try to use svg-android (needs SVG Basic 1.1 as format, however...)
 
