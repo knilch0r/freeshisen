@@ -118,10 +118,12 @@ public class ShisenSho extends Application {
 			view.loadTileset();
 		}
 
-		if (needsReset && (view != null) && (activity != null)) {
-			activity.onOptionsChanged();
-		} else {
-			Log.d("ShisenSho", "Preferences changed, but no view or activity online - huh?");
+		if (needsReset) {
+			if ((view != null) && (activity != null)) {
+				activity.onOptionsChanged();
+			} else {
+				Log.d("ShisenSho", "Preferences changed, but no view or activity online - huh?");
+			}
 		}
 
 	}
