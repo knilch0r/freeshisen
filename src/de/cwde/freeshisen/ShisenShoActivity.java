@@ -2,7 +2,6 @@ package de.cwde.freeshisen;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -120,24 +119,5 @@ public class ShisenShoActivity extends Activity {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void onOptionsChanged()
-	{
-		new AlertDialog.Builder(this)
-		.setTitle(R.string.prefchange_confirm_title)
-		.setCancelable(true)
-		.setIcon(R.drawable.icon)
-		.setPositiveButton(android.R.string.yes,
-				new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				// User clicked OK button - reset game
-				view.reset();
-			}
-		})
-		.setNegativeButton(android.R.string.no, null)
-		.setMessage(R.string.prefchange_confirm_text)
-		.create()
-		.show();
 	}
 }

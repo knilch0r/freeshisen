@@ -588,4 +588,22 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			unregisterTimer();
 		}
 	}
+
+	public void onOptionsChanged()
+	{
+		this.postDelayed(new Runnable() { public void run() { onOptionsChangedActivate(); } }, 100);
+	}
+
+	public void onOptionsChangedActivate()
+	{
+		new AlertDialog.Builder(app.activity)
+		.setTitle(R.string.prefchange_confirm_title)
+		.setCancelable(true)
+		.setIcon(R.drawable.icon)
+		.setPositiveButton(android.R.string.ok, null)
+		.setMessage(R.string.prefchange_confirm_text)
+		.create()
+		.show();
+	}
+
 }

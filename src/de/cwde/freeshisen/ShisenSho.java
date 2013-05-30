@@ -120,7 +120,7 @@ public class ShisenSho extends Application {
 
 		if (needsReset) {
 			if ((view != null) && (activity != null)) {
-				activity.onOptionsChanged();
+				view.onOptionsChanged();
 			} else {
 				Log.d("ShisenSho", "Preferences changed, but no view or activity online - huh?");
 			}
