@@ -331,6 +331,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			case MATCHED:
 				highlightTile(canvas, x0, y0, selection1, selectcolor);
 				break;
+			default:
+				break;
 			}
 
 			// rectangle for selection 2
@@ -338,6 +340,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			case SELECTED2:
 			case MATCHED:
 				highlightTile(canvas, x0, y0, selection2, selectcolor);
+				break;
+			default:
 				break;
 			}
 
@@ -353,6 +357,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 						p0=p1;
 					}
 				}
+				break;
+			default:
 				break;
 			}
 
@@ -381,6 +387,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					highlightTile(canvas, x0, y0, b, hintcolor);
 				}
 				break;
+			default:
+				break;
 			}
 
 			// Win & loose notifications
@@ -392,6 +400,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			case LOSE:
 				drawMessage(canvas, screenWidth / 2, screenHeight / 2, true,
 						"Game Over", 100);
+				break;
+			default:
 				break;
 			}
 
@@ -526,6 +536,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			case GAMEOVER:
 				reset();
 				paint(StatePaint.BOARD);
+				break;
+			default:
 				break;
 			}
 		} catch (Exception e) {
