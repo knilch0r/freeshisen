@@ -7,7 +7,7 @@ TODO list for FreeShisen:
 ** try to use svg-android (needs SVG Basic 1.1 as format, however...)
 
 * i18n (lots of!)
-** remove some lefover hardcoded strings
+** remove some leftover hardcoded strings
 ** add i18n variants for resources
 
 * use actionbar? this will cost some display space, but apparently is the new way to go
@@ -22,3 +22,7 @@ TODO list for FreeShisen:
 
 * add music
 
+* add counters for all kinds of events (may supersede current hiscore implementation)
+** time played, games won/lost, average times, etc
+
+* add "achievements" based on counters
