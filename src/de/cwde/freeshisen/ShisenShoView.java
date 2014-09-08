@@ -480,6 +480,11 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		return super.onTouchEvent(event);
 	}
 
+	private void playSoundEffect() {
+		if (soundEnabled == true) {
+			super.playSoundEffect(android.view.SoundEffectConstants.CLICK);
+		}
+	}
 	private void onClick(int x, int y) {
 		try {
 			int i=(y-(screenHeight-app.board.boardSize[0]*tileset.tileHeight)/2)/tileset.tileHeight;
@@ -493,6 +498,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					selection1.set(i, j);
 					paint(StatePaint.SELECTED1);
 					control(StatePlay.SELECTED1);
+					playSoundEffect();
 				}
 				break;
 			case SELECTED1:
@@ -532,11 +538,13 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 						}
 						//undo.sensitive=app.board.getCanUndo();
 					}
+					playSoundEffect();
 				}
 				break;
 			case GAMEOVER:
 				reset();
 				paint(StatePaint.BOARD);
+				playSoundEffect();
 				break;
 			default:
 				break;
