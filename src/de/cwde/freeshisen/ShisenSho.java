@@ -17,7 +17,7 @@ public class ShisenSho extends Application {
 	public String tilesetid = "classic";
 	public boolean gravity=true;
 	public boolean timeCounter=true;
-	public boolean usesound=false;
+//	public boolean usesound=false;
 
 	public void newPlay() {
 		loadOptions();
@@ -83,7 +83,7 @@ public class ShisenSho extends Application {
 		gravity = sp.getBoolean("pref_grav", true);
 		timeCounter = sp.getBoolean("pref_time", true);
 		tilesetid = sp.getString("pref_tile", "");
-		usesound = sp.getBoolean("pref_sound", false);
+//		usesound = sp.getBoolean("pref_sound", false);
 	}
 
 	public void checkForChangedOptions() {
@@ -95,7 +95,7 @@ public class ShisenSho extends Application {
 		boolean gravity = sp.getBoolean("pref_grav", true);
 		boolean timeCounter = sp.getBoolean("pref_time", true);
 		String tilesetid = sp.getString("pref_tile", "");
-		boolean usesound = sp.getBoolean("pref_sound", false);
+//		boolean usesound = sp.getBoolean("pref_sound", false);
 
 		boolean needsReset = false;
 
@@ -121,10 +121,10 @@ public class ShisenSho extends Application {
 			view.loadTileset();
 		}
 
-		if ((usesound != this.usesound) && (view != null)) {
-			this.usesound = usesound;
-			view.setSoundEnabled(usesound);
-		}
+//		if ((usesound != this.usesound) && (view != null)) {
+//			this.usesound = usesound;
+//			view.setSoundEnabled(usesound);
+//		}
 
 		if (needsReset) {
 			if ((view != null) && (activity != null)) {

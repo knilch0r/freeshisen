@@ -24,6 +24,7 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -480,10 +481,9 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		return super.onTouchEvent(event);
 	}
 
-	private void playSoundEffect() {
-		if (soundEnabled == true) {
+	private void doPlaySoundEffect() {
 			super.playSoundEffect(android.view.SoundEffectConstants.CLICK);
-		}
+		//	Log.d("ShisenSho", "SOUND EFFECT!!! BADABUMM!");
 	}
 	private void onClick(int x, int y) {
 		try {
@@ -498,7 +498,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					selection1.set(i, j);
 					paint(StatePaint.SELECTED1);
 					control(StatePlay.SELECTED1);
-					playSoundEffect();
+					doPlaySoundEffect();
 				}
 				break;
 			case SELECTED1:
@@ -538,13 +538,13 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 						}
 						//undo.sensitive=app.board.getCanUndo();
 					}
-					playSoundEffect();
+					doPlaySoundEffect();
 				}
 				break;
 			case GAMEOVER:
 				reset();
 				paint(StatePaint.BOARD);
-				playSoundEffect();
+				doPlaySoundEffect();
 				break;
 			default:
 				break;
