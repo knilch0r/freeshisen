@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">FreeShisen</string>
     <string name="newgame">New Game</string>
     <string name="hint">Hint</string>
@@ -45,5 +46,8 @@ Get the source code: https://code.google.com/p/freeshisen/</string>
     <string name="prefchange_confirm_text">Some changes in Preferences will only have an effect if a new game is started.</string>
     <string name="hiscore_title">Hiscore!</string>
     <string name="hiscore_text">You\'ve made the highscore list!</string>
+    <string name="sound_pref_on">Sound Effects are enabled.</string>
+    <string name="sound_pref_off">Sound effects are disabled.</string>
+    <string name="sound_effects">Sound Effects</string>
 
 </resources>
