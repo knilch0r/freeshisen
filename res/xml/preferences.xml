@@ -34,7 +34,7 @@
         android:key="pref_tile"
         android:title="@string/tileset" />
     <CheckBoxPreference
-        android:defaultValue="true"
+        android:defaultValue="false"
         android:key="pref_sound"
         android:summaryOff="@string/sound_pref_off"
         android:summaryOn="@string/sound_pref_on"
