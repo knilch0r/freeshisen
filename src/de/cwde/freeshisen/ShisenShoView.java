@@ -53,6 +53,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private Timer timer;
 	private Tileset tileset;
 
+	private boolean soundEnabled = false;
+
 	static class hHandler extends Handler {
 		private final WeakReference<ShisenShoView> mTarget;
 
@@ -152,7 +154,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	public void loadTileset() {
 		tileset.loadTileset(screenWidth, screenHeight);
 	}
-	
+
 	private void initializeGame() {
 		loadBackground();
 		screenWidth=getWidth();
@@ -426,7 +428,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 				int timePosX=screenWidth-120;
 				int timePosY=screenHeight-10;
-				
+
 				if (app.timeCounter) {
 					drawMessage(canvas, timePosX, timePosY, false, time, 30);
 				}
@@ -560,13 +562,13 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		if (time.compareTo(besttime2) < 0) {
 			// score!
 			new AlertDialog.Builder(app.activity)
-				.setTitle(R.string.hiscore_title)
-				.setCancelable(true)
-				.setIcon(R.drawable.icon)
-				.setPositiveButton(android.R.string.ok, null)
-				.setMessage(R.string.hiscore_text)
-				.create()
-				.show();
+			.setTitle(R.string.hiscore_title)
+			.setCancelable(true)
+			.setIcon(R.drawable.icon)
+			.setPositiveButton(android.R.string.ok, null)
+			.setMessage(R.string.hiscore_text)
+			.create()
+			.show();
 
 			SharedPreferences.Editor editor = sp.edit();
 			if (time.compareTo(besttime1) < 0) {
@@ -615,6 +617,20 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		.setMessage(R.string.prefchange_confirm_text)
 		.create()
 		.show();
+	}
+
+	/**
+	 * @return the soundEnabled
+	 */
+	public boolean isSoundEnabled() {
+		return soundEnabled;
+	}
+
+	/**
+	 * @param soundEnabled the soundEnabled to set
+	 */
+	public void setSoundEnabled(boolean soundEnabled) {
+		this.soundEnabled = soundEnabled;
 	}
 
 }
