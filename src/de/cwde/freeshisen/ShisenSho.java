@@ -59,7 +59,7 @@ public class ShisenSho extends Application {
 		return instance;
 	}
 
-	public ShisenShoView getView() {
+	public synchronized ShisenShoView getView() {
 		if (view == null) view = new ShisenShoView(this);
 		return view;
 	}

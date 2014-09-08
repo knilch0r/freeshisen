@@ -236,7 +236,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	public static void drawMessage(Canvas canvas, int x, int y,
 			boolean centered, String message, float textSize) {
 		Paint paint = new Paint();
