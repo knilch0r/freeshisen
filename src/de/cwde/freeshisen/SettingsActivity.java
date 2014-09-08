@@ -14,8 +14,6 @@ implements OnSharedPreferenceChangeListener {
 	private static final String KEY_PREF_DIFF = "pref_diff";
 	private static final String KEY_PREF_SIZE = "pref_size";
 	private static final String KEY_PREF_TILE = "pref_tile";
-	//private static final String KEY_PREF_GRAV = "pref_grav";
-	//private static final String KEY_PREF_TIME = "pref_time";
 
 	@SuppressWarnings("deprecation")
 	@Override
