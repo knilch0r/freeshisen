@@ -37,8 +37,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private static final String COLOR_HINT = "#F0C000";
 	private static final String COLOR_SELECTED = "#FF0000";
 
-	private enum StatePlay { UNINITIALIZED, IDLE, SELECTED1, SELECTED2, GAMEOVER };
-	private enum StatePaint { BOARD, SELECTED1, SELECTED2, MATCHED, WIN, LOSE, HINT, TIME };
+	private enum StatePlay { UNINITIALIZED, IDLE, SELECTED1, GAMEOVER }
+	private enum StatePaint { BOARD, SELECTED1, SELECTED2, MATCHED, WIN, LOSE, HINT, TIME }
 
 	private int screenWidth;
 	private int screenHeight;
@@ -52,8 +52,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private long baseTime;
 	private Timer timer;
 	private Tileset tileset;
-
-	private boolean soundEnabled = false;
 
 	static class hHandler extends Handler {
 		private final WeakReference<ShisenShoView> mTarget;
@@ -253,15 +251,13 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		canvas.drawText(message, x, y, paint);
 	}
 
-	public void repaint() {
+	public synchronized void repaint() {
 		if (surfaceHolder == null) return;
 		try {
 			if (canvas == null) canvas = surfaceHolder.lockCanvas(null);
 			if (canvas == null) return;
 			if (cstate == StatePlay.UNINITIALIZED) initializeGame();
-			synchronized (surfaceHolder) {
-				doDraw(canvas);
-			}
+			doDraw(canvas);
 		} finally {
 			if (canvas != null) {
 				surfaceHolder.unlockCanvasAndPost(canvas);
@@ -492,7 +488,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			switch (cstate) {
 			case IDLE:
 				if (i >= 0 && i < app.board.boardSize[0] && j >= 0
-				&& j < app.board.boardSize[1]
+						&& j < app.board.boardSize[1]
 						&& app.board.board[i][j] != 0) {
 					selection1.set(i, j);
 					paint(StatePaint.SELECTED1);
@@ -624,20 +620,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		.setMessage(R.string.prefchange_confirm_text)
 		.create()
 		.show();
-	}
-
-	/**
-	 * @return the soundEnabled
-	 */
-	public boolean isSoundEnabled() {
-		return soundEnabled;
-	}
-
-	/**
-	 * @param soundEnabled the soundEnabled to set
-	 */
-	public void setSoundEnabled(boolean soundEnabled) {
-		this.soundEnabled = soundEnabled;
 	}
 
 }

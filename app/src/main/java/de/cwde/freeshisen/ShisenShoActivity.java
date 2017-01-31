@@ -92,8 +92,8 @@ public class ShisenShoActivity extends Activity {
 		PackageInfo pInfo;
 		try {
 			pInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
-			String appname = getString(R.string.app_name);
-			String aboutTitle = "About " + appname;
+			final String appname = getString(R.string.app_name);
+			final String aboutTitle = "About " + appname;
 			String versionString = appname + " "+ pInfo.versionName;
 			String aboutText = getString(R.string.aboutText);
 
