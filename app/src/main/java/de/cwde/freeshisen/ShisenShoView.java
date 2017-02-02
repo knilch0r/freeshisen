@@ -1,11 +1,5 @@
 package de.cwde.freeshisen;
 
-import java.lang.ref.WeakReference;
-import java.util.List;
-import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -24,10 +18,21 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.v4.view.GestureDetectorCompat;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.lang.ref.WeakReference;
+import java.util.List;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static java.lang.Math.abs;
 
 class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -78,13 +83,16 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private SurfaceHolder surfaceHolder = null;
 	private String time = INVALID_TIME;
 
+	private GestureDetectorCompat mDetector;
+
 	public ShisenShoView(ShisenSho shisenSho) {
-		super((Context) shisenSho);
+		super(shisenSho);
 		this.app = shisenSho;
 		cstate = StatePlay.UNINITIALIZED;
 		surfaceHolder = getHolder();
 		surfaceHolder.addCallback(this);
 		tileset = new Tileset(shisenSho);
+		mDetector = new GestureDetectorCompat(getContext(), new MyGestureListener());
 	}
 
 	public ShisenShoView(Context ctx) {
@@ -93,6 +101,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		cstate = StatePlay.UNINITIALIZED;
 		surfaceHolder = getHolder();
 		surfaceHolder.addCallback(this);
+		tileset = new Tileset((ShisenSho) ctx);
+		mDetector = new GestureDetectorCompat(getContext(), new MyGestureListener());
 	}
 
 	private void paint(StatePaint pstate) {
@@ -470,10 +480,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if (event.getAction()==MotionEvent.ACTION_DOWN) {
-			onClick(Math.round(event.getX()),Math.round(event.getY()));
-		}
-		return super.onTouchEvent(event);
+		this.mDetector.onTouchEvent(event);
+		return true;
 	}
 
 	private void doPlaySoundEffect() {
@@ -622,4 +630,36 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		.show();
 	}
 
+	class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+		final float scale = getResources().getDisplayMetrics().density;
+
+		@Override
+		public boolean onDown(MotionEvent event) {
+			Log.d("DEBUGS", "onDowni2");
+			return true;
+		}
+
+		@Override
+		public boolean onSingleTapUp(MotionEvent event)
+		{
+			Log.d("DEBUGS", "onSTUp");
+			onClick(Math.round(event.getX()),Math.round(event.getY()));
+			return true;
+		}
+
+		@Override
+		public boolean onFling(MotionEvent event1, MotionEvent event2,
+							   float dX, float dY) {
+			Log.d("DEBUGS", "onFling: 1:" + event1.getX() + "," + event1.getY() + " 2:"+ event2.getX()+ "," + event2.getY());
+			Log.d("DEBUGS", "onFling: scale:" + (30.0*scale));
+			// TODO: options menu handling
+			if (abs(event1.getY() - event2.getY()) > (30.0*scale) )
+			{
+				app.activity.openOptionsMenu();
+			}
+
+			return true;
+		}
+	}
 }
