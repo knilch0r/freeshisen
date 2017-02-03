@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.cwde.freeshisen"
-    android:versionCode="9"
-    android:versionName="0.5" >
+    android:versionCode="10"
+    android:versionName="0.6rc1" >
 
-    <uses-sdk
-        android:minSdkVersion="9"
-        android:targetSdkVersion="10" >
-
-        <!-- targetSdkVersion *must* be <=10 so we can show the legacy "menu" button -->
+    <uses-sdk>
+        <!-- overridden by gradle scripts -->
     </uses-sdk>
 
     <application
@@ -21,7 +18,6 @@
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -35,7 +31,6 @@
 
             <intent-filter>
                 <action android:name="de.cwde.freeshisen.SETTINGS" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -49,7 +44,6 @@
 
             <intent-filter>
                 <action android:name="de.cwde.freeshisen.HISCORE" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
