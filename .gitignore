@@ -2,3 +2,7 @@
 /build
 /screenshots
 local.properties
+*.iml
+.gradle
+.externalNativeBuild
+
