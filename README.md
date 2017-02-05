@@ -8,4 +8,16 @@ Features:
   * highscores
 
 Automatically exported from `code.google.com/p/freeshisen`
+
+## Licensing
+
 This is a fork of the already existing excellent implementation from "proofofconcept" which is available at https://play.google.com/store/apps/details?id=org.proofofconcept.shisensho
+
+(c) 2017 knilch - freeshisen@cwde.de
+Most of the gameplay code and application structure taken from ShisenSho:
+(c) 2013 contact.proofofconcept@gmail.com
+Images taken from kshisen (Shisen Sho 1.5.1), from the package kdegames:
+(c) 1997 Mario Weilguni
+Other tilesets from libkmahjongg:
+(c) Eugene Trounev, James L. Hammons, Robert Buchholz
+
