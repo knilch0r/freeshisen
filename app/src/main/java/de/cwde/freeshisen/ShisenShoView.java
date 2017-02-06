@@ -231,14 +231,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	public void onTimeCounterActivate() {
-		if (cstate!=StatePlay.GAMEOVER && !timerRegistered) {
-			// Reprogram the time update that had been
-			// deactivated with the time_counter=false
-			registerTimer();
-		}
-	}
-
 	private void onUpdateTime() {
 		paint(pstate);
 		if (cstate==StatePlay.GAMEOVER) {
