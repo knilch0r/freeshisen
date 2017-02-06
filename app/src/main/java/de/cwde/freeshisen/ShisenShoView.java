@@ -42,8 +42,9 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private static final String COLOR_HINT = "#F0C000";
 	private static final String COLOR_SELECTED = "#FF0000";
 
-	private enum StatePlay { UNINITIALIZED, IDLE, SELECTED1, RESTARTING}
-	private enum StatePaint { STARTING, BOARD, SELECTED1, SELECTED2, MATCHED, WIN, LOSE, HINT, TIME }
+	private enum StatePlay {UNINITIALIZED, IDLE, SELECTED1, RESTARTING}
+
+	private enum StatePaint {STARTING, BOARD, SELECTED1, SELECTED2, MATCHED, WIN, LOSE, HINT, TIME}
 
 	private int screenWidth;
 	private int screenHeight;
@@ -106,12 +107,12 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void paint(StatePaint pstate) {
-		this.pstate=pstate;
+		this.pstate = pstate;
 		repaint();
 	}
 
 	private void control(StatePlay cstate) {
-		this.cstate=cstate;
+		this.cstate = cstate;
 	}
 
 	private void loadBackground() {
@@ -154,8 +155,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void updateTime() {
-		if (cstate!=StatePlay.RESTARTING) {
-			playTime = (System.currentTimeMillis()-startTime)/1000+baseTime;
+		if (cstate != StatePlay.RESTARTING) {
+			playTime = (System.currentTimeMillis() - startTime) / 1000 + baseTime;
 		}
 	}
 
@@ -165,40 +166,52 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private void initializeGame() {
 		loadBackground();
-		screenWidth=getWidth();
-		screenHeight=getHeight();
+		screenWidth = getWidth();
+		screenHeight = getHeight();
 		loadTileset();
 		//undo.sensitive=false;
-		pstate=StatePaint.STARTING;
+		pstate = StatePaint.STARTING;
 		app.newPlay();
 		control(StatePlay.IDLE);
-		startTime=System.currentTimeMillis();
-		playTime=0;
-		baseTime=0;
+		startTime = System.currentTimeMillis();
+		playTime = 0;
+		baseTime = 0;
 		if (!timerRegistered) {
 			registerTimer();
 		}
-		pairs=app.board.getPairs(1);
+		pairs = app.board.getPairs(1);
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
-		case R.id.hint:
-			this.postDelayed(new Runnable() { public void run() { onHintActivate(); } }, 100);
-			return true;
-		case R.id.undo:
-			this.postDelayed(new Runnable() { public void run() { onUndoActivate(); } }, 100);
-			return true;
-		case R.id.clean:
-			this.postDelayed(new Runnable() { public void run() { reset(); } }, 100);
-			return true;
-		case R.id.options:
-			return true;
-		case R.id.about:
-			return true;
-		default:
-			return false;
+			case R.id.hint:
+				this.postDelayed(new Runnable() {
+					public void run() {
+						onHintActivate();
+					}
+				}, 100);
+				return true;
+			case R.id.undo:
+				this.postDelayed(new Runnable() {
+					public void run() {
+						onUndoActivate();
+					}
+				}, 100);
+				return true;
+			case R.id.clean:
+				this.postDelayed(new Runnable() {
+					public void run() {
+						reset();
+					}
+				}, 100);
+				return true;
+			case R.id.options:
+				return true;
+			case R.id.about:
+				return true;
+			default:
+				return false;
 		}
 	}
 
@@ -208,8 +221,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void onHintActivate() {
-		if (cstate!=StatePlay.RESTARTING) {
-			pairs=app.board.getPairs(1);
+		if (cstate != StatePlay.RESTARTING) {
+			pairs = app.board.getPairs(1);
 			paint(StatePaint.HINT);
 			app.sleep(10);
 			paint(StatePaint.BOARD);
@@ -219,7 +232,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private void onUndoActivate() {
 		if (app.board.getCanUndo()) {
-			if (cstate==StatePlay.RESTARTING && !timerRegistered) {
+			if (cstate == StatePlay.RESTARTING && !timerRegistered) {
 				// Reprogram the time update that had been
 				// deactivated with the game over status
 				registerTimer();
@@ -233,13 +246,13 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private void onUpdateTime() {
 		paint(pstate);
-		if (cstate==StatePlay.RESTARTING) {
+		if (cstate == StatePlay.RESTARTING) {
 			unregisterTimer();
 		}
 	}
 
 	public static void drawMessage(Canvas canvas, int x, int y,
-			boolean centered, String message, float textSize) {
+								   boolean centered, String message, float textSize) {
 		Paint paint = new Paint();
 		paint.setLinearText(true);
 		paint.setAntiAlias(true);
@@ -273,12 +286,12 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			if (canvas == null) return;
 
 			// Board upper left corner on screen
-			int x0=0;
-			int y0=0;
+			int x0 = 0;
+			int y0 = 0;
 
-			if (app!=null && app.board!=null) {
-				x0=(screenWidth-app.board.boardSize[1]*tileset.tileWidth)/2;
-				y0=(screenHeight-app.board.boardSize[0]*tileset.tileHeight)/2;
+			if (app != null && app.board != null) {
+				x0 = (screenWidth - app.board.boardSize[1] * tileset.tileWidth) / 2;
+				y0 = (screenHeight - app.board.boardSize[0] * tileset.tileHeight) / 2;
 			}
 
 			int selectcolor = Color.parseColor(COLOR_SELECTED);
@@ -287,24 +300,24 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			// Background painting
 			int bgWidth = bg.getWidth();
 			int bgHeight = bg.getHeight();
-			for (int i=0; i<screenHeight/bgHeight+1; i++) {
-				for (int j=0; j<screenWidth/bgWidth+1; j++) {
-					canvas.drawBitmap(bg, j*bgWidth, i*bgHeight, null);
+			for (int i = 0; i < screenHeight / bgHeight + 1; i++) {
+				for (int j = 0; j < screenWidth / bgWidth + 1; j++) {
+					canvas.drawBitmap(bg, j * bgWidth, i * bgHeight, null);
 				}
 			}
 
 			// Board painting
 			// Max visible size: 7x17
-			if (app!=null && app.board!=null) {
-				for (int i=0;i<app.board.boardSize[0];i++) {
-					for (int j=0;j<app.board.boardSize[1];j++) {
+			if (app != null && app.board != null) {
+				for (int i = 0; i < app.board.boardSize[0]; i++) {
+					for (int j = 0; j < app.board.boardSize[1]; j++) {
 						// Tiles are 56px height, 40px width each
-						char piece=app.board.board[i][j];
-						if (piece!=0) {
+						char piece = app.board.board[i][j];
+						if (piece != 0) {
 							canvas.drawBitmap(
 									tileset.tile[piece],
-									x0+j*tileset.tileWidth,
-									y0+i*tileset.tileHeight,
+									x0 + j * tileset.tileWidth,
+									y0 + i * tileset.tileHeight,
 									null);
 						}
 					}
@@ -313,112 +326,112 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 			// rectangle for selection 1
 			switch (pstate) {
-			case SELECTED1:
-			case SELECTED2:
-			case MATCHED:
-				highlightTile(canvas, x0, y0, selection1, selectcolor);
-				break;
-			default:
-				break;
+				case SELECTED1:
+				case SELECTED2:
+				case MATCHED:
+					highlightTile(canvas, x0, y0, selection1, selectcolor);
+					break;
+				default:
+					break;
 			}
 
 			// rectangle for selection 2
 			switch (pstate) {
-			case SELECTED2:
-			case MATCHED:
-				highlightTile(canvas, x0, y0, selection2, selectcolor);
-				break;
-			default:
-				break;
+				case SELECTED2:
+				case MATCHED:
+					highlightTile(canvas, x0, y0, selection2, selectcolor);
+					break;
+				default:
+					break;
 			}
 
 			// Matching path
 			switch (pstate) {
-			case MATCHED:
-				if (path!=null) {
-					Point p0=null;
-					for (Point p1 : path) {
-						if (p0!=null) {
-							drawLine(canvas, x0, y0, p0, p1, selectcolor);
-						}
-						p0=p1;
-					}
-				}
-				break;
-			default:
-				break;
-			}
-
-			// hint rectangles
-			switch (pstate) {
-			case HINT:
-				if (pairs != null && pairs.size() > 0) {
-					Line pair = pairs.get(0);
-					Point a = pair.a;
-					Point b = pair.b;
-					path = app.board.getPath(a, b);
-
-					highlightTile(canvas, x0, y0, a, hintcolor);
-
+				case MATCHED:
 					if (path != null) {
 						Point p0 = null;
 						for (Point p1 : path) {
 							if (p0 != null) {
-								drawLine(canvas, x0, y0, p0, p1, hintcolor);
+								drawLine(canvas, x0, y0, p0, p1, selectcolor);
 							}
 							p0 = p1;
 						}
-						path = null;
 					}
+					break;
+				default:
+					break;
+			}
 
-					highlightTile(canvas, x0, y0, b, hintcolor);
-				}
-				break;
-			default:
-				break;
+			// hint rectangles
+			switch (pstate) {
+				case HINT:
+					if (pairs != null && pairs.size() > 0) {
+						Line pair = pairs.get(0);
+						Point a = pair.a;
+						Point b = pair.b;
+						path = app.board.getPath(a, b);
+
+						highlightTile(canvas, x0, y0, a, hintcolor);
+
+						if (path != null) {
+							Point p0 = null;
+							for (Point p1 : path) {
+								if (p0 != null) {
+									drawLine(canvas, x0, y0, p0, p1, hintcolor);
+								}
+								p0 = p1;
+							}
+							path = null;
+						}
+
+						highlightTile(canvas, x0, y0, b, hintcolor);
+					}
+					break;
+				default:
+					break;
 			}
 
 			// Win & loose notifications
 			switch (pstate) {
-			case WIN:
-				drawMessage(canvas, screenWidth / 2, screenHeight / 2, true,
-						"You Win!", 100);
-				break;
-			case LOSE:
-				drawMessage(canvas, screenWidth / 2, screenHeight / 2, true,
-						"Game Over", 100);
-				break;
-			default:
-				break;
+				case WIN:
+					drawMessage(canvas, screenWidth / 2, screenHeight / 2, true,
+							"You Win!", 100);
+					break;
+				case LOSE:
+					drawMessage(canvas, screenWidth / 2, screenHeight / 2, true,
+							"Game Over", 100);
+					break;
+				default:
+					break;
 			}
 
 			switch (pstate) {
-			case BOARD:
-			case SELECTED1:
-			case SELECTED2:
-			case MATCHED:
-			case WIN:
-			case LOSE:
-			case HINT:
-			case TIME:
-				updateTime();
-				int hours = (int) (playTime / (60 * 60));
-				int minutes = (int) ((playTime / 60) % 60);
-				int seconds = (int) (playTime % 60);
-				if (hours < 10) {
-					time = String.format(Locale.US, "%01d:%02d:%02d",
-							hours, minutes, seconds);
-				} else {
-					time = INVALID_TIME;
-				}
+				case BOARD:
+				case SELECTED1:
+				case SELECTED2:
+				case MATCHED:
+				case WIN:
+				case LOSE:
+				case HINT:
+				case TIME:
+					updateTime();
+					int hours = (int) (playTime / (60 * 60));
+					int minutes = (int) ((playTime / 60) % 60);
+					int seconds = (int) (playTime % 60);
+					if (hours < 10) {
+						time = String.format(Locale.US, "%01d:%02d:%02d",
+								hours, minutes, seconds);
+					} else {
+						time = INVALID_TIME;
+					}
 
-				int timePosX=screenWidth-120;
-				int timePosY=screenHeight-10;
+					int timePosX = screenWidth - 120;
+					int timePosY = screenHeight - 10;
 
-				if (app.timeCounter) {
-					drawMessage(canvas, timePosX, timePosY, false, time, 30);
-				}
-				break;
+					if (app.timeCounter) {
+						drawMessage(canvas, timePosX, timePosY, false, time, 30);
+					}
+					break;
 			}
 
 		} catch (Exception e) {
@@ -465,72 +478,73 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void doPlaySoundEffect() {
-			super.playSoundEffect(android.view.SoundEffectConstants.CLICK);
+		super.playSoundEffect(android.view.SoundEffectConstants.CLICK);
 		//	Log.d("ShisenSho", "SOUND EFFECT!!! BADABUMM!");
 	}
+
 	private void onClick(int x, int y) {
 		try {
-			int i=(y-(screenHeight-app.board.boardSize[0]*tileset.tileHeight)/2)/tileset.tileHeight;
-			int j=(x-(screenWidth-app.board.boardSize[1]*tileset.tileWidth)/2)/tileset.tileWidth;
+			int i = (y - (screenHeight - app.board.boardSize[0] * tileset.tileHeight) / 2) / tileset.tileHeight;
+			int j = (x - (screenWidth - app.board.boardSize[1] * tileset.tileWidth) / 2) / tileset.tileWidth;
 
 			switch (cstate) {
-			case IDLE:
-				if (i >= 0 && i < app.board.boardSize[0] && j >= 0
-						&& j < app.board.boardSize[1]
-						&& app.board.board[i][j] != 0) {
-					selection1.set(i, j);
-					paint(StatePaint.SELECTED1);
-					control(StatePlay.SELECTED1);
-					doPlaySoundEffect();
-				}
-				break;
-			case SELECTED1:
-				if (i >= 0 && i < app.board.boardSize[0] && j >= 0
-				&& j < app.board.boardSize[1]
-						&& app.board.board[i][j] != 0) {
-					if (selection1.equals(i, j)) {
-						paint(StatePaint.BOARD);
-						control(StatePlay.IDLE);
-					} else {
-						selection2.set(i, j);
-						paint(StatePaint.SELECTED2);
-
-						Point a = selection1.copy();
-						Point b = selection2.copy();
-						path = app.board.getPath(a, b);
-						paint(StatePaint.MATCHED);
-						app.sleep(2);
-						paint(StatePaint.BOARD);
-						if (path.size() > 0) {
-							app.board.play(a, b);
-						}
-						path = null;
-						paint(StatePaint.BOARD);
-
-						pairs = app.board.getPairs(1);
-						if (pairs.size() == 0) {
-							if (app.board.getNumPieces() == 0) {
-								paint(StatePaint.WIN);
-								checkforhiscore();
-							} else {
-								paint(StatePaint.LOSE);
-							}
-							control(StatePlay.RESTARTING);
-						} else {
-							control(StatePlay.IDLE);
-						}
-						//undo.sensitive=app.board.getCanUndo();
+				case IDLE:
+					if (i >= 0 && i < app.board.boardSize[0] && j >= 0
+							&& j < app.board.boardSize[1]
+							&& app.board.board[i][j] != 0) {
+						selection1.set(i, j);
+						paint(StatePaint.SELECTED1);
+						control(StatePlay.SELECTED1);
+						doPlaySoundEffect();
 					}
+					break;
+				case SELECTED1:
+					if (i >= 0 && i < app.board.boardSize[0] && j >= 0
+							&& j < app.board.boardSize[1]
+							&& app.board.board[i][j] != 0) {
+						if (selection1.equals(i, j)) {
+							paint(StatePaint.BOARD);
+							control(StatePlay.IDLE);
+						} else {
+							selection2.set(i, j);
+							paint(StatePaint.SELECTED2);
+
+							Point a = selection1.copy();
+							Point b = selection2.copy();
+							path = app.board.getPath(a, b);
+							paint(StatePaint.MATCHED);
+							app.sleep(2);
+							paint(StatePaint.BOARD);
+							if (path.size() > 0) {
+								app.board.play(a, b);
+							}
+							path = null;
+							paint(StatePaint.BOARD);
+
+							pairs = app.board.getPairs(1);
+							if (pairs.size() == 0) {
+								if (app.board.getNumPieces() == 0) {
+									paint(StatePaint.WIN);
+									checkforhiscore();
+								} else {
+									paint(StatePaint.LOSE);
+								}
+								control(StatePlay.RESTARTING);
+							} else {
+								control(StatePlay.IDLE);
+							}
+							//undo.sensitive=app.board.getCanUndo();
+						}
+						doPlaySoundEffect();
+					}
+					break;
+				case RESTARTING:
+					reset();
+					paint(StatePaint.BOARD);
 					doPlaySoundEffect();
-				}
-				break;
-			case RESTARTING:
-				reset();
-				paint(StatePaint.BOARD);
-				doPlaySoundEffect();
-				break;
-			default:
-				break;
+					break;
+				default:
+					break;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -541,10 +555,10 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		if (timerRegistered) {
 			unregisterTimer();
 		}
-		final String[] sizes = { "S", "M", "L" };
-		final String[] diffs = { "E", "H" };
-		String prefname1 = "hiscore_" + diffs[app.difficulty-1] + sizes[app.size-1] + "1";
-		String prefname2 = "hiscore_" + diffs[app.difficulty-1] + sizes[app.size-1] + "2";
+		final String[] sizes = {"S", "M", "L"};
+		final String[] diffs = {"E", "H"};
+		String prefname1 = "hiscore_" + diffs[app.difficulty - 1] + sizes[app.size - 1] + "1";
+		String prefname2 = "hiscore_" + diffs[app.difficulty - 1] + sizes[app.size - 1] + "2";
 		// get hiscores for current size/difficulty
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(app);
 		String besttime1 = sp.getString(prefname1, INVALID_TIME);
@@ -553,13 +567,13 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		if (time.compareTo(besttime2) < 0) {
 			// score!
 			new AlertDialog.Builder(app.activity)
-			.setTitle(R.string.hiscore_title)
-			.setCancelable(true)
-			.setIcon(R.drawable.icon)
-			.setPositiveButton(android.R.string.ok, null)
-			.setMessage(R.string.hiscore_text)
-			.create()
-			.show();
+					.setTitle(R.string.hiscore_title)
+					.setCancelable(true)
+					.setIcon(R.drawable.icon)
+					.setPositiveButton(android.R.string.ok, null)
+					.setMessage(R.string.hiscore_text)
+					.create()
+					.show();
 
 			SharedPreferences.Editor editor = sp.edit();
 			if (time.compareTo(besttime1) < 0) {
@@ -573,9 +587,9 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
+							   int height) {
 		surfaceHolder = holder;
-		if (cstate!=StatePlay.RESTARTING && !timerRegistered) {
+		if (cstate != StatePlay.RESTARTING && !timerRegistered) {
 			registerTimer();
 		}
 		repaint();
@@ -593,21 +607,23 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	public void onOptionsChanged()
-	{
-		this.postDelayed(new Runnable() { public void run() { onOptionsChangedActivate(); } }, 100);
+	public void onOptionsChanged() {
+		this.postDelayed(new Runnable() {
+			public void run() {
+				onOptionsChangedActivate();
+			}
+		}, 100);
 	}
 
-	public void onOptionsChangedActivate()
-	{
+	public void onOptionsChangedActivate() {
 		new AlertDialog.Builder(app.activity)
-		.setTitle(R.string.prefchange_confirm_title)
-		.setCancelable(true)
-		.setIcon(R.drawable.icon)
-		.setPositiveButton(android.R.string.ok, null)
-		.setMessage(R.string.prefchange_confirm_text)
-		.create()
-		.show();
+				.setTitle(R.string.prefchange_confirm_title)
+				.setCancelable(true)
+				.setIcon(R.drawable.icon)
+				.setPositiveButton(android.R.string.ok, null)
+				.setMessage(R.string.prefchange_confirm_text)
+				.create()
+				.show();
 	}
 
 	class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -621,21 +637,19 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 
 		@Override
-		public boolean onSingleTapUp(MotionEvent event)
-		{
+		public boolean onSingleTapUp(MotionEvent event) {
 			Log.d("DEBUGS", "onSTUp");
-			onClick(Math.round(event.getX()),Math.round(event.getY()));
+			onClick(Math.round(event.getX()), Math.round(event.getY()));
 			return true;
 		}
 
 		@Override
 		public boolean onFling(MotionEvent event1, MotionEvent event2,
 							   float dX, float dY) {
-			Log.d("DEBUGS", "onFling: 1:" + event1.getX() + "," + event1.getY() + " 2:"+ event2.getX()+ "," + event2.getY());
-			Log.d("DEBUGS", "onFling: scale:" + (30.0*scale));
+			Log.d("DEBUGS", "onFling: 1:" + event1.getX() + "," + event1.getY() + " 2:" + event2.getX() + "," + event2.getY());
+			Log.d("DEBUGS", "onFling: scale:" + (30.0 * scale));
 			// TODO: options menu handling
-			if (abs(event1.getY() - event2.getY()) > (30.0*scale) )
-			{
+			if (abs(event1.getY() - event2.getY()) > (30.0 * scale)) {
 				app.activity.openOptionsMenu();
 			}
 
