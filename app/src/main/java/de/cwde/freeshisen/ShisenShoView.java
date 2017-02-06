@@ -42,8 +42,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private static final String COLOR_HINT = "#F0C000";
 	private static final String COLOR_SELECTED = "#FF0000";
 
-	private enum StatePlay { UNINITIALIZED, IDLE, SELECTED1, GAMEOVER }
-	private enum StatePaint { BOARD, SELECTED1, SELECTED2, MATCHED, WIN, LOSE, HINT, TIME }
+	private enum StatePlay { UNINITIALIZED, IDLE, SELECTED1, RESTARTING}
+	private enum StatePaint { STARTING, BOARD, SELECTED1, SELECTED2, MATCHED, WIN, LOSE, HINT, TIME }
 
 	private int screenWidth;
 	private int screenHeight;
@@ -154,7 +154,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void updateTime() {
-		if (cstate!=StatePlay.GAMEOVER) {
+		if (cstate!=StatePlay.RESTARTING) {
 			playTime = (System.currentTimeMillis()-startTime)/1000+baseTime;
 		}
 	}
@@ -169,7 +169,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		screenHeight=getHeight();
 		loadTileset();
 		//undo.sensitive=false;
-		pstate=StatePaint.BOARD;
+		pstate=StatePaint.STARTING;
 		app.newPlay();
 		control(StatePlay.IDLE);
 		startTime=System.currentTimeMillis();
@@ -204,11 +204,11 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	public void reset() {
 		control(StatePlay.UNINITIALIZED);
-		paint(StatePaint.BOARD);
+		paint(StatePaint.STARTING);
 	}
 
 	private void onHintActivate() {
-		if (cstate!=StatePlay.GAMEOVER) {
+		if (cstate!=StatePlay.RESTARTING) {
 			pairs=app.board.getPairs(1);
 			paint(StatePaint.HINT);
 			app.sleep(10);
@@ -219,7 +219,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private void onUndoActivate() {
 		if (app.board.getCanUndo()) {
-			if (cstate==StatePlay.GAMEOVER && !timerRegistered) {
+			if (cstate==StatePlay.RESTARTING && !timerRegistered) {
 				// Reprogram the time update that had been
 				// deactivated with the game over status
 				registerTimer();
@@ -233,7 +233,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private void onUpdateTime() {
 		paint(pstate);
-		if (cstate==StatePlay.GAMEOVER) {
+		if (cstate==StatePlay.RESTARTING) {
 			unregisterTimer();
 		}
 	}
@@ -284,43 +284,31 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			int selectcolor = Color.parseColor(COLOR_SELECTED);
 			int hintcolor = Color.parseColor(COLOR_HINT);
 
-			// Background & board painting
-			switch (pstate) {
-			case BOARD:
-			case SELECTED1:
-			case SELECTED2:
-			case MATCHED:
-			case WIN:
-			case LOSE:
-			case HINT:
-			case TIME:
-				// Background painting
-				int bgWidth = bg.getWidth();
-				int bgHeight = bg.getHeight();
-				for (int i=0; i<screenHeight/bgHeight+1; i++) {
-					for (int j=0; j<screenWidth/bgWidth+1; j++) {
-						canvas.drawBitmap(bg, j*bgWidth, i*bgHeight, null);
-					}
+			// Background painting
+			int bgWidth = bg.getWidth();
+			int bgHeight = bg.getHeight();
+			for (int i=0; i<screenHeight/bgHeight+1; i++) {
+				for (int j=0; j<screenWidth/bgWidth+1; j++) {
+					canvas.drawBitmap(bg, j*bgWidth, i*bgHeight, null);
 				}
+			}
 
-				// Board painting
-				// Max visible size: 7x17
-				if (app!=null && app.board!=null) {
-					for (int i=0;i<app.board.boardSize[0];i++) {
-						for (int j=0;j<app.board.boardSize[1];j++) {
-							// Tiles are 56px height, 40px width each
-							char piece=app.board.board[i][j];
-							if (piece!=0) {
-								canvas.drawBitmap(
-										tileset.tile[piece],
-										x0+j*tileset.tileWidth,
-										y0+i*tileset.tileHeight,
-										null);
-							}
+			// Board painting
+			// Max visible size: 7x17
+			if (app!=null && app.board!=null) {
+				for (int i=0;i<app.board.boardSize[0];i++) {
+					for (int j=0;j<app.board.boardSize[1];j++) {
+						// Tiles are 56px height, 40px width each
+						char piece=app.board.board[i][j];
+						if (piece!=0) {
+							canvas.drawBitmap(
+									tileset.tile[piece],
+									x0+j*tileset.tileWidth,
+									y0+i*tileset.tileHeight,
+									null);
 						}
 					}
 				}
-				break;
 			}
 
 			// rectangle for selection 1
@@ -527,7 +515,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 							} else {
 								paint(StatePaint.LOSE);
 							}
-							control(StatePlay.GAMEOVER);
+							control(StatePlay.RESTARTING);
 						} else {
 							control(StatePlay.IDLE);
 						}
@@ -536,7 +524,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					doPlaySoundEffect();
 				}
 				break;
-			case GAMEOVER:
+			case RESTARTING:
 				reset();
 				paint(StatePaint.BOARD);
 				doPlaySoundEffect();
@@ -587,7 +575,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 		surfaceHolder = holder;
-		if (cstate!=StatePlay.GAMEOVER && !timerRegistered) {
+		if (cstate!=StatePlay.RESTARTING && !timerRegistered) {
 			registerTimer();
 		}
 		repaint();
