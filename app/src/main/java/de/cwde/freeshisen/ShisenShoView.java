@@ -577,6 +577,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 						doPlaySoundEffect();
 					}
 					break;
+				case STARTING:
 				case RESTARTING:
 					reset();
 					paint(StatePaint.BOARD);
