@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Cap;
@@ -42,7 +43,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private static final String COLOR_HINT = "#F0C000";
 	private static final String COLOR_SELECTED = "#FF0000";
 
-	private enum StatePlay {UNINITIALIZED, IDLE, SELECTED1, RESTARTING}
+	private enum StatePlay {UNINITIALIZED, STARTING, IDLE, SELECTED1, RESTARTING}
 
 	private enum StatePaint {STARTING, BOARD, SELECTED1, SELECTED2, MATCHED, WIN, LOSE, HINT, TIME}
 
@@ -311,7 +312,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			if (app != null && app.board != null) {
 				for (int i = 0; i < app.board.boardSize[0]; i++) {
 					for (int j = 0; j < app.board.boardSize[1]; j++) {
-						// Tiles are 56px height, 40px width each
 						char piece = app.board.board[i][j];
 						if (piece != 0) {
 							canvas.drawBitmap(
@@ -391,20 +391,32 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					break;
 			}
 
-			// Win & loose notifications
+			// stuff with text
 			switch (pstate) {
+				case STARTING:
 				case WIN:
-					drawMessage(canvas, screenWidth / 2, screenHeight / 2, true,
-							"You Win!", 100);
-					break;
 				case LOSE:
-					drawMessage(canvas, screenWidth / 2, screenHeight / 2, true,
-							"Game Over", 100);
+					String msg;
+					switch (pstate) {
+						case WIN:
+							msg = "You Win!";
+							break;
+						case LOSE:
+							msg = "Game Over";
+							break;
+						default:
+							msg = "FreeShisen";
+							break;
+					}
+					drawMessage(canvas, screenWidth / 2, (screenHeight / 2), true,
+							msg, 100);
+					drawButtons(canvas, screenWidth / 2, (screenHeight / 3)* 2);
 					break;
 				default:
 					break;
 			}
 
+			// time
 			switch (pstate) {
 				case BOARD:
 				case SELECTED1:
@@ -438,6 +450,33 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void drawButtons(Canvas canvas, int x, int y) {
+		BitmapFactory.Options ops = new BitmapFactory.Options();
+		ops.inScaled = false;
+		// FIXME: only decode resource once
+		Bitmap buttons = BitmapFactory.decodeResource(app.getResources(), R.drawable.gamebuttons, ops);
+		buttons.setDensity(Bitmap.DENSITY_NONE);
+		// FIXME hardcoded: buttons are 4 normal tiles wide
+		// FIXME: refactor into a static Tileset helper methos or whatever
+		float scalex = ((float) (screenWidth - 2)/17) / (buttons.getWidth()/8);
+		float scaley = ((float) (screenHeight - 2)/7) / buttons.getHeight();
+		if (scaley < scalex) {
+			scalex = scaley;
+		} else {
+			scaley = scalex;
+		}
+		Matrix matrix = new Matrix();
+		matrix.setScale(scalex, scaley);
+		Bitmap newgame = Bitmap.createBitmap(buttons, 0, 0,
+				buttons.getWidth()/2, buttons.getHeight(), matrix, false);
+		Bitmap options = Bitmap.createBitmap(buttons, buttons.getWidth()/2, 0,
+				buttons.getWidth()/2, buttons.getHeight(), matrix, false);
+		int bw = newgame.getWidth();
+
+		canvas.drawBitmap(newgame, x - (bw + bw/8), y, null);
+		canvas.drawBitmap(options, x + (bw / 8), y, null);
 	}
 
 	private void drawLine(Canvas canvas, int x0, int y0, Point p0, Point p1, int color) {
