@@ -578,7 +578,13 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					if (((midx - (bw + bw / 8)) < x) && (x < (midx - (bw / 8)))
 							&& (midy < y) && (y < midy + bh)) {
 						// "new game"
-						reset();
+						// FIXME: fix statemachine, a lot.
+						if (cstate == StatePlay.RESTARTING) {
+							// FIXME FIXME FIXME - reset sets us to starting, but we should be IDLE!
+							reset();
+						} else {
+							control(StatePlay.IDLE);
+						}
 						paint(StatePaint.BOARD);
 						doPlaySoundEffect();
 					} else if (((midx + (bw / 8)) < x) && (x < (midx + (bw + bw / 8)))
