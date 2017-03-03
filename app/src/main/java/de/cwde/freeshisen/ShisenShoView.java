@@ -145,7 +145,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void onHintActivate() {
-		if (cstate != StatePlay.RESTARTING) {
+		if ((cstate != StatePlay.RESTARTING) && (cstate != StatePlay.STARTING)) {
 			pairs = app.board.getPairs(1);
 			paint(StatePaint.HINT);
 			app.sleep(10);
@@ -433,6 +433,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void control(StatePlay cstate) {
+		Log.d("DEBUGS", "state:"+cstate);
 		this.cstate = cstate;
 	}
 
@@ -693,7 +694,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 		@Override
 		public boolean onSingleTapUp(MotionEvent event) {
-			Log.d("DEBUGS", "onSTUp");
+			//Log.d("DEBUGS", "onSTUp");
 			onClick(Math.round(event.getX()), Math.round(event.getY()));
 			return true;
 		}
@@ -701,8 +702,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		@Override
 		public boolean onFling(MotionEvent event1, MotionEvent event2,
 							   float dX, float dY) {
-			Log.d("DEBUGS", "onFling: 1:" + event1.getX() + "," + event1.getY() + " 2:" + event2.getX() + "," + event2.getY());
-			Log.d("DEBUGS", "onFling: scale:" + (30.0 * scale));
+			//Log.d("DEBUGS", "onFling: 1:" + event1.getX() + "," + event1.getY() + " 2:" + event2.getX() + "," + event2.getY());
+			//Log.d("DEBUGS", "onFling: scale:" + (30.0 * scale));
 			// TODO: options menu handling
 			if (abs(event1.getY() - event2.getY()) > (30.0 * scale)) {
 				app.activity.openOptionsMenu();
@@ -713,7 +714,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 		@Override
 		public boolean onDown(MotionEvent event) {
-			Log.d("DEBUGS", "onDowni2");
+			//Log.d("DEBUGS", "onDowni2");
 			return true;
 		}
 	}
