@@ -55,9 +55,17 @@ public class ShisenSho extends Application {
 	private void loadOptions() {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 
-		// FIXME: handle NumberFormatException here?
-		setSize(Integer.parseInt(sp.getString("pref_size", "1")));
-		difficulty = Integer.parseInt(sp.getString("pref_diff", "1"));
+		int s = 1;
+		int d = 1;
+		try {
+			s = Integer.parseInt(sp.getString("pref_size", "1"));
+			d = Integer.parseInt(sp.getString("pref_diff", "1"));
+		} catch NumberFormatException {
+			// we'll use the defaults we set earlier
+		}
+
+		setSize(s);
+		difficulty = d;
 		gravity = sp.getBoolean("pref_grav", true);
 		timeCounter = sp.getBoolean("pref_time", true);
 		tilesetid = sp.getString("pref_tile", "");
