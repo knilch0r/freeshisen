@@ -60,7 +60,7 @@ public class ShisenSho extends Application {
 		try {
 			s = Integer.parseInt(sp.getString("pref_size", "1"));
 			d = Integer.parseInt(sp.getString("pref_diff", "1"));
-		} catch NumberFormatException {
+		} catch (NumberFormatException e) {
 			// we'll use the defaults we set earlier
 		}
 
