@@ -45,6 +45,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private int screenWidth;
 	private int screenHeight;
 	private int buttonWidth;
+	private int buttonHeight;
 	private Bitmap bg;
 	private Bitmap newGameBmp;
 	private Bitmap optionsBmp;
@@ -203,6 +204,10 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void initializeGame() {
+		// FIXME refactor and split up!
+		// 1. things we need to do only once: load stuff
+		// 2. things we need to do during restarts
+		// 3. timer should only start, tiles should only be generated when button has been pressed!
 		loadBackground();
 		screenWidth = getWidth();
 		screenHeight = getHeight();
@@ -211,7 +216,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		//undo.sensitive=false;
 		pstate = StatePaint.STARTING;
 		app.newPlay();
-		control(StatePlay.IDLE);
+		control(StatePlay.STARTING);
 		startTime = System.currentTimeMillis();
 		playTime = 0;
 		baseTime = 0;
@@ -420,6 +425,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 				buttons.getWidth() / 2, buttons.getHeight(), matrix, false);
 
 		buttonWidth = newGameBmp.getWidth();
+		buttonHeight = newGameBmp.getHeight();
 	}
 
 	public void loadTileset() {
@@ -563,9 +569,21 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					break;
 				case STARTING:
 				case RESTARTING:
-					reset();
-					paint(StatePaint.BOARD);
-					doPlaySoundEffect();
+					// find which button was clicked
+					int bw = buttonWidth;
+					int bh = buttonHeight;
+					int midx = screenWidth / 2;
+					int midy = screenHeight / 2;
+					if (((midx - (bw + bw / 8)) < x) && (x < (midx - (bw / 8)))
+							&& (midy < y) && (y < midy + bh)) {
+						// "new game"
+						reset();
+						paint(StatePaint.BOARD);
+						doPlaySoundEffect();
+					} else if (((midx + (bw / 8)) < x) && (x < (midx + (bw + bw / 8)))
+							&& (midy < y) && (y < midy + bh)) {
+						app.activity.openOptionsMenu();
+					}
 					break;
 				default:
 					break;
@@ -654,7 +672,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private enum StatePaint {STARTING, BOARD, SELECTED1, SELECTED2, MATCHED, WIN, LOSE, HINT, TIME}
 
-	static class hHandler extends Handler {
+	private static class hHandler extends Handler {
 		private final WeakReference<ShisenShoView> mTarget;
 
 		hHandler(ShisenShoView target) {
@@ -669,7 +687,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+	private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
 
 		final float scale = getResources().getDisplayMetrics().density;
 
