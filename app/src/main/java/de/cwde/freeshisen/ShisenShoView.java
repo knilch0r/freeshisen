@@ -49,7 +49,10 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private int screenWidth;
 	private int screenHeight;
+	private int buttonWidth;
 	private Bitmap bg;
+	private Bitmap newGameBmp;
+	private Bitmap optionsBmp;
 	private Point selection1 = new Point(0, 0);
 	private Point selection2 = new Point(0, 0);
 	private List<Point> path = null;
@@ -169,6 +172,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		loadBackground();
 		screenWidth = getWidth();
 		screenHeight = getHeight();
+		loadButtons();
 		loadTileset();
 		//undo.sensitive=false;
 		pstate = StatePaint.STARTING;
@@ -181,6 +185,30 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			registerTimer();
 		}
 		pairs = app.board.getPairs(1);
+	}
+
+	private void loadButtons() {
+		BitmapFactory.Options ops = new BitmapFactory.Options();
+		ops.inScaled = false;
+		Bitmap buttons = BitmapFactory.decodeResource(app.getResources(), R.drawable.gamebuttons, ops);
+		buttons.setDensity(Bitmap.DENSITY_NONE);
+		// FIXME hardcoded: buttons are 4 normal tiles wide
+		// FIXME: refactor into a static Tileset helper methos or whatever
+		float scalex = ((float) (screenWidth - 2) / 17) / (buttons.getWidth() / 8);
+		float scaley = ((float) (screenHeight - 2) / 7) / buttons.getHeight();
+		if (scaley < scalex) {
+			scalex = scaley;
+		} else {
+			scaley = scalex;
+		}
+		Matrix matrix = new Matrix();
+		matrix.setScale(scalex, scaley);
+		newGameBmp = Bitmap.createBitmap(buttons, 0, 0,
+				buttons.getWidth() / 2, buttons.getHeight(), matrix, false);
+		optionsBmp = Bitmap.createBitmap(buttons, buttons.getWidth() / 2, 0,
+				buttons.getWidth() / 2, buttons.getHeight(), matrix, false);
+
+		buttonWidth = newGameBmp.getWidth();
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -453,30 +481,9 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void drawButtons(Canvas canvas, int x, int y) {
-		BitmapFactory.Options ops = new BitmapFactory.Options();
-		ops.inScaled = false;
-		// FIXME: only decode resource once
-		Bitmap buttons = BitmapFactory.decodeResource(app.getResources(), R.drawable.gamebuttons, ops);
-		buttons.setDensity(Bitmap.DENSITY_NONE);
-		// FIXME hardcoded: buttons are 4 normal tiles wide
-		// FIXME: refactor into a static Tileset helper methos or whatever
-		float scalex = ((float) (screenWidth - 2)/17) / (buttons.getWidth()/8);
-		float scaley = ((float) (screenHeight - 2)/7) / buttons.getHeight();
-		if (scaley < scalex) {
-			scalex = scaley;
-		} else {
-			scaley = scalex;
-		}
-		Matrix matrix = new Matrix();
-		matrix.setScale(scalex, scaley);
-		Bitmap newgame = Bitmap.createBitmap(buttons, 0, 0,
-				buttons.getWidth()/2, buttons.getHeight(), matrix, false);
-		Bitmap options = Bitmap.createBitmap(buttons, buttons.getWidth()/2, 0,
-				buttons.getWidth()/2, buttons.getHeight(), matrix, false);
-		int bw = newgame.getWidth();
-
-		canvas.drawBitmap(newgame, x - (bw + bw/8), y, null);
-		canvas.drawBitmap(options, x + (bw / 8), y, null);
+		int bw = buttonWidth;
+		canvas.drawBitmap(newGameBmp, x - (bw + bw / 8), y, null);
+		canvas.drawBitmap(optionsBmp, x + (bw / 8), y, null);
 	}
 
 	private void drawLine(Canvas canvas, int x0, int y0, Point p0, Point p1, int color) {
