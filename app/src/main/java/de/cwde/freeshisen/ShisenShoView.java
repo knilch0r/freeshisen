@@ -66,6 +66,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private SurfaceHolder surfaceHolder = null;
 	private String time = INVALID_TIME;
 	private GestureDetectorCompat mDetector;
+
 	public ShisenShoView(ShisenSho shisenSho) {
 		super(shisenSho);
 		this.app = shisenSho;
@@ -75,6 +76,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		tileset = new Tileset(shisenSho);
 		mDetector = new GestureDetectorCompat(getContext(), new MyGestureListener());
 	}
+
 	public ShisenShoView(Context ctx) {
 		super(ctx);
 		this.app = (ShisenSho) ctx;
