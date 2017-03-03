@@ -20,7 +20,9 @@ import android.widget.TextView;
 public class ShisenShoActivity extends Activity {
 	private ShisenShoView view;
 
-	/** Called when the activity is first created. */
+	/**
+	 * Called when the activity is first created.
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,27 +37,27 @@ public class ShisenShoActivity extends Activity {
 	}
 
 	@Override
-	protected void onDestroy() {
-		ViewGroup vg = (ViewGroup)(view.getParent());
-		vg.removeView(view);
-		ShisenSho.app().activity = null;
-		super.onDestroy();
+	protected void onResume() {
+		super.onResume();
+		if (view != null) {
+			view.resumeTime();
+		}
 	}
 
 	@Override
 	protected void onPause() {
-		if (view!=null) {
+		if (view != null) {
 			view.pauseTime();
 		}
 		super.onPause();
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-		if (view!=null) {
-			view.resumeTime();
-		}
+	protected void onDestroy() {
+		ViewGroup vg = (ViewGroup) (view.getParent());
+		vg.removeView(view);
+		ShisenSho.app().activity = null;
+		super.onDestroy();
 	}
 
 	@Override
@@ -69,21 +71,21 @@ public class ShisenShoActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
-		case R.id.hint:
-		case R.id.undo:
-		case R.id.clean:
-			return view.onOptionsItemSelected(item);
-		case R.id.hiscore:
-			startActivity(new Intent("de.cwde.freeshisen.HISCORE", null));
-			return true;
-		case R.id.options:
-			startActivity(new Intent("de.cwde.freeshisen.SETTINGS", null));
-			return true;
-		case R.id.about:
-			onAboutActivate();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
+			case R.id.hint:
+			case R.id.undo:
+			case R.id.clean:
+				return view.onOptionsItemSelected(item);
+			case R.id.hiscore:
+				startActivity(new Intent("de.cwde.freeshisen.HISCORE", null));
+				return true;
+			case R.id.options:
+				startActivity(new Intent("de.cwde.freeshisen.SETTINGS", null));
+				return true;
+			case R.id.about:
+				onAboutActivate();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 
@@ -94,7 +96,7 @@ public class ShisenShoActivity extends Activity {
 			pInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
 			final String appname = getString(R.string.app_name);
 			final String aboutTitle = "About " + appname;
-			String versionString = appname + " "+ pInfo.versionName;
+			String versionString = appname + " " + pInfo.versionName;
 			String aboutText = getString(R.string.aboutText);
 
 			// Set up the TextView
@@ -110,12 +112,12 @@ public class ShisenShoActivity extends Activity {
 			Linkify.addLinks(message, Linkify.ALL);
 
 			new AlertDialog.Builder(this)
-			.setTitle(aboutTitle)
-			.setCancelable(true)
-			.setIcon(R.drawable.icon)
-			.setPositiveButton(android.R.string.ok, null)
-			.setView(message).create()
-			.show();
+					.setTitle(aboutTitle)
+					.setCancelable(true)
+					.setIcon(R.drawable.icon)
+					.setPositiveButton(android.R.string.ok, null)
+					.setView(message).create()
+					.show();
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
