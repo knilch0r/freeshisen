@@ -129,11 +129,6 @@ public class ShisenSho extends Application {
 			view.loadTileset();
 		}
 
-//		if ((usesound != this.usesound) && (view != null)) {
-//			this.usesound = usesound;
-//			view.setSoundEnabled(usesound);
-//		}
-
 		if (needsReset) {
 			if ((view != null) && (activity != null)) {
 				view.onOptionsChanged();
