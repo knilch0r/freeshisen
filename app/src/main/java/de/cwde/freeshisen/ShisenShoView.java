@@ -574,7 +574,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					int bw = buttonWidth;
 					int bh = buttonHeight;
 					int midx = screenWidth / 2;
-					int midy = screenHeight / 2;
+					int midy = (screenHeight / 3) * 2;
 					if (((midx - (bw + bw / 8)) < x) && (x < (midx - (bw / 8)))
 							&& (midy < y) && (y < midy + bh)) {
 						// "new game"
