@@ -42,11 +42,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private static final String COLOR_TEXT_SHADOW = "#000000";
 	private static final String COLOR_HINT = "#F0C000";
 	private static final String COLOR_SELECTED = "#FF0000";
-
-	private enum StatePlay {UNINITIALIZED, STARTING, IDLE, SELECTED1, RESTARTING}
-
-	private enum StatePaint {STARTING, BOARD, SELECTED1, SELECTED2, MATCHED, WIN, LOSE, HINT, TIME}
-
 	private int screenWidth;
 	private int screenHeight;
 	private int buttonWidth;
@@ -62,24 +57,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private long baseTime;
 	private Timer timer;
 	private Tileset tileset;
-
-	static class hHandler extends Handler {
-		private final WeakReference<ShisenShoView> mTarget;
-
-		hHandler(ShisenShoView target) {
-			mTarget = new WeakReference<ShisenShoView>(target);
-		}
-
-		@Override
-		public void handleMessage(Message msg) {
-			ShisenShoView target = mTarget.get();
-			if (target != null)
-				target.onUpdateTime();
-		}
-	}
-
 	private Handler timerHandler = new hHandler(this);
-
 	private boolean timerRegistered = false;
 	private ShisenSho app;
 	private StatePlay cstate;
@@ -87,9 +65,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private Canvas canvas = null;
 	private SurfaceHolder surfaceHolder = null;
 	private String time = INVALID_TIME;
-
 	private GestureDetectorCompat mDetector;
-
 	public ShisenShoView(ShisenSho shisenSho) {
 		super(shisenSho);
 		this.app = shisenSho;
@@ -99,7 +75,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		tileset = new Tileset(shisenSho);
 		mDetector = new GestureDetectorCompat(getContext(), new MyGestureListener());
 	}
-
 	public ShisenShoView(Context ctx) {
 		super(ctx);
 		this.app = (ShisenSho) ctx;
@@ -110,52 +85,11 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		mDetector = new GestureDetectorCompat(getContext(), new MyGestureListener());
 	}
 
-	private void paint(StatePaint pstate) {
-		this.pstate = pstate;
-		repaint();
-	}
-
-	private void control(StatePlay cstate) {
-		this.cstate = cstate;
-	}
-
-	private void loadBackground() {
-		BitmapFactory.Options ops = new BitmapFactory.Options();
-		ops.inScaled = false;
-		bg = BitmapFactory.decodeResource(getResources(), R.drawable.kshisen_bgnd, ops);
-		bg.setDensity(Bitmap.DENSITY_NONE);
-	}
-
-	private void registerTimer() {
-		if (timer != null)
-			return; // Already registered
-		timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-			public void run() {
-				timerHandler.sendEmptyMessage(Activity.RESULT_OK);
-			}
-		}, 0, 1000);
-		timerRegistered = true;
-	}
-
-	private void unregisterTimer() {
-		if (timer == null)
-			return; // Already unregistered
-		timer.cancel();
-		timer = null;
-		timerRegistered = false;
-	}
-
 	public void pauseTime() {
 		updateTime();
 		baseTime = playTime;
 		startTime = System.currentTimeMillis();
 
-	}
-
-	public void resumeTime() {
-		startTime = System.currentTimeMillis();
-		updateTime();
 	}
 
 	private void updateTime() {
@@ -164,51 +98,9 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	public void loadTileset() {
-		tileset.loadTileset(screenWidth, screenHeight);
-	}
-
-	private void initializeGame() {
-		loadBackground();
-		screenWidth = getWidth();
-		screenHeight = getHeight();
-		loadButtons();
-		loadTileset();
-		//undo.sensitive=false;
-		pstate = StatePaint.STARTING;
-		app.newPlay();
-		control(StatePlay.IDLE);
+	public void resumeTime() {
 		startTime = System.currentTimeMillis();
-		playTime = 0;
-		baseTime = 0;
-		if (!timerRegistered) {
-			registerTimer();
-		}
-		pairs = app.board.getPairs(1);
-	}
-
-	private void loadButtons() {
-		BitmapFactory.Options ops = new BitmapFactory.Options();
-		ops.inScaled = false;
-		Bitmap buttons = BitmapFactory.decodeResource(app.getResources(), R.drawable.gamebuttons, ops);
-		buttons.setDensity(Bitmap.DENSITY_NONE);
-		// FIXME hardcoded: buttons are 4 normal tiles wide
-		// FIXME: refactor into a static Tileset helper methos or whatever
-		float scalex = ((float) (screenWidth - 2) / 17) / (buttons.getWidth() / 8);
-		float scaley = ((float) (screenHeight - 2) / 7) / buttons.getHeight();
-		if (scaley < scalex) {
-			scalex = scaley;
-		} else {
-			scaley = scalex;
-		}
-		Matrix matrix = new Matrix();
-		matrix.setScale(scalex, scaley);
-		newGameBmp = Bitmap.createBitmap(buttons, 0, 0,
-				buttons.getWidth() / 2, buttons.getHeight(), matrix, false);
-		optionsBmp = Bitmap.createBitmap(buttons, buttons.getWidth() / 2, 0,
-				buttons.getWidth() / 2, buttons.getHeight(), matrix, false);
-
-		buttonWidth = newGameBmp.getWidth();
+		updateTime();
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -280,19 +172,17 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	public static void drawMessage(Canvas canvas, int x, int y,
-								   boolean centered, String message, float textSize) {
-		Paint paint = new Paint();
-		paint.setLinearText(true);
-		paint.setAntiAlias(true);
-		paint.setTextAlign(centered ? Align.CENTER : Align.LEFT);
-		paint.setTypeface(Typeface.SANS_SERIF);
-		paint.setFakeBoldText(true);
-		paint.setTextSize(textSize);
-		paint.setColor(Color.parseColor(COLOR_TEXT_SHADOW));
-		canvas.drawText(message, x + 1, y + 1, paint);
-		paint.setColor(Color.parseColor(COLOR_TEXT));
-		canvas.drawText(message, x, y, paint);
+	private void paint(StatePaint pstate) {
+		this.pstate = pstate;
+		repaint();
+	}
+
+	private void unregisterTimer() {
+		if (timer == null)
+			return; // Already unregistered
+		timer.cancel();
+		timer = null;
+		timerRegistered = false;
 	}
 
 	public synchronized void repaint() {
@@ -308,6 +198,25 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 				canvas = null;
 			}
 		}
+	}
+
+	private void initializeGame() {
+		loadBackground();
+		screenWidth = getWidth();
+		screenHeight = getHeight();
+		loadButtons();
+		loadTileset();
+		//undo.sensitive=false;
+		pstate = StatePaint.STARTING;
+		app.newPlay();
+		control(StatePlay.IDLE);
+		startTime = System.currentTimeMillis();
+		playTime = 0;
+		baseTime = 0;
+		if (!timerRegistered) {
+			registerTimer();
+		}
+		pairs = app.board.getPairs(1);
 	}
 
 	protected void doDraw(Canvas canvas) {
@@ -438,7 +347,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					}
 					drawMessage(canvas, screenWidth / 2, (screenHeight / 2), true,
 							msg, 100);
-					drawButtons(canvas, screenWidth / 2, (screenHeight / 3)* 2);
+					drawButtons(canvas, screenWidth / 2, (screenHeight / 3) * 2);
 					break;
 				default:
 					break;
@@ -480,10 +389,71 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	}
 
-	private void drawButtons(Canvas canvas, int x, int y) {
-		int bw = buttonWidth;
-		canvas.drawBitmap(newGameBmp, x - (bw + bw / 8), y, null);
-		canvas.drawBitmap(optionsBmp, x + (bw / 8), y, null);
+	private void loadBackground() {
+		BitmapFactory.Options ops = new BitmapFactory.Options();
+		ops.inScaled = false;
+		bg = BitmapFactory.decodeResource(getResources(), R.drawable.kshisen_bgnd, ops);
+		bg.setDensity(Bitmap.DENSITY_NONE);
+	}
+
+	private void loadButtons() {
+		BitmapFactory.Options ops = new BitmapFactory.Options();
+		ops.inScaled = false;
+		Bitmap buttons = BitmapFactory.decodeResource(app.getResources(), R.drawable.gamebuttons, ops);
+		buttons.setDensity(Bitmap.DENSITY_NONE);
+		// FIXME hardcoded: buttons are 4 normal tiles wide
+		// FIXME: refactor into a static Tileset helper methos or whatever
+		float scalex = ((float) (screenWidth - 2) / 17) / (buttons.getWidth() / 8);
+		float scaley = ((float) (screenHeight - 2) / 7) / buttons.getHeight();
+		if (scaley < scalex) {
+			scalex = scaley;
+		} else {
+			scaley = scalex;
+		}
+		Matrix matrix = new Matrix();
+		matrix.setScale(scalex, scaley);
+		newGameBmp = Bitmap.createBitmap(buttons, 0, 0,
+				buttons.getWidth() / 2, buttons.getHeight(), matrix, false);
+		optionsBmp = Bitmap.createBitmap(buttons, buttons.getWidth() / 2, 0,
+				buttons.getWidth() / 2, buttons.getHeight(), matrix, false);
+
+		buttonWidth = newGameBmp.getWidth();
+	}
+
+	public void loadTileset() {
+		tileset.loadTileset(screenWidth, screenHeight);
+	}
+
+	private void control(StatePlay cstate) {
+		this.cstate = cstate;
+	}
+
+	private void registerTimer() {
+		if (timer != null)
+			return; // Already registered
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				timerHandler.sendEmptyMessage(Activity.RESULT_OK);
+			}
+		}, 0, 1000);
+		timerRegistered = true;
+	}
+
+	private void highlightTile(Canvas canvas, int x0, int y0, Point p, int color) {
+		Paint paint = new Paint();
+		paint.setFlags(Paint.ANTI_ALIAS_FLAG);
+		paint.setColor(color);
+		paint.setStyle(Style.STROKE);
+		paint.setStrokeCap(Cap.ROUND);
+		paint.setStrokeJoin(Join.ROUND);
+		paint.setStrokeWidth(3);
+		Rect r = new Rect(
+				x0 + p.j * tileset.tileWidth - 2,
+				y0 + p.i * tileset.tileHeight - 2,
+				x0 + p.j * tileset.tileWidth + tileset.tileWidth + 2,
+				y0 + p.i * tileset.tileHeight + tileset.tileHeight + 2);
+		canvas.drawRect(r, paint);
 	}
 
 	private void drawLine(Canvas canvas, int x0, int y0, Point p0, Point p1, int color) {
@@ -501,20 +471,25 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 				y0 + p1.i * tileset.tileHeight - 2 + (tileset.tileHeight / 2), paint);
 	}
 
-	private void highlightTile(Canvas canvas, int x0, int y0, Point p, int color) {
+	public static void drawMessage(Canvas canvas, int x, int y,
+								   boolean centered, String message, float textSize) {
 		Paint paint = new Paint();
-		paint.setFlags(Paint.ANTI_ALIAS_FLAG);
-		paint.setColor(color);
-		paint.setStyle(Style.STROKE);
-		paint.setStrokeCap(Cap.ROUND);
-		paint.setStrokeJoin(Join.ROUND);
-		paint.setStrokeWidth(3);
-		Rect r = new Rect(
-				x0 + p.j * tileset.tileWidth - 2,
-				y0 + p.i * tileset.tileHeight - 2,
-				x0 + p.j * tileset.tileWidth + tileset.tileWidth + 2,
-				y0 + p.i * tileset.tileHeight + tileset.tileHeight + 2);
-		canvas.drawRect(r, paint);
+		paint.setLinearText(true);
+		paint.setAntiAlias(true);
+		paint.setTextAlign(centered ? Align.CENTER : Align.LEFT);
+		paint.setTypeface(Typeface.SANS_SERIF);
+		paint.setFakeBoldText(true);
+		paint.setTextSize(textSize);
+		paint.setColor(Color.parseColor(COLOR_TEXT_SHADOW));
+		canvas.drawText(message, x + 1, y + 1, paint);
+		paint.setColor(Color.parseColor(COLOR_TEXT));
+		canvas.drawText(message, x, y, paint);
+	}
+
+	private void drawButtons(Canvas canvas, int x, int y) {
+		int bw = buttonWidth;
+		canvas.drawBitmap(newGameBmp, x - (bw + bw / 8), y, null);
+		canvas.drawBitmap(optionsBmp, x + (bw / 8), y, null);
 	}
 
 	@Override
@@ -633,17 +608,17 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
+	public void surfaceCreated(SurfaceHolder holder) {
+		surfaceHolder = holder;
+		repaint();
+	}
+
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 							   int height) {
 		surfaceHolder = holder;
 		if (cstate != StatePlay.RESTARTING && !timerRegistered) {
 			registerTimer();
 		}
-		repaint();
-	}
-
-	public void surfaceCreated(SurfaceHolder holder) {
-		surfaceHolder = holder;
 		repaint();
 	}
 
@@ -673,15 +648,28 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 				.show();
 	}
 
+	private enum StatePlay {UNINITIALIZED, STARTING, IDLE, SELECTED1, RESTARTING}
+
+	private enum StatePaint {STARTING, BOARD, SELECTED1, SELECTED2, MATCHED, WIN, LOSE, HINT, TIME}
+
+	static class hHandler extends Handler {
+		private final WeakReference<ShisenShoView> mTarget;
+
+		hHandler(ShisenShoView target) {
+			mTarget = new WeakReference<ShisenShoView>(target);
+		}
+
+		@Override
+		public void handleMessage(Message msg) {
+			ShisenShoView target = mTarget.get();
+			if (target != null)
+				target.onUpdateTime();
+		}
+	}
+
 	class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
 
 		final float scale = getResources().getDisplayMetrics().density;
-
-		@Override
-		public boolean onDown(MotionEvent event) {
-			Log.d("DEBUGS", "onDowni2");
-			return true;
-		}
 
 		@Override
 		public boolean onSingleTapUp(MotionEvent event) {
@@ -700,6 +688,12 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 				app.activity.openOptionsMenu();
 			}
 
+			return true;
+		}
+
+		@Override
+		public boolean onDown(MotionEvent event) {
+			Log.d("DEBUGS", "onDowni2");
 			return true;
 		}
 	}
