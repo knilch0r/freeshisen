@@ -8,4 +8,5 @@ local.properties
 .idea/tasks.xml
 .idea/gradle.xml
 .idea/libraries
+keystore.properties
 
