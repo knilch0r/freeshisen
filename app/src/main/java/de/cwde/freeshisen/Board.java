@@ -140,11 +140,11 @@ public class Board {
 		if (gravity) for (int i = 0; i < p.i; i++) board[i][p.j] = board[i + 1][p.j];
 	}
 
-	public List<Line> getPairs(int maxResults) {
-		List<Line> result = new ArrayList<>();
+	public Line getNextPair() {
+		Line result = null;
 		List<Integer> pieces = new ArrayList<>();
 		List<List<Point>> piecePoints = new ArrayList<>();
-		for (int i = 0; i < boardSizeY; i++)
+		for (int i = 0; i < boardSizeY; i++) {
 			for (int j = 0; j < boardSizeX; j++) {
 				int piece = (int) board[i][j];
 				if (piece == 0) continue;
@@ -163,6 +163,7 @@ public class Board {
 					points1.add(p);
 				}
 			}
+		}
 
 		int nresults = 0;
 		for (List<Point> points : piecePoints) {
@@ -173,13 +174,13 @@ public class Board {
 					Point b = points.get(j);
 					List<Point> path = getPath(a.copy(), b.copy());
 					if (path != null && path.size() > 0) {
-						result.add(new Line(a, b));
-						if (nresults++ == maxResults) break;
+						result = new Line(a, b);
+						break;
 					}
 				}
-				if (nresults == maxResults) break;
+				if (result != null) break;
 			}
-			if (nresults == maxResults) break;
+			if (result != null) break;
 		}
 		return result;
 	}

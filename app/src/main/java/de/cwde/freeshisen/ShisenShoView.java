@@ -52,7 +52,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private Point selection1 = new Point(0, 0);
 	private Point selection2 = new Point(0, 0);
 	private List<Point> path = null;
-	private List<Line> pairs = null;
+	private Line nextPair = null;
 	private long startTime;
 	private long playTime;
 	private long baseTime;
@@ -146,7 +146,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private void onHintActivate() {
 		if ((cstate != StatePlay.RESTARTING) && (cstate != StatePlay.STARTING)) {
-			pairs = app.board.getPairs(1);
+			nextPair = app.board.getNextPair();
 			paint(StatePaint.HINT);
 			app.sleep(10);
 			paint(StatePaint.BOARD);
@@ -221,7 +221,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		if (!timerRegistered) {
 			registerTimer();
 		}
-		pairs = app.board.getPairs(1);
+		nextPair = app.board.getNextPair();
 		control(StatePlay.IDLE);
 		paint(StatePaint.BOARD);
 	}
@@ -309,8 +309,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			// hint rectangles
 			switch (pstate) {
 				case HINT:
-					if (pairs != null && pairs.size() > 0) {
-						Line pair = pairs.get(0);
+					if (nextPair != null) {
+						Line pair = nextPair;
 						Point a = pair.a;
 						Point b = pair.b;
 						path = app.board.getPath(a, b);
@@ -554,8 +554,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 								path = null;
 								paint(StatePaint.BOARD);
 
-								pairs = app.board.getPairs(1);
-								if (pairs.size() == 0) {
+								nextPair = app.board.getNextPair();
+								if (nextPair == null) {
 									if (app.board.getNumPieces() == 0) {
 										paint(StatePaint.WIN);
 										checkforhiscore();
@@ -566,7 +566,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 								} else {
 									control(StatePlay.IDLE);
 								}
-								//undo.sensitive=app.board.getCanUndo();
 							}
 							doPlaySoundEffect();
 						}
