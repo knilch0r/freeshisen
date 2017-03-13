@@ -7,7 +7,6 @@ import java.util.List;
 public class Board {
 	private static String charpieces = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-	private int difficulty = 1; // 1=Hard ... N=Easy
 	private boolean gravity = true;
 	int boardSizeY = 0;
 	int boardSizeX = 0;
@@ -65,7 +64,6 @@ public class Board {
 
 	public void buildRandomBoard(int sizeI, int sizeJ, int difficulty, boolean gravity) {
 		initialize(sizeI, sizeJ);
-		this.difficulty = difficulty;
 		this.gravity = gravity;
 
 		int numDifferentPieces = ((boardSizeY - 2) * (boardSizeX - 2) / ((4 - difficulty) * 2)) + 1;
