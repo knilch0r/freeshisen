@@ -9,7 +9,8 @@ public class ShisenSho extends Application {
 	private static ShisenSho instance = null;
 	public ShisenShoActivity activity = null;
 	public Board board;
-	public int[] boardSize = new int[2];
+	public int boardSizeX;
+	public int boardSizeY;
 	public int difficulty = 1; // 1=Easy, 2=Hard
 	public int size = 3; // 1=Small, 2=Medium, 3=Big
 	public String tilesetId = "classic";
@@ -27,17 +28,17 @@ public class ShisenSho extends Application {
 
 		switch (s) {
 			case 1:
-				boardSize[0] = 6 + 2;
-				boardSize[1] = 8 + 2;
+				boardSizeX = 6 + 2;
+				boardSizeY = 8 + 2;
 				break;
 			case 2:
-				boardSize[0] = 6 + 2;
-				boardSize[1] = 12 + 2;
+				boardSizeX = 6 + 2;
+				boardSizeY = 12 + 2;
 				break;
 			case 3:
 			default:
-				boardSize[0] = 6 + 2;
-				boardSize[1] = 16 + 2;
+				boardSizeX = 6 + 2;
+				boardSizeY = 16 + 2;
 				break;
 		}
 	}
@@ -49,7 +50,7 @@ public class ShisenSho extends Application {
 	public void newPlay() {
 		loadOptions();
 		board = new Board();
-		board.buildRandomBoard(boardSize[0], boardSize[1], difficulty, gravity);
+		board.buildRandomBoard(boardSizeX, boardSizeY, difficulty, gravity);
 	}
 
 	private void loadOptions() {
@@ -75,6 +76,7 @@ public class ShisenSho extends Application {
 		try {
 			Thread.sleep(deciSeconds * 100);
 		} catch (InterruptedException e) {
+			// do nothing: interruptions are expected
 		}
 	}
 
@@ -123,7 +125,7 @@ public class ShisenSho extends Application {
 			needsReset = true;
 		}
 
-		if ((tilesetid != this.tilesetId) && (view != null)) {
+		if ((!tilesetid.equals(this.tilesetId)) && (view != null)) {
 			// tileset can be changed without a reset
 			this.tilesetId = tilesetid;
 			view.loadTileset();

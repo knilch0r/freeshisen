@@ -235,8 +235,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			int y0 = 0;
 
 			if (app != null && app.board != null) {
-				x0 = (screenWidth - app.board.boardSize[1] * tileset.tileWidth) / 2;
-				y0 = (screenHeight - app.board.boardSize[0] * tileset.tileHeight) / 2;
+				x0 = (screenWidth - app.board.boardSizeX * tileset.tileWidth) / 2;
+				y0 = (screenHeight - app.board.boardSizeY * tileset.tileHeight) / 2;
 			}
 
 			int selectcolor = Color.parseColor(COLOR_SELECTED);
@@ -254,8 +254,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			// Board painting
 			// Max visible size: 7x17
 			if (app != null && app.board != null) {
-				for (int i = 0; i < app.board.boardSize[0]; i++) {
-					for (int j = 0; j < app.board.boardSize[1]; j++) {
+				for (int i = 0; i < app.board.boardSizeY; i++) {
+					for (int j = 0; j < app.board.boardSizeX; j++) {
 						char piece = app.board.board[i][j];
 						if (piece != 0) {
 							canvas.drawBitmap(
@@ -517,13 +517,13 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		try {
 			if ((cstate != StatePlay.STARTING) && (cstate != StatePlay.RESTARTING))
 			{
-				int i = (y - (screenHeight - app.board.boardSize[0] * tileset.tileHeight) / 2) / tileset.tileHeight;
-				int j = (x - (screenWidth - app.board.boardSize[1] * tileset.tileWidth) / 2) / tileset.tileWidth;
+				int i = (y - (screenHeight - app.board.boardSizeY * tileset.tileHeight) / 2) / tileset.tileHeight;
+				int j = (x - (screenWidth - app.board.boardSizeX * tileset.tileWidth) / 2) / tileset.tileWidth;
 
 				switch (cstate) {
 					case IDLE:
-						if (i >= 0 && i < app.board.boardSize[0] && j >= 0
-								&& j < app.board.boardSize[1]
+						if (i >= 0 && i < app.board.boardSizeY && j >= 0
+								&& j < app.board.boardSizeX
 								&& app.board.board[i][j] != 0) {
 							selection1.set(i, j);
 							paint(StatePaint.SELECTED1);
@@ -532,8 +532,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 						}
 						break;
 					case SELECTED1:
-						if (i >= 0 && i < app.board.boardSize[0] && j >= 0
-								&& j < app.board.boardSize[1]
+						if (i >= 0 && i < app.board.boardSizeY && j >= 0
+								&& j < app.board.boardSizeX
 								&& app.board.board[i][j] != 0) {
 							if (selection1.equals(i, j)) {
 								paint(StatePaint.BOARD);
