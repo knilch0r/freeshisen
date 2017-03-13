@@ -126,7 +126,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			case R.id.clean:
 				this.postDelayed(new Runnable() {
 					public void run() {
-						reset();
+						reset();//FIXME TODO
 					}
 				}, 100);
 				return true;
@@ -513,82 +513,86 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void onClick(int x, int y) {
+		Log.d("DEBUGS", "onclick:"+cstate);
 		try {
-			int i = (y - (screenHeight - app.board.boardSize[0] * tileset.tileHeight) / 2) / tileset.tileHeight;
-			int j = (x - (screenWidth - app.board.boardSize[1] * tileset.tileWidth) / 2) / tileset.tileWidth;
+			if ((cstate != StatePlay.STARTING) && (cstate != StatePlay.RESTARTING))
+			{
+				int i = (y - (screenHeight - app.board.boardSize[0] * tileset.tileHeight) / 2) / tileset.tileHeight;
+				int j = (x - (screenWidth - app.board.boardSize[1] * tileset.tileWidth) / 2) / tileset.tileWidth;
 
-			switch (cstate) {
-				case IDLE:
-					if (i >= 0 && i < app.board.boardSize[0] && j >= 0
-							&& j < app.board.boardSize[1]
-							&& app.board.board[i][j] != 0) {
-						selection1.set(i, j);
-						paint(StatePaint.SELECTED1);
-						control(StatePlay.SELECTED1);
-						doPlaySoundEffect();
-					}
-					break;
-				case SELECTED1:
-					if (i >= 0 && i < app.board.boardSize[0] && j >= 0
-							&& j < app.board.boardSize[1]
-							&& app.board.board[i][j] != 0) {
-						if (selection1.equals(i, j)) {
-							paint(StatePaint.BOARD);
-							control(StatePlay.IDLE);
-						} else {
-							selection2.set(i, j);
-							paint(StatePaint.SELECTED2);
-
-							Point a = selection1.copy();
-							Point b = selection2.copy();
-							path = app.board.getPath(a, b);
-							paint(StatePaint.MATCHED);
-							app.sleep(2);
-							paint(StatePaint.BOARD);
-							if (path.size() > 0) {
-								app.board.play(a, b);
-							}
-							path = null;
-							paint(StatePaint.BOARD);
-
-							pairs = app.board.getPairs(1);
-							if (pairs.size() == 0) {
-								if (app.board.getNumPieces() == 0) {
-									paint(StatePaint.WIN);
-									checkforhiscore();
-								} else {
-									paint(StatePaint.LOSE);
-								}
-								control(StatePlay.RESTARTING);
-							} else {
-								control(StatePlay.IDLE);
-							}
-							//undo.sensitive=app.board.getCanUndo();
+				switch (cstate) {
+					case IDLE:
+						if (i >= 0 && i < app.board.boardSize[0] && j >= 0
+								&& j < app.board.boardSize[1]
+								&& app.board.board[i][j] != 0) {
+							selection1.set(i, j);
+							paint(StatePaint.SELECTED1);
+							control(StatePlay.SELECTED1);
+							doPlaySoundEffect();
 						}
-						doPlaySoundEffect();
-					}
-					break;
-				case STARTING:
-				case RESTARTING:
-					// find which button was clicked
-					int bw = buttonWidth;
-					int bh = buttonHeight;
-					int midx = screenWidth / 2;
-					int midy = (screenHeight / 3) * 2;
-					if (((midx - (bw + bw / 8)) < x) && (x < (midx - (bw / 8)))
-							&& (midy < y) && (y < midy + bh)) {
-						// "new game"
-						startNewGame();
-						doPlaySoundEffect();
-					} else if (((midx + (bw / 8)) < x) && (x < (midx + (bw + bw / 8)))
-							&& (midy < y) && (y < midy + bh)) {
-						// "options"
-						app.activity.openOptionsMenu();
-						doPlaySoundEffect();
-					}
-					break;
-				default:
-					break;
+						break;
+					case SELECTED1:
+						if (i >= 0 && i < app.board.boardSize[0] && j >= 0
+								&& j < app.board.boardSize[1]
+								&& app.board.board[i][j] != 0) {
+							if (selection1.equals(i, j)) {
+								paint(StatePaint.BOARD);
+								control(StatePlay.IDLE);
+							} else {
+								selection2.set(i, j);
+								paint(StatePaint.SELECTED2);
+
+								Point a = selection1.copy();
+								Point b = selection2.copy();
+								path = app.board.getPath(a, b);
+								paint(StatePaint.MATCHED);
+								app.sleep(2);
+								paint(StatePaint.BOARD);
+								if (path.size() > 0) {
+									app.board.play(a, b);
+								}
+								path = null;
+								paint(StatePaint.BOARD);
+
+								pairs = app.board.getPairs(1);
+								if (pairs.size() == 0) {
+									if (app.board.getNumPieces() == 0) {
+										paint(StatePaint.WIN);
+										checkforhiscore();
+									} else {
+										paint(StatePaint.LOSE);
+									}
+									control(StatePlay.RESTARTING);
+								} else {
+									control(StatePlay.IDLE);
+								}
+								//undo.sensitive=app.board.getCanUndo();
+							}
+							doPlaySoundEffect();
+						}
+						break;
+					default:
+						break;
+				}
+			} else {
+				// STARTING or RESTARTING:
+				int bw = buttonWidth;
+				int bh = buttonHeight;
+				int midx = screenWidth / 2;
+				int midy = (screenHeight / 3) * 2;
+				if (((midx - (bw + bw / 8)) < x) && (x < (midx - (bw / 8)))
+						&& (midy < y) && (y < midy + bh)) {
+					// "new game"
+					startNewGame();
+					doPlaySoundEffect();
+					Log.d("DEBUGS", "new");
+				} else if (((midx + (bw / 8)) < x) && (x < (midx + (bw + bw / 8)))
+						&& (midy < y) && (y < midy + bh)) {
+					// "options"
+					app.activity.openOptionsMenu();
+					doPlaySoundEffect();
+					Log.d("DEBUGS", "options");
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -678,7 +682,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		private final WeakReference<ShisenShoView> mTarget;
 
 		hHandler(ShisenShoView target) {
-			mTarget = new WeakReference<ShisenShoView>(target);
+			mTarget = new WeakReference<>(target);
 		}
 
 		@Override
