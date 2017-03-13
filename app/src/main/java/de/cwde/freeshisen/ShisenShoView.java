@@ -409,7 +409,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		Bitmap buttons = BitmapFactory.decodeResource(app.getResources(), R.drawable.gamebuttons, ops);
 		buttons.setDensity(Bitmap.DENSITY_NONE);
 		// FIXME hardcoded: buttons are 4 normal tiles wide
-		// FIXME: refactor into a static Tileset helper methos or whatever
+		// FIXME: refactor into a static Tileset helper method or whatever
 		float scalex = ((float) (screenWidth - 2) / 17) / (buttons.getWidth() / 8);
 		float scaley = ((float) (screenHeight - 2) / 7) / buttons.getHeight();
 		if (scaley < scalex) {
