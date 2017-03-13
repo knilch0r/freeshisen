@@ -9,16 +9,16 @@ public class Board {
 
 	private int difficulty = 1; // 1=Hard ... N=Easy
 	private boolean gravity = true;
-	public int boardSizeY = 0;
-	public int boardSizeX = 0;
+	int boardSizeY = 0;
+	int boardSizeX = 0;
 	public char[][] board;
-	public LinkedList<Move> history;
+	private LinkedList<Move> history;
 
 	// ----------------------
 	// Public methods
 	// ----------------------
 
-	public Board() {
+	Board() {
 	}
 
 	public static String pieceToString(char piece) {
@@ -28,8 +28,9 @@ public class Board {
 	public static char StringToPiece(String piece) {
 		char upiece;
 		long charpiecesLen = charpieces.length();
-		for (upiece = 0; (upiece < charpiecesLen && charpieces.substring(upiece, 1) != piece); upiece++)
-			;
+		for (upiece = 0; (upiece < charpiecesLen && charpieces.substring(upiece, 1) != piece); upiece++) {
+			// just count
+		}
 		if (upiece < charpiecesLen) return upiece;
 		else return 0;
 	}
@@ -84,7 +85,7 @@ public class Board {
 
 	// The board always has a 1-square width free rectangle that has
 	// to be taken into account when specifying the size
-	public void initialize(int sizeI, int sizeJ) {
+	private void initialize(int sizeI, int sizeJ) {
 		boardSizeY = sizeI;
 		boardSizeX = sizeJ;
 		board = new char[boardSizeY][boardSizeX];
@@ -114,8 +115,9 @@ public class Board {
 	public void setStrPiece(Point p, String piece) {
 		char upiece;
 		long charpiecesLen = charpieces.length();
-		for (upiece = 0; (upiece < charpiecesLen && charpieces.substring(upiece, 1) != piece); upiece++)
-			;
+		for (upiece = 0; (upiece < charpiecesLen && charpieces.substring(upiece, 1) != piece); upiece++) {
+			// count...
+		}
 		if (upiece < charpiecesLen) board[p.i][p.j] = upiece;
 	}
 
@@ -131,11 +133,11 @@ public class Board {
 		processGravity(b);
 	}
 
-	public char getPiece(Point p) {
+	private char getPiece(Point p) {
 		return board[p.i][p.j];
 	}
 
-	public void setPiece(Point p, char piece) {
+	private void setPiece(Point p, char piece) {
 		board[p.i][p.j] = piece;
 	}
 
