@@ -204,19 +204,17 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void initializeGame() {
-		// FIXME refactor and split up!
-		// 1. things we need to do only once: load stuff
-		// 2. things we need to do during restarts
-		// 3. timer should only start, tiles should only be generated when button has been pressed!
 		loadBackground();
 		screenWidth = getWidth();
 		screenHeight = getHeight();
 		loadButtons();
 		loadTileset();
-		//undo.sensitive=false;
 		pstate = StatePaint.STARTING;
-		app.newPlay();
 		control(StatePlay.STARTING);
+	}
+
+	private void startNewGame() {
+		app.newPlay();
 		startTime = System.currentTimeMillis();
 		playTime = 0;
 		baseTime = 0;
@@ -224,6 +222,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			registerTimer();
 		}
 		pairs = app.board.getPairs(1);
+		control(StatePlay.IDLE);
+		paint(StatePaint.BOARD);
 	}
 
 	protected void doDraw(Canvas canvas) {
@@ -578,18 +578,13 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					if (((midx - (bw + bw / 8)) < x) && (x < (midx - (bw / 8)))
 							&& (midy < y) && (y < midy + bh)) {
 						// "new game"
-						// FIXME: fix statemachine, a lot.
-						if (cstate == StatePlay.RESTARTING) {
-							// FIXME FIXME FIXME - reset sets us to starting, but we should be IDLE!
-							reset();
-						} else {
-							control(StatePlay.IDLE);
-						}
-						paint(StatePaint.BOARD);
+						startNewGame();
 						doPlaySoundEffect();
 					} else if (((midx + (bw / 8)) < x) && (x < (midx + (bw + bw / 8)))
 							&& (midy < y) && (y < midy + bh)) {
+						// "options"
 						app.activity.openOptionsMenu();
+						doPlaySoundEffect();
 					}
 					break;
 				default:
@@ -710,7 +705,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 							   float dX, float dY) {
 			//Log.d("DEBUGS", "onFling: 1:" + event1.getX() + "," + event1.getY() + " 2:" + event2.getX() + "," + event2.getY());
 			//Log.d("DEBUGS", "onFling: scale:" + (30.0 * scale));
-			// TODO: options menu handling
 			if (abs(event1.getY() - event2.getY()) > (30.0 * scale)) {
 				app.activity.openOptionsMenu();
 			}
