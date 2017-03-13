@@ -12,7 +12,7 @@ public class ShisenSho extends Application {
 	public int[] boardSize = new int[2];
 	public int difficulty = 1; // 1=Easy, 2=Hard
 	public int size = 3; // 1=Small, 2=Medium, 3=Big
-	public String tilesetid = "classic";
+	public String tilesetId = "classic";
 	public boolean gravity = true;
 	public boolean timeCounter = true;
 	private ShisenShoView view = null;
@@ -68,7 +68,7 @@ public class ShisenSho extends Application {
 		difficulty = d;
 		gravity = sp.getBoolean("pref_grav", true);
 		timeCounter = sp.getBoolean("pref_time", true);
-		tilesetid = sp.getString("pref_tile", "");
+		tilesetId = sp.getString("pref_tile", "");
 	}
 
 	public void sleep(int deciSeconds) {
@@ -123,9 +123,9 @@ public class ShisenSho extends Application {
 			needsReset = true;
 		}
 
-		if ((tilesetid != this.tilesetid) && (view != null)) {
+		if ((tilesetid != this.tilesetId) && (view != null)) {
 			// tileset can be changed without a reset
-			this.tilesetid = tilesetid;
+			this.tilesetId = tilesetid;
 			view.loadTileset();
 		}
 

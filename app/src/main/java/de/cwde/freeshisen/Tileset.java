@@ -18,7 +18,7 @@ public class Tileset {
 	public void loadTileset(int screenWidth, int screenHeight) {
 		boolean isSVG = false;
 		int id;
-		String s = app.tilesetid;
+		String s = app.tilesetId;
 
 		if (s.equals("classic")) {
 			id = R.drawable.classic;
