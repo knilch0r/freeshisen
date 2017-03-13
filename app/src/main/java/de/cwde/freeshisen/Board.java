@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Board {
-	private static String charpieces = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	private static final String charpieces = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 	private boolean gravity = true;
 	int boardSizeY = 0;
@@ -22,16 +22,6 @@ public class Board {
 
 	public static String pieceToString(char piece) {
 		return charpieces.substring(piece, 1);
-	}
-
-	public static char StringToPiece(String piece) {
-		char upiece;
-		long charpiecesLen = charpieces.length();
-		for (upiece = 0; (upiece < charpiecesLen && charpieces.substring(upiece, 1) != piece); upiece++) {
-			// just count
-		}
-		if (upiece < charpiecesLen) return upiece;
-		else return 0;
 	}
 
 	public String toString() {
@@ -105,20 +95,6 @@ public class Board {
 		return (boardSizeY - 1 - 1);
 	}
 
-	public String getStrPiece(Point p) {
-		char piece = board[p.i][p.j];
-		return charpieces.substring(piece, 1);
-	}
-
-	public void setStrPiece(Point p, String piece) {
-		char upiece;
-		long charpiecesLen = charpieces.length();
-		for (upiece = 0; (upiece < charpiecesLen && charpieces.substring(upiece, 1) != piece); upiece++) {
-			// count...
-		}
-		if (upiece < charpiecesLen) board[p.i][p.j] = upiece;
-	}
-
 	public void play(Point a0, Point b0) {
 		// It's important to sink the upper piece first
 		Point a = (a0.i < b0.i) ? a0 : b0;
@@ -190,7 +166,7 @@ public class Board {
 
 		int nresults = 0;
 		for (List<Point> points : piecePoints) {
-			int n = (int) points.size();
+			int n = points.size();
 			for (int i = 0; i < n; i++) {
 				Point a = points.get(i);
 				for (int j = i + 1; j < n; j++) {
@@ -240,7 +216,7 @@ public class Board {
 	  - boolean lineCutsLine(Line l1, Line l2)
 	 */
 	public List<Point> getPath(Point a, Point b) {
-		List<Point> result = new ArrayList<Point>();
+		List<Point> result = new ArrayList<>();
 
 		if (getPiece(a) != getPiece(b)) return result;
 
@@ -329,7 +305,7 @@ public class Board {
 	}
 
 	private List<Line> getHorizontalLines(Point excludeA, Point excludeB) {
-		List<Line> result = new ArrayList<Line>();
+		List<Line> result = new ArrayList<>();
 		for (int i = 0; i < boardSizeY; i++) {
 			int j0 = -1;
 			boolean empty;
@@ -354,7 +330,7 @@ public class Board {
 	}
 
 	private List<Line> getVerticalLines(Point excludeA, Point excludeB) {
-		List<Line> result = new ArrayList<Line>();
+		List<Line> result = new ArrayList<>();
 		for (int j = 0; j < boardSizeX; j++) {
 			int i0 = -1;
 			boolean empty;
