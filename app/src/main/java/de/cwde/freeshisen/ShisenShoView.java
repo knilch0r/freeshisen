@@ -20,7 +20,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.view.GestureDetectorCompat;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -67,6 +66,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private SurfaceHolder surfaceHolder = null;
 	private String time = INVALID_TIME;
 	private GestureDetectorCompat mDetector;
+	private int bigTextSize;
 
 	public ShisenShoView(ShisenSho shisenSho) {
 		super(shisenSho);
@@ -209,6 +209,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		screenHeight = getHeight();
 		loadButtons();
 		loadTileset();
+		findTextSize();
 		pstate = StatePaint.STARTING;
 		control(StatePlay.STARTING);
 	}
@@ -353,7 +354,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 							break;
 					}
 					drawMessage(canvas, screenWidth / 2, (screenHeight / 2), true,
-							msg, 100);
+							msg, bigTextSize);
 					drawButtons(canvas, screenWidth / 2, (screenHeight / 3) * 2);
 					break;
 				default:
@@ -433,7 +434,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void control(StatePlay cstate) {
-		Log.d("DEBUGS", "state:"+cstate);
+		//Log.d("DEBUGS", "state:"+cstate);
 		this.cstate = cstate;
 	}
 
@@ -490,9 +491,38 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		paint.setFakeBoldText(true);
 		paint.setTextSize(textSize);
 		paint.setColor(Color.parseColor(COLOR_TEXT_SHADOW));
-		canvas.drawText(message, x + 1, y + 1, paint);
+		int offset = ((int)textSize / 150) + 1;
+		canvas.drawText(message, x + offset, y + offset, paint);
 		paint.setColor(Color.parseColor(COLOR_TEXT));
 		canvas.drawText(message, x, y, paint);
+	}
+
+	private void findTextSize()
+	{
+		int sw = screenWidth * 95 / 100;
+		int sh = screenHeight * 95 / 200;
+		int ts = 500;
+		// CAUTION: must use the same settings as drawMessage() above!
+		Paint p = new Paint();
+		p.setLinearText(true);
+		p.setAntiAlias(true);
+		p.setTextAlign(Align.CENTER);
+		p.setTypeface(Typeface.SANS_SERIF);
+		p.setFakeBoldText(true);
+		ts = sh;
+		p.setTextSize(ts);
+		//Log.d("DEBUGS", "try ts: " + ts + " (sw " + sw + ")");
+		int m = (int) p.measureText("FreeShisen");
+		// m is the size we've got, sw is the size we want, we assume linear scaling...
+		ts = (ts * sw) / m;
+		p.setTextSize(ts);
+		//Log.d("DEBUGS", "got m: " + m + ", try ts: " + ts);
+		while ((p.measureText("FreeShisen") > sw) && (ts > 10)) {
+			ts -= 5;
+			p.setTextSize(ts);
+			//Log.d("DEBUGS", "ts: " + ts);
+		}
+		bigTextSize = ts;
 	}
 
 	private void drawButtons(Canvas canvas, int x, int y) {
@@ -513,7 +543,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void onClick(int x, int y) {
-		Log.d("DEBUGS", "onclick:"+cstate);
+		//Log.d("DEBUGS", "onclick:"+cstate);
 		try {
 			if ((cstate != StatePlay.STARTING) && (cstate != StatePlay.RESTARTING))
 			{
@@ -584,13 +614,13 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					// "new game"
 					startNewGame();
 					doPlaySoundEffect();
-					Log.d("DEBUGS", "new");
+					//Log.d("DEBUGS", "new");
 				} else if (((midx + (bw / 8)) < x) && (x < (midx + (bw + bw / 8)))
 						&& (midy < y) && (y < midy + bh)) {
 					// "options"
 					app.activity.openOptionsMenu();
 					doPlaySoundEffect();
-					Log.d("DEBUGS", "options");
+					//Log.d("DEBUGS", "options");
 				}
 			}
 		} catch (Exception e) {
