@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">FreeShisen</string>
-    <string name="newgame">New Game</string>
+    <string name="newgame">Reset Game</string>
     <string name="hint">Hint</string>
     <string name="undo">Undo</string>
     <string name="options">Options</string>
