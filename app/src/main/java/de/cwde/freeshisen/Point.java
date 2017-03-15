@@ -6,11 +6,6 @@ class Point {
 		this.j = j;
 	}
 
-	public Point(Point p) {
-		this.i = p.i;
-		this.j = p.j;
-	}
-
 	public boolean equals(Point p) {
 		return (i == p.i && j == p.j);
 	}
@@ -26,13 +21,6 @@ class Point {
 	public void set(int i, int j) {
 		this.i = i;
 		this.j = j;
-	}
-
-	public static Point fromString(String s) {
-		String[] ij = s.split(",", 2);
-		int i = Integer.parseInt(ij[0]);
-		int j = Integer.parseInt(ij[1]);
-		return new Point(i, j);
 	}
 
 	public int i;

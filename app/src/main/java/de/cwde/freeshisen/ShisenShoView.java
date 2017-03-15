@@ -500,8 +500,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private void findTextSize()
 	{
 		int sw = screenWidth * 95 / 100;
-		int sh = screenHeight * 95 / 200;
-		int ts = 500;
+		int ts = screenHeight * 95 / 200;
 		// CAUTION: must use the same settings as drawMessage() above!
 		Paint p = new Paint();
 		p.setLinearText(true);
@@ -509,7 +508,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		p.setTextAlign(Align.CENTER);
 		p.setTypeface(Typeface.SANS_SERIF);
 		p.setFakeBoldText(true);
-		ts = sh;
 		p.setTextSize(ts);
 		//Log.d("DEBUGS", "try ts: " + ts + " (sw " + sw + ")");
 		int m = (int) p.measureText("FreeShisen");
@@ -659,7 +657,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			} else {
 				editor.putString(prefname2, time);
 			}
-			editor.commit();
+			editor.apply();
 		}
 	}
 

@@ -1,14 +1,14 @@
 package de.cwde.freeshisen;
 
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.View;
-import android.widget.TextView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.TextView;
 
 public class HighscoreActivity extends Activity implements
 OnSharedPreferenceChangeListener {
@@ -91,7 +91,7 @@ OnSharedPreferenceChangeListener {
 				editor.remove("hiscore_EM2");
 				editor.remove("hiscore_ES1");
 				editor.remove("hiscore_ES2");
-				editor.commit();
+				editor.apply();
 			}
 		});
 		builder.setNegativeButton(android.R.string.cancel, null);

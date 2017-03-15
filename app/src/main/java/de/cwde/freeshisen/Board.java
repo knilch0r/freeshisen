@@ -165,7 +165,6 @@ public class Board {
 			}
 		}
 
-		int nresults = 0;
 		for (List<Point> points : piecePoints) {
 			int n = points.size();
 			for (int i = 0; i < n; i++) {
