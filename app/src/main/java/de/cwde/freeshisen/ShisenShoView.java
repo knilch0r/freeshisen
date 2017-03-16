@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.view.GestureDetectorCompat;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -67,6 +68,9 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private String time = INVALID_TIME;
 	private GestureDetectorCompat mDetector;
 	private int bigTextSize;
+	private int timePosX;
+	private int timePosY;
+	private int timeTextSize;
 
 	public ShisenShoView(ShisenSho shisenSho) {
 		super(shisenSho);
@@ -126,7 +130,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			case R.id.clean:
 				this.postDelayed(new Runnable() {
 					public void run() {
-						reset();//FIXME TODO
+						reset();
 					}
 				}, 100);
 				return true;
@@ -209,7 +213,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		screenHeight = getHeight();
 		loadButtons();
 		loadTileset();
-		findTextSize();
+		initTextSizes();
 		pstate = StatePaint.STARTING;
 		control(StatePlay.STARTING);
 	}
@@ -382,11 +386,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 						time = INVALID_TIME;
 					}
 
-					int timePosX = screenWidth - 120;
-					int timePosY = screenHeight - 10;
-
 					if (app.timeCounter) {
-						drawMessage(canvas, timePosX, timePosY, false, time, 30);
+						drawMessage(canvas, timePosX, timePosY, false, time, timeTextSize);
 					}
 					break;
 			}
@@ -497,9 +498,9 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		canvas.drawText(message, x, y, paint);
 	}
 
-	private void findTextSize()
+	private void initTextSizes()
 	{
-		int sw = screenWidth * 95 / 100;
+		int tw = screenWidth * 95 / 100;
 		int ts = screenHeight * 95 / 200;
 		// CAUTION: must use the same settings as drawMessage() above!
 		Paint p = new Paint();
@@ -509,18 +510,35 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		p.setTypeface(Typeface.SANS_SERIF);
 		p.setFakeBoldText(true);
 		p.setTextSize(ts);
-		//Log.d("DEBUGS", "try ts: " + ts + " (sw " + sw + ")");
+		//Log.d("DEBUGS", "try ts: " + ts + " (tw " + tw + ")");
 		int m = (int) p.measureText("FreeShisen");
 		// m is the size we've got, sw is the size we want, we assume linear scaling...
-		ts = (ts * sw) / m;
+		ts = (ts * tw) / m;
 		p.setTextSize(ts);
 		//Log.d("DEBUGS", "got m: " + m + ", try ts: " + ts);
-		while ((p.measureText("FreeShisen") > sw) && (ts > 10)) {
+		while ((p.measureText("FreeShisen") > tw) && (ts > 10)) {
 			ts -= 5;
 			p.setTextSize(ts);
 			//Log.d("DEBUGS", "ts: " + ts);
 		}
 		bigTextSize = ts;
+		// now for the timer, as simigern complained
+		tw = screenWidth / 10;
+		ts = 30;
+		p.setTextSize(ts);
+		m = (int) p.measureText("0:00:00");
+		Log.d("DEBUGS", "m="+m+", tw="+tw);
+		ts = (ts * tw) / m;
+		if (ts < 25) {
+			ts = 25;
+		}
+		p.setTextSize(ts);
+		m = (int) p.measureText("0:00:00");
+		Log.d("DEBUGS", "m="+m+", ts="+ts);
+		timeTextSize = ts;
+		// may get ugly if someone plays for more than 10 hours straight...
+		timePosX = screenWidth - m - 15;
+		timePosY = screenHeight - 10;
 	}
 
 	private void drawButtons(Canvas canvas, int x, int y) {
