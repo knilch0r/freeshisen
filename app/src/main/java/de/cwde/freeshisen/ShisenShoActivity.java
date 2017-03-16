@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2017 knilch - freeshisen@cwde.de
+ * Copyright (c) 2013 contact.proofofconcept@gmail.com
+ *
+ * Licensed under GNU General Public License, version 2 or later.
+ * Some rights reserved. See COPYING.
+ */
+
 package de.cwde.freeshisen;
 
 import android.app.Activity;
