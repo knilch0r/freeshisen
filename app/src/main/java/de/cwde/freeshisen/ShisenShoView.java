@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -222,8 +223,25 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		loadButtons();
 		loadTileset();
 		initTextSizes();
+		versionUpdateToast();
 		pstate = StatePaint.STARTING;
 		control(StatePlay.STARTING);
+	}
+
+	private void versionUpdateToast() {
+		final String versionKey = "lastversion";
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(app);
+		int lastversion = sp.getInt(versionKey, 0);
+		// we actually could use the real package versions here, but as the
+		// strings are hardcoded anyway, who cares...
+		if (lastversion < 10)
+		{
+			String text = "Hint: Swipe up ↑ to access menu.";
+			SharedPreferences.Editor editor = sp.edit();
+			editor.putInt(versionKey, 10);
+			editor.apply();
+			Toast.makeText(app, text, Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	protected void doDraw(Canvas canvas) {
