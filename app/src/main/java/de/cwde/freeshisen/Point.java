@@ -9,6 +9,9 @@
 package de.cwde.freeshisen;
 
 class Point {
+	public int i;
+	public int j;
+
 	public Point(int i, int j) {
 		this.i = i;
 		this.j = j;
@@ -30,9 +33,6 @@ class Point {
 		this.i = i;
 		this.j = j;
 	}
-
-	public int i;
-	public int j;
 
 	public Point copy() {
 		return new Point(this.i, this.j);

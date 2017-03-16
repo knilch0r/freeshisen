@@ -19,7 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class HighscoreActivity extends Activity implements
-OnSharedPreferenceChangeListener {
+		OnSharedPreferenceChangeListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,26 +28,21 @@ OnSharedPreferenceChangeListener {
 		updateTextViews();
 
 		PreferenceManager.getDefaultSharedPreferences(this)
-		.registerOnSharedPreferenceChangeListener(this);
+				.registerOnSharedPreferenceChangeListener(this);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		PreferenceManager.getDefaultSharedPreferences(this)
-		.registerOnSharedPreferenceChangeListener(this);
+				.registerOnSharedPreferenceChangeListener(this);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		PreferenceManager.getDefaultSharedPreferences(this)
-		.unregisterOnSharedPreferenceChangeListener(this);
-	}
-
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-			String key) {
-		updateTextViews();
+				.unregisterOnSharedPreferenceChangeListener(this);
 	}
 
 	private void updateTextViews() {
@@ -73,6 +68,11 @@ OnSharedPreferenceChangeListener {
 		tv.setText(sp.getString(key, "9:99:99"));
 	}
 
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+										  String key) {
+		updateTextViews();
+	}
+
 	public void clearHiscore(View view) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -81,27 +81,27 @@ OnSharedPreferenceChangeListener {
 
 		builder.setPositiveButton(android.R.string.ok,
 				new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				// User clicked OK button - delete hiscores
-				SharedPreferences sp = PreferenceManager
-						.getDefaultSharedPreferences(((AlertDialog) dialog)
-								.getContext());
-				SharedPreferences.Editor editor = sp.edit();
-				editor.remove("hiscore_HL1");
-				editor.remove("hiscore_HL2");
-				editor.remove("hiscore_HM1");
-				editor.remove("hiscore_HM2");
-				editor.remove("hiscore_HS1");
-				editor.remove("hiscore_HS2");
-				editor.remove("hiscore_EL1");
-				editor.remove("hiscore_EL2");
-				editor.remove("hiscore_EM1");
-				editor.remove("hiscore_EM2");
-				editor.remove("hiscore_ES1");
-				editor.remove("hiscore_ES2");
-				editor.apply();
-			}
-		});
+					public void onClick(DialogInterface dialog, int id) {
+						// User clicked OK button - delete hiscores
+						SharedPreferences sp = PreferenceManager
+								.getDefaultSharedPreferences(((AlertDialog) dialog)
+										.getContext());
+						SharedPreferences.Editor editor = sp.edit();
+						editor.remove("hiscore_HL1");
+						editor.remove("hiscore_HL2");
+						editor.remove("hiscore_HM1");
+						editor.remove("hiscore_HM2");
+						editor.remove("hiscore_HS1");
+						editor.remove("hiscore_HS2");
+						editor.remove("hiscore_EL1");
+						editor.remove("hiscore_EL2");
+						editor.remove("hiscore_EM1");
+						editor.remove("hiscore_EM2");
+						editor.remove("hiscore_ES1");
+						editor.remove("hiscore_ES2");
+						editor.apply();
+					}
+				});
 		builder.setNegativeButton(android.R.string.cancel, null);
 
 		AlertDialog dialog = builder.create();

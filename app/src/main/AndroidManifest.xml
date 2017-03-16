@@ -8,9 +8,9 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.cwde.freeshisen"
-    android:versionCode="11"
-    android:versionName="0.6rc2" >
+          package="de.cwde.freeshisen"
+          android:versionCode="11"
+          android:versionName="0.6rc2">
 
     <uses-sdk>
         <!-- overridden by gradle scripts -->
@@ -20,39 +20,39 @@
         android:name="de.cwde.freeshisen.ShisenSho"
         android:allowBackup="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name" >
+        android:label="@string/app_name">
         <activity
             android:name="de.cwde.freeshisen.ShisenShoActivity"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name="de.cwde.freeshisen.SettingsActivity"
             android:parentActivityName="de.cwde.freeshisen.ShisenShoActivity"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.cwde.freeshisen.ShisenShoActivity" />
+                android:value="de.cwde.freeshisen.ShisenShoActivity"/>
 
             <intent-filter>
-                <action android:name="de.cwde.freeshisen.SETTINGS" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="de.cwde.freeshisen.SETTINGS"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
         <activity
             android:name="de.cwde.freeshisen.HighscoreActivity"
             android:parentActivityName="de.cwde.freeshisen.ShisenShoActivity"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.cwde.freeshisen.ShisenShoActivity" />
+                android:value="de.cwde.freeshisen.ShisenShoActivity"/>
 
             <intent-filter>
-                <action android:name="de.cwde.freeshisen.HISCORE" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="de.cwde.freeshisen.HISCORE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
     </application>

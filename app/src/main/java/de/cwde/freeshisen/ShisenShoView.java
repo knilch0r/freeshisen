@@ -226,19 +226,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		control(StatePlay.STARTING);
 	}
 
-	private void startNewGame() {
-		app.newPlay();
-		startTime = System.currentTimeMillis();
-		playTime = 0;
-		baseTime = 0;
-		if (!timerRegistered) {
-			registerTimer();
-		}
-		nextPair = app.board.getNextPair();
-		control(StatePlay.IDLE);
-		paint(StatePaint.BOARD);
-	}
-
 	protected void doDraw(Canvas canvas) {
 		try {
 			if (canvas == null) return;
@@ -442,21 +429,51 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		tileset.loadTileset(screenWidth, screenHeight);
 	}
 
+	private void initTextSizes() {
+		int tw = screenWidth * 95 / 100;
+		int ts = screenHeight * 95 / 200;
+		// CAUTION: must use the same settings as drawMessage() above!
+		Paint p = new Paint();
+		p.setLinearText(true);
+		p.setAntiAlias(true);
+		p.setTextAlign(Align.CENTER);
+		p.setTypeface(Typeface.SANS_SERIF);
+		p.setFakeBoldText(true);
+		p.setTextSize(ts);
+		//Log.d("DEBUGS", "try ts: " + ts + " (tw " + tw + ")");
+		int m = (int) p.measureText("FreeShisen");
+		// m is the size we've got, sw is the size we want, we assume linear scaling...
+		ts = (ts * tw) / m;
+		p.setTextSize(ts);
+		//Log.d("DEBUGS", "got m: " + m + ", try ts: " + ts);
+		while ((p.measureText("FreeShisen") > tw) && (ts > 10)) {
+			ts -= 5;
+			p.setTextSize(ts);
+			//Log.d("DEBUGS", "ts: " + ts);
+		}
+		bigTextSize = ts;
+		// now for the timer, as simigern complained
+		tw = screenWidth / 10;
+		ts = 30;
+		p.setTextSize(ts);
+		m = (int) p.measureText("0:00:00");
+		Log.d("DEBUGS", "m=" + m + ", tw=" + tw);
+		ts = (ts * tw) / m;
+		if (ts < 25) {
+			ts = 25;
+		}
+		p.setTextSize(ts);
+		m = (int) p.measureText("0:00:00");
+		Log.d("DEBUGS", "m=" + m + ", ts=" + ts);
+		timeTextSize = ts;
+		// may get ugly if someone plays for more than 10 hours straight...
+		timePosX = screenWidth - m - 15;
+		timePosY = screenHeight - 10;
+	}
+
 	private void control(StatePlay cstate) {
 		//Log.d("DEBUGS", "state:"+cstate);
 		this.cstate = cstate;
-	}
-
-	private void registerTimer() {
-		if (timer != null)
-			return; // Already registered
-		timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-			public void run() {
-				timerHandler.sendEmptyMessage(Activity.RESULT_OK);
-			}
-		}, 0, 1000);
-		timerRegistered = true;
 	}
 
 	private void highlightTile(Canvas canvas, int x0, int y0, Point p, int color) {
@@ -500,59 +517,29 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		paint.setFakeBoldText(true);
 		paint.setTextSize(textSize);
 		paint.setColor(Color.parseColor(COLOR_TEXT_SHADOW));
-		int offset = ((int)textSize / 150) + 1;
+		int offset = ((int) textSize / 150) + 1;
 		canvas.drawText(message, x + offset, y + offset, paint);
 		paint.setColor(Color.parseColor(COLOR_TEXT));
 		canvas.drawText(message, x, y, paint);
-	}
-
-	private void initTextSizes()
-	{
-		int tw = screenWidth * 95 / 100;
-		int ts = screenHeight * 95 / 200;
-		// CAUTION: must use the same settings as drawMessage() above!
-		Paint p = new Paint();
-		p.setLinearText(true);
-		p.setAntiAlias(true);
-		p.setTextAlign(Align.CENTER);
-		p.setTypeface(Typeface.SANS_SERIF);
-		p.setFakeBoldText(true);
-		p.setTextSize(ts);
-		//Log.d("DEBUGS", "try ts: " + ts + " (tw " + tw + ")");
-		int m = (int) p.measureText("FreeShisen");
-		// m is the size we've got, sw is the size we want, we assume linear scaling...
-		ts = (ts * tw) / m;
-		p.setTextSize(ts);
-		//Log.d("DEBUGS", "got m: " + m + ", try ts: " + ts);
-		while ((p.measureText("FreeShisen") > tw) && (ts > 10)) {
-			ts -= 5;
-			p.setTextSize(ts);
-			//Log.d("DEBUGS", "ts: " + ts);
-		}
-		bigTextSize = ts;
-		// now for the timer, as simigern complained
-		tw = screenWidth / 10;
-		ts = 30;
-		p.setTextSize(ts);
-		m = (int) p.measureText("0:00:00");
-		Log.d("DEBUGS", "m="+m+", tw="+tw);
-		ts = (ts * tw) / m;
-		if (ts < 25) {
-			ts = 25;
-		}
-		p.setTextSize(ts);
-		m = (int) p.measureText("0:00:00");
-		Log.d("DEBUGS", "m="+m+", ts="+ts);
-		timeTextSize = ts;
-		// may get ugly if someone plays for more than 10 hours straight...
-		timePosX = screenWidth - m - 15;
-		timePosY = screenHeight - 10;
 	}
 
 	private void drawButtons(Canvas canvas, int x, int y) {
 		int bw = buttonWidth;
 		canvas.drawBitmap(newGameBmp, x - (bw + bw / 8), y, null);
 		canvas.drawBitmap(optionsBmp, x + (bw / 8), y, null);
+	}
+
+	private void startNewGame() {
+		app.newPlay();
+		startTime = System.currentTimeMillis();
+		playTime = 0;
+		baseTime = 0;
+		if (!timerRegistered) {
+			registerTimer();
+		}
+		nextPair = app.board.getNextPair();
+		control(StatePlay.IDLE);
+		paint(StatePaint.BOARD);
 	}
 
 	@Override
@@ -569,8 +556,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private void onClick(int x, int y) {
 		//Log.d("DEBUGS", "onclick:"+cstate);
 		try {
-			if ((cstate != StatePlay.STARTING) && (cstate != StatePlay.RESTARTING))
-			{
+			if ((cstate != StatePlay.STARTING) && (cstate != StatePlay.RESTARTING)) {
 				int i = (y - (screenHeight - app.board.boardSizeY * tileset.tileHeight) / 2) / tileset.tileHeight;
 				int j = (x - (screenWidth - app.board.boardSizeX * tileset.tileWidth) / 2) / tileset.tileWidth;
 
@@ -699,6 +685,18 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 			registerTimer();
 		}
 		repaint();
+	}
+
+	private void registerTimer() {
+		if (timer != null)
+			return; // Already registered
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				timerHandler.sendEmptyMessage(Activity.RESULT_OK);
+			}
+		}, 0, 1000);
+		timerRegistered = true;
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {

@@ -14,11 +14,10 @@ import java.util.List;
 
 public class Board {
 	private static final String charpieces = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-	private boolean gravity = true;
+	public char[][] board;
 	int boardSizeY = 0;
 	int boardSizeX = 0;
-	public char[][] board;
+	private boolean gravity = true;
 	private LinkedList<Move> history;
 
 	// ----------------------
