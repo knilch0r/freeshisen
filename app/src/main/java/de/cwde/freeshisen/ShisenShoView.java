@@ -598,7 +598,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 								if (nextPair == null) {
 									if (app.board.getNumPieces() == 0) {
 										paint(StatePaint.WIN);
-										checkforhiscore();
+										checkForHighScore();
 									} else {
 										paint(StatePaint.LOSE);
 									}
@@ -638,7 +638,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	private void checkforhiscore() {
+	private void checkForHighScore() {
 		if (timerRegistered) {
 			unregisterTimer();
 		}
