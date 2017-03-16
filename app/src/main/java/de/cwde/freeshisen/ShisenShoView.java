@@ -80,6 +80,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private int timePosX;
 	private int timePosY;
 	private int timeTextSize;
+	private String newGameToastText = null;
 
 	public ShisenShoView(ShisenSho shisenSho) {
 		super(shisenSho);
@@ -226,22 +227,6 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		versionUpdateToast();
 		pstate = StatePaint.STARTING;
 		control(StatePlay.STARTING);
-	}
-
-	private void versionUpdateToast() {
-		final String versionKey = "lastversion";
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(app);
-		int lastversion = sp.getInt(versionKey, 0);
-		// we actually could use the real package versions here, but as the
-		// strings are hardcoded anyway, who cares...
-		if (lastversion < 10)
-		{
-			String text = "Hint: Swipe up ↑ to access menu.";
-			SharedPreferences.Editor editor = sp.edit();
-			editor.putInt(versionKey, 10);
-			editor.apply();
-			Toast.makeText(app, text, Toast.LENGTH_SHORT).show();
-		}
 	}
 
 	protected void doDraw(Canvas canvas) {
@@ -489,6 +474,20 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		timePosY = screenHeight - 10;
 	}
 
+	private void versionUpdateToast() {
+		final String versionKey = "lastversion";
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(app);
+		int lastversion = sp.getInt(versionKey, 0);
+		// we actually could use the real package versions here, but as the
+		// strings are hardcoded anyway, who cares...
+		if (lastversion < 10) {
+			newGameToastText = "Hint: Swipe up ↑ to access menu.";
+			SharedPreferences.Editor editor = sp.edit();
+			editor.putInt(versionKey, 10);
+			editor.apply();
+		}
+	}
+
 	private void control(StatePlay cstate) {
 		//Log.d("DEBUGS", "state:"+cstate);
 		this.cstate = cstate;
@@ -642,6 +641,10 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 					// "new game"
 					startNewGame();
 					doPlaySoundEffect();
+					if (newGameToastText != null) {
+						Toast.makeText(app, newGameToastText, Toast.LENGTH_SHORT).show();
+						newGameToastText = null;
+					}
 					//Log.d("DEBUGS", "new");
 				} else if (((midx + (bw / 8)) < x) && (x < (midx + (bw + bw / 8)))
 						&& (midy < y) && (y < midy + bh)) {
