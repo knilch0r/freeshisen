@@ -28,7 +28,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.view.GestureDetectorCompat;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -460,14 +459,14 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		ts = 30;
 		p.setTextSize(ts);
 		m = (int) p.measureText("0:00:00");
-		Log.d("DEBUGS", "m=" + m + ", tw=" + tw);
+		//Log.d("DEBUGS", "m=" + m + ", tw=" + tw);
 		ts = (ts * tw) / m;
 		if (ts < 25) {
 			ts = 25;
 		}
 		p.setTextSize(ts);
 		m = (int) p.measureText("0:00:00");
-		Log.d("DEBUGS", "m=" + m + ", ts=" + ts);
+		//Log.d("DEBUGS", "m=" + m + ", ts=" + ts);
 		timeTextSize = ts;
 		// may get ugly if someone plays for more than 10 hours straight...
 		timePosX = screenWidth - m - 15;
