@@ -73,6 +73,7 @@ public class HighscoreActivity extends Activity implements
 		updateTextViews();
 	}
 
+	@SuppressWarnings("UnusedParameters")
 	public void clearHiscore(View view) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 

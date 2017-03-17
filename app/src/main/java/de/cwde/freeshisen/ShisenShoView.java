@@ -50,6 +50,12 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private static final String COLOR_TEXT_SHADOW = "#000000";
 	private static final String COLOR_HINT = "#F0C000";
 	private static final String COLOR_SELECTED = "#FF0000";
+	private final Point selection1 = new Point(0, 0);
+	private final Point selection2 = new Point(0, 0);
+	private final Tileset tileset;
+	private final Handler timerHandler = new hHandler(this);
+	private final ShisenSho app;
+	private final GestureDetectorCompat mDetector;
 	private int screenWidth;
 	private int screenHeight;
 	private int buttonWidth;
@@ -57,24 +63,18 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	private Bitmap bg;
 	private Bitmap newGameBmp;
 	private Bitmap optionsBmp;
-	private Point selection1 = new Point(0, 0);
-	private Point selection2 = new Point(0, 0);
 	private List<Point> path = null;
 	private Line nextPair = null;
 	private long startTime;
 	private long playTime;
 	private long baseTime;
 	private Timer timer;
-	private Tileset tileset;
-	private Handler timerHandler = new hHandler(this);
 	private boolean timerRegistered = false;
-	private ShisenSho app;
 	private StatePlay cstate;
 	private StatePaint pstate;
 	private Canvas canvas = null;
 	private SurfaceHolder surfaceHolder = null;
 	private String time = INVALID_TIME;
-	private GestureDetectorCompat mDetector;
 	private int bigTextSize;
 	private int timePosX;
 	private int timePosY;
@@ -152,7 +152,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	public void reset() {
+	private void reset() {
 		control(StatePlay.UNINITIALIZED);
 		paint(StatePaint.STARTING);
 	}
@@ -201,7 +201,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		timerRegistered = false;
 	}
 
-	public synchronized void repaint() {
+	private synchronized void repaint() {
 		if (surfaceHolder == null) return;
 		try {
 			if (canvas == null) canvas = surfaceHolder.lockCanvas(null);
@@ -228,7 +228,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		control(StatePlay.STARTING);
 	}
 
-	protected void doDraw(Canvas canvas) {
+	private void doDraw(Canvas canvas) {
 		try {
 			if (canvas == null) return;
 
@@ -315,6 +315,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 						Line pair = nextPair;
 						Point a = pair.a;
 						Point b = pair.b;
+						assert app != null;
 						path = app.board.getPath(a, b);
 
 						highlightTile(canvas, x0, y0, a, hintcolor);
@@ -383,6 +384,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 						time = INVALID_TIME;
 					}
 
+					assert app != null;
 					if (app.timeCounter) {
 						drawMessage(canvas, timePosX, timePosY, false, time, timeTextSize);
 					}
@@ -523,8 +525,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 				y0 + p1.i * tileset.tileHeight - 2 + (tileset.tileHeight / 2), paint);
 	}
 
-	public static void drawMessage(Canvas canvas, int x, int y,
-								   boolean centered, String message, float textSize) {
+	private static void drawMessage(Canvas canvas, int x, int y,
+									boolean centered, String message, float textSize) {
 		Paint paint = new Paint();
 		paint.setLinearText(true);
 		paint.setAntiAlias(true);
@@ -734,7 +736,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		}, 100);
 	}
 
-	public void onOptionsChangedActivate() {
+	private void onOptionsChangedActivate() {
 		new AlertDialog.Builder(app.activity)
 				.setTitle(R.string.prefchange_confirm_title)
 				.setCancelable(true)

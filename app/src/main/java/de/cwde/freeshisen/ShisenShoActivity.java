@@ -8,6 +8,7 @@
 
 package de.cwde.freeshisen;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -97,6 +98,7 @@ public class ShisenShoActivity extends Activity {
 		}
 	}
 
+	@SuppressLint("SetTextI18n")
 	private void onAboutActivate() {
 		// Try to load the a package matching the name of our own package
 		PackageInfo pInfo;

@@ -13,48 +13,54 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.util.Log;
 
-public class Tileset {
-	public int tileWidth;
-	public int tileHeight;
-	public Bitmap[] tile;
-	private ShisenSho app;
+class Tileset {
+	private final ShisenSho app;
+	int tileWidth;
+	int tileHeight;
+	Bitmap[] tile;
 
-	public Tileset(ShisenSho shishenSho) {
+	Tileset(ShisenSho shishenSho) {
 		this.app = shishenSho;
 	}
 
-	public void loadTileset(int screenWidth, int screenHeight) {
+	void loadTileset(int screenWidth, int screenHeight) {
 		boolean isSVG = false;
 		int id;
 		String s = app.tilesetId;
 
-		if (s.equals("classic")) {
-			id = R.drawable.classic;
-		} else if (s.equals("jade")) {
-			id = R.drawable.jade;
-		} else if (s.equals("traditional")) {
-			id = R.drawable.traditional;
-		} else if (s.equals("pixel")) {
-			id = R.drawable.pixel;
-		} else if (s.equals("original")) {
-			id = R.drawable.original;
-		} else if (s.equals("veit")) {
-			id = R.drawable.veit;
-		} else {
-			// shouldn't be reached...
-			Log.e("ShisenSho", "somebody managed to set an invalid tileset string");
-			id = R.drawable.original;
+		switch (s) {
+			case "classic":
+				id = R.drawable.classic;
+				break;
+			case "jade":
+				id = R.drawable.jade;
+				break;
+			case "traditional":
+				id = R.drawable.traditional;
+				break;
+			case "pixel":
+				id = R.drawable.pixel;
+				break;
+			case "original":
+				id = R.drawable.original;
+				break;
+			case "veit":
+				id = R.drawable.veit;
+				break;
+			default:
+				// shouldn't be reached...
+				Log.e("ShisenSho", "somebody managed to set an invalid tileset string");
+				id = R.drawable.original;
+				break;
 		}
 
+		//noinspection ConstantConditions
 		if (isSVG) {
-			loadSVGTileset(id, screenWidth, screenHeight);
+			// TODO:
+			//loadSVGTileset(id, screenWidth, screenHeight);
 		} else {
 			loadPNGTileset(id, screenWidth, screenHeight);
 		}
-	}
-
-	private void loadSVGTileset(int tilesetid, int screenWidth, int screenHeight) {
-		// TODO
 	}
 
 	private void loadPNGTileset(int tilesetid, int screenWidth, int screenHeight) {

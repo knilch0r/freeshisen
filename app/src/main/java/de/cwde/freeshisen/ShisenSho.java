@@ -17,13 +17,13 @@ public class ShisenSho extends Application {
 	private static ShisenSho instance = null;
 	public ShisenShoActivity activity = null;
 	public Board board;
-	public int boardSizeX;
-	public int boardSizeY;
 	public int difficulty = 1; // 1=Easy, 2=Hard
 	public int size = 3; // 1=Small, 2=Medium, 3=Big
 	public String tilesetId = "classic";
-	public boolean gravity = true;
 	public boolean timeCounter = true;
+	private int boardSizeX;
+	private int boardSizeY;
+	private boolean gravity = true;
 	private ShisenShoView view = null;
 
 	public ShisenSho() {
@@ -31,7 +31,7 @@ public class ShisenSho extends Application {
 		setSize(size);
 	}
 
-	public void setSize(int s) {
+	private void setSize(int s) {
 		size = s;
 
 		switch (s) {
