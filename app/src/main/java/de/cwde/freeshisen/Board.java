@@ -12,22 +12,18 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Board {
+class Board {
 	private static final String charpieces = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-	public char[][] board;
+	char[][] board;
 	int boardSizeY = 0;
 	int boardSizeX = 0;
 	private boolean gravity = true;
 	private LinkedList<Move> history;
 
-	// ----------------------
-	// Public methods
-	// ----------------------
-
 	Board() {
 	}
 
-	public static String pieceToString(char piece) {
+	static String pieceToString(char piece) {
 		return charpieces.substring(piece, 1);
 	}
 
@@ -59,7 +55,7 @@ public class Board {
 		return result;
 	}
 
-	public void buildRandomBoard(int sizeI, int sizeJ, int difficulty, boolean gravity) {
+	void buildRandomBoard(int sizeI, int sizeJ, int difficulty, boolean gravity) {
 		initialize(sizeI, sizeJ);
 		this.gravity = gravity;
 
@@ -71,15 +67,11 @@ public class Board {
 					j = (myrand() % (boardSizeX - 2)) + 1;
 					i = findFreeRow(j);
 				} while (i < 1);
-				// ShisenSho.log("numDifferentPieces="+numDifferentPieces+", n="+n+", k="+(int)k+", i="+i+", j="+j);
-				// ShisenSho.log(toString());
 				board[i][j] = (char) k;
 			}
 		}
 	}
 
-	// The board always has a 1-square width free rectangle that has
-	// to be taken into account when specifying the size
 	private void initialize(int sizeI, int sizeJ) {
 		boardSizeY = sizeI;
 		boardSizeX = sizeJ;
@@ -102,7 +94,7 @@ public class Board {
 		return (boardSizeY - 1 - 1);
 	}
 
-	public void play(Point a0, Point b0) {
+	void play(Point a0, Point b0) {
 		// It's important to sink the upper piece first
 		Point a = (a0.i < b0.i) ? a0 : b0;
 		Point b = (a0.i < b0.i) ? b0 : a0;
@@ -126,7 +118,7 @@ public class Board {
 		if (gravity) for (int i = p.i; i > 0; i--) board[i][p.j] = board[i - 1][p.j];
 	}
 
-	public void undo() {
+	void undo() {
 		if (!getCanUndo()) return;
 		Move m = history.remove(0);
 		undoGravity(m.b);
@@ -135,11 +127,7 @@ public class Board {
 		setPiece(m.a, m.piece);
 	}
 
-	// ----------------------
-	// Private methods
-	// ----------------------
-
-	public boolean getCanUndo() {
+	boolean getCanUndo() {
 		return !history.isEmpty();
 	}
 
@@ -147,7 +135,7 @@ public class Board {
 		if (gravity) for (int i = 0; i < p.i; i++) board[i][p.j] = board[i + 1][p.j];
 	}
 
-	public Line getNextPair() {
+	Line getNextPair() {
 		Line result = null;
 		List<Integer> pieces = new ArrayList<>();
 		List<List<Point>> piecePoints = new ArrayList<>();
@@ -204,25 +192,8 @@ public class Board {
 	  - If VA cuts HB, the result is an L line A-(IB,JA)-B
 	  - If exists an V line that cuts HA and HB, the result is a Z line A-(IA,JV)-(IB-JV)-B
 	  - If exists an H line that cuts VA and VB, the result is a Z line A-(IV,JA)-(IV,JB)-B
-
-	  The following data types are defined:
-
-	  - Board
-	  - Point(int i, int j)
-	  - Line(Point a, Point b)
-	  - LineSet(Line l1, ..., Line lN)
-
-	  The following operations are defined
-
-	  - LineSet getHorizontalLines(Board board, Point a, Point b) // a and b needed to consider them as blank
-	  - LineSet getVerticalLines(Board board, Point a, Point b)
-	  - boolean lineIsHorizontal(Line l)
-	  - boolean lineIsVertical(Line l)
-	  - boolean lineContainsPoint(Line l, Point p)
-	  - boolean lineEqualsLine(Line l1, Line l2)
-	  - boolean lineCutsLine(Line l1, Line l2)
 	 */
-	public List<Point> getPath(Point a, Point b) {
+	List<Point> getPath(Point a, Point b) {
 		List<Point> result = new ArrayList<>();
 
 		if (getPiece(a) != getPiece(b)) return result;
@@ -243,10 +214,15 @@ public class Board {
 			if (va != null && vb != null) break;
 		}
 
-		// stdout.printf("va=%s, ha=%s, vb=%s, hb=%s\n",va.toString(),ha.toString(),vb.toString(),hb.toString());
-
-		if ((ha == null && va == null) || (hb == null && vb == null))
+		if ((ha == null) || (va == null) || (hb == null) || (vb == null)) {
+			// actually, the way get*Lines work, these will never be null: each point is
+			// at least included in a "Line" of length 0
 			return result;
+		}
+		if ((ha.isPoint() && va.isPoint()) || (hb.isPoint() && vb.isPoint())) {
+			// either a or b don't have any connections
+			return result;
+		}
 
 		if (ha.equals(hb) || va.equals(vb)) {
 			result.add(a);
@@ -257,7 +233,6 @@ public class Board {
 		Point ab;
 
 		ab = ha.cuts(vb);
-		// stdout.printf("(ha cuts vb) ab=%s\n",ab.toString());
 
 		if (ab != null) {
 			result.add(a);
@@ -267,7 +242,6 @@ public class Board {
 		}
 
 		ab = va.cuts(hb);
-		// stdout.printf("(va cuts hb) ab=%s\n",ab.toString());
 
 		if (ab != null) {
 			result.add(a);
@@ -279,9 +253,6 @@ public class Board {
 		for (Line l : v) {
 			Point al = l.cuts(ha);
 			Point bl = l.cuts(hb);
-
-			// stdout.printf("(%s cuts ha) al=%s\n",l.toString(),al.toString());
-			// stdout.printf("(%s cuts hb) bl=%s\n",l.toString(),bl.toString());
 
 			if (al != null && bl != null) {
 				result.add(a);
@@ -296,9 +267,6 @@ public class Board {
 			Point al = l.cuts(va);
 			Point bl = l.cuts(vb);
 
-			// stdout.printf("(%s cuts va) al=%s\n",l.toString(),al.toString());
-			// stdout.printf("(%s cuts vb) bl=%s\n",l.toString(),bl.toString());
-
 			if (al != null && bl != null) {
 				result.add(a);
 				result.add(al);
@@ -311,6 +279,7 @@ public class Board {
 		return result;
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	private List<Line> getHorizontalLines(Point excludeA, Point excludeB) {
 		List<Line> result = new ArrayList<>();
 		for (int i = 0; i < boardSizeY; i++) {
@@ -329,13 +298,10 @@ public class Board {
 			if (j0 != -1) result.add(new Line(new Point(i, j0), new Point(i, boardSizeX - 1)));
 		}
 
-		// stdout.printf("\ngetHorizontalLines( %s, %s ): ",excludeA.toString(),excludeB.toString());
-		// for (Line line : result) stdout.printf("%s ",line.toString());
-		// stdout.printf("\n");
-
 		return result;
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	private List<Line> getVerticalLines(Point excludeA, Point excludeB) {
 		List<Line> result = new ArrayList<>();
 		for (int j = 0; j < boardSizeX; j++) {
@@ -354,14 +320,10 @@ public class Board {
 			if (i0 != -1) result.add(new Line(new Point(i0, j), new Point(boardSizeY - 1, j)));
 		}
 
-		// stdout.printf("\ngetVerticalLines( %s, %s ): ",excludeA.toString(),excludeB.toString());
-		// for (Line line : result) stdout.printf("%s ",line.toString());
-		// stdout.printf("\n");
-
 		return result;
 	}
 
-	public int getNumPieces() {
+	int getNumPieces() {
 		int result = 0;
 		for (int j = 0; j < boardSizeX; j++) {
 			for (int i = 0; i < boardSizeY; i++) {
