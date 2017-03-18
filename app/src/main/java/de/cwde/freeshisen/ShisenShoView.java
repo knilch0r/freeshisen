@@ -782,10 +782,10 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 		@Override
 		public boolean onFling(MotionEvent event1, MotionEvent event2,
 							   float dX, float dY) {
-			//Log.d("DEBUGS", "onFling: 1:" + event1.getX() + "," + event1.getY() + " 2:" + event2.getX() + "," + event2.getY());
-			//Log.d("DEBUGS", "onFling: scale:" + (30.0 * scale));
-			if (abs(event1.getY() - event2.getY()) > (30.0 * scale)) {
+			if (abs(event1.getY() - event2.getY()) > (40.0 * scale)) {
 				app.activity.openOptionsMenu();
+			} else { // FIXME TODO: is that a good idea?
+				//onClick(Math.round(event1.getX()), Math.round(event1.getY()));
 			}
 
 			return true;
@@ -793,7 +793,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 
 		@Override
 		public boolean onDown(MotionEvent event) {
-			//Log.d("DEBUGS", "onDowni2");
+			// FIXME TODO: do our "onClick" here instead of onSingleTapUp? might increase responsiveness...
 			return true;
 		}
 	}
