@@ -729,11 +729,13 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void onOptionsChanged() {
-		this.postDelayed(new Runnable() {
-			public void run() {
-				onOptionsChangedActivate();
-			}
-		}, 100);
+		if ((cstate != StatePlay.STARTING) && (cstate != StatePlay.RESTARTING) && (cstate != StatePlay.UNINITIALIZED)) {
+			this.postDelayed(new Runnable() {
+				public void run() {
+					onOptionsChangedActivate();
+				}
+			}, 100);
+		}
 	}
 
 	private void onOptionsChangedActivate() {
