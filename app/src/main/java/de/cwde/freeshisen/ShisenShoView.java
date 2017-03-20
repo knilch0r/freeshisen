@@ -784,8 +784,8 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 							   float dX, float dY) {
 			if (abs(event1.getY() - event2.getY()) > (40.0 * scale)) {
 				app.activity.openOptionsMenu();
-			} else { // FIXME TODO: is that a good idea?
-				//onClick(Math.round(event1.getX()), Math.round(event1.getY()));
+			} else {
+				onClick(Math.round(event1.getX()), Math.round(event1.getY()));
 			}
 
 			return true;
