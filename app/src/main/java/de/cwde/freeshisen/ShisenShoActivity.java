@@ -42,7 +42,15 @@ public class ShisenShoActivity extends Activity {
 
 		view = ShisenSho.app().getView();
 		ShisenSho.app().activity = this;
-		setContentView(view);
+		try {
+			setContentView(view);
+		} catch (IllegalStateException e) {
+			ViewGroup parentViewGroup = (ViewGroup) view.getParent();
+			if (parentViewGroup != null) {
+				parentViewGroup.removeAllViews();
+			}
+			setContentView(view);
+		}
 	}
 
 	@Override
