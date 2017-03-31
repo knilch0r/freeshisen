@@ -21,6 +21,10 @@
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name">
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="3.0"/>
+
         <activity
             android:name="de.cwde.freeshisen.ShisenShoActivity"
             android:screenOrientation="landscape">
