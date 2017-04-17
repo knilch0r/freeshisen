@@ -168,7 +168,7 @@ class ShisenShoView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void onUndoActivate() {
-		if (app.board.getCanUndo()) {
+		if ((app.board != null) && (app.board.getCanUndo())) {
 			if (cstate == StatePlay.RESTARTING && !timerRegistered) {
 				// Reprogram the time update that had been
 				// deactivated with the game over status
