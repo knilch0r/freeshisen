@@ -10,10 +10,6 @@ TODO list for FreeShisen:
 ** remove some leftover hardcoded strings
 ** add i18n variants for resources
 
-* use actionbar? this will cost some display space, but apparently is the new way to go
-** then we don't have to claim targetSdkVersion 10 any more (which provides a software menu button for devices without a hardware button)
-** may also think of another way to provide some "software menu" button
-
 * save highscores depending on gravity switch?
 
 * ask for name in highscore list?
