@@ -2,6 +2,11 @@
 
 A free, open-source [Shisen Sho](http://en.wikipedia.org/wiki/Shisen_sho) game for Android. Does not use any extra permissions on your android device and doesn't display any ads at runtime :-)
 
+<a href="https://f-droid.org/packages/de.cwde.freeshisen/" target="_blank"> 
+<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
+<a href="https://play.google.com/store/apps/details?id=de.cwde.freeshisen">
+<img alt="Get it on Google Play" height="80" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"/></a>
+
 Features:
   * saveable preferences
   * adapted layout for big screens (e.g. tablets)
