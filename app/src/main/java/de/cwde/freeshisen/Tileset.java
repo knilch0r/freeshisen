@@ -41,6 +41,9 @@ class Tileset {
 			case "pixel":
 				id = R.drawable.pixel;
 				break;
+			case "8bit":
+				id = R.drawable.eightbit;
+				break;
 			case "original":
 				id = R.drawable.original;
 				break;

@@ -1,4 +1,6 @@
 build/
+/app/*.apk
+/app/*.bat
 /screenshots
 local.properties
 *.iml
@@ -10,4 +12,4 @@ local.properties
 .idea/libraries
 .idea/dictionaries/*
 keystore.properties
-
+git.txt
