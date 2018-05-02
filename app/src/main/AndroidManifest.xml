@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2017 knilch - freeshisen@cwde.de
+  ~ Copyright (c) 2018 knilch - freeshisen@cwde.de
   ~ Copyright (c) 2013 contact.proofofconcept@gmail.com
   ~
   ~ Licensed under GNU General Public License, version 2 or later.
@@ -9,8 +9,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="de.cwde.freeshisen"
-          android:versionCode="16"
-          android:versionName="0.6.4">
+          android:versionCode="17"
+          android:versionName="0.6.5">
 
     <uses-sdk>
         <!-- overridden by gradle scripts -->
