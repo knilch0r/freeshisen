@@ -30,7 +30,11 @@ Images taken from kshisen (Shisen Sho 1.5.1), from the package kdegames:
     
 Other tilesets from libkmahjongg:  
 
-    (c) Eugene Trounev, James L. Hammons, Robert Buchholz, ELY M. 
+    (c) Eugene Trounev, James L. Hammons, Robert Buchholz
+
+8bit tileset:
+
+    (c) ELY M. 
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License - see the [file COPYING](https://github.com/knilch0r/freeshisen/blob/master/COPYING) for details.
-> This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+> This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
