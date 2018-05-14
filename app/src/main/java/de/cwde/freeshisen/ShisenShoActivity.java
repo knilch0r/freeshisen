@@ -71,8 +71,10 @@ public class ShisenShoActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
-		ViewGroup vg = (ViewGroup) (view.getParent());
-		vg.removeView(view);
+		if (view != null) {
+			ViewGroup vg = (ViewGroup) (view.getParent());
+			vg.removeView(view);
+		}
 		ShisenSho.app().activity = null;
 		super.onDestroy();
 	}
