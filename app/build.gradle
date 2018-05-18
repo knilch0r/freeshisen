@@ -14,7 +14,7 @@ android {
         }
     }
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "de.cwde.freeshisen"
         minSdkVersion 9
@@ -34,5 +34,5 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:25.3.0'
+    implementation 'com.android.support:support-v4:25.3.0'
 }

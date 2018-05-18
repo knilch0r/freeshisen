@@ -6,6 +6,7 @@ local.properties
 *.iml
 .gradle
 .externalNativeBuild
+.idea/caches
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/gradle.xml
