@@ -129,9 +129,8 @@ public class ShisenSho extends Application {
 			needsReset = true;
 		}
 
-		if (timeCounter != this.timeCounter) {
-			this.timeCounter = timeCounter;
-		}
+		// timeCounter can be changed in all occasions
+		this.timeCounter = timeCounter;
 
 		if ((!tilesetid.equals(this.tilesetId)) && (view != null)) {
 			// tileset can be changed without a reset
