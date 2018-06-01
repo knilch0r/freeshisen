@@ -130,7 +130,7 @@ public class ShisenSho extends Application {
 		}
 
 		if (timeCounter != this.timeCounter) {
-			needsReset = true;
+			this.timeCounter = timeCounter;
 		}
 
 		if ((!tilesetid.equals(this.tilesetId)) && (view != null)) {
