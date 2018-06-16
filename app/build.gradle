@@ -36,3 +36,18 @@ android {
 dependencies {
     implementation 'com.android.support:support-v4:25.3.0'
 }
+
+afterEvaluate {
+    project.getTasks().findAll { task -> task.name.contains("compile") && task.name.contains("Release") }.each { task ->
+        task.dependsOn('removeLogs')
+    }
+
+    task removeLogs() {
+        doLast {
+            fileTree(dir: project.file('src')).include('**/*.java').each { File file ->
+                def out = file.getText("UTF-8").replaceAll("([^/])((android\\.util\\.)*Log\\.([ewidv]|wtf)\\s*\\([\\S\\s]*?\\)\\s*;)", "\$1//\$2")
+                file.write(out);
+            }
+        }
+    }
+}
