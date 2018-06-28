@@ -12,8 +12,6 @@ Features:
   * adapted layout for big screens (e.g. tablets)
   * highscores
 
-Automatically exported from `code.google.com/p/freeshisen`
-
 ## Licensing
 
 This is a fork of the already existing excellent implementation from "proofofconcept" which is available at https://play.google.com/store/apps/details?id=org.proofofconcept.shisensho
