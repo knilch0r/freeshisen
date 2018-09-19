@@ -28,31 +28,32 @@ class Board {
 	}
 
 	public String toString() {
-		String result = "  ";
+		StringBuffer buf = new StringBuffer("  ");
 		for (int j = 0; j < boardSizeX; j++) {
-			if (j > 0) result += " ";
-			result += "" + (j % 10);
+			if (j > 0) buf.append(" ");
+			buf.append("" + (j % 10));
 		}
-		result += "\n  " + StringRepeat("--", boardSizeX);
+		buf.append("\n  " + StringRepeat("--", boardSizeX));
 		for (int i = 0; i < boardSizeY; i++) {
-			result += "\n" + (i % 10) + "|";
+			buf.append("\n" + (i % 10) + "|");
 			for (int j = 0; j < boardSizeX; j++) {
-				if (j > 0) result += " ";
-				result += charpieces.substring(board[i][j], board[i][j] + 1);
+				if (j > 0) buf.append(" ");
+				buf.append(charpieces.substring(board[i][j], board[i][j] + 1));
 			}
-			result += " |\n";
+			buf.append(" |\n");
 			if (i < boardSizeY - 1)
-				result += " |" + StringRepeat("  ", boardSizeX) + "|";
+				buf.append(" |" + StringRepeat("  ", boardSizeX) + "|");
 		}
-		result += "  " + StringRepeat("--", boardSizeX) + "\n";
-		return result;
+		buf.append("  " + StringRepeat("--", boardSizeX) + "\n");
+		return buf.toString();
 	}
 
 	private String StringRepeat(String s, int n) {
-		String result = "";
-		for (int i = 0; i < n; i++)
-			result += s;
-		return result;
+		StringBuffer buf = new StringBuffer();
+		for (int i = 0; i < n; i++) {
+			buf.append(s);
+		}
+		return buf.toString();
 	}
 
 	void buildRandomBoard(int sizeI, int sizeJ, int difficulty, boolean gravity) {
@@ -152,7 +153,6 @@ class Board {
 					piecePoints.add(points0);
 
 					key = pieces.indexOf(piece);
-					piecePoints.get(key);
 				} else {
 					List<Point> points1 = piecePoints.get(key);
 					points1.add(p);
