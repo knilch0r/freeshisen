@@ -9,13 +9,13 @@
 package de.cwde.freeshisen;
 
 class Move {
-	final Point a;
-	final Point b;
-	final char piece;
+    final Point a;
+    final Point b;
+    final char piece;
 
-	Move(Point a, Point b, char piece) {
-		this.a = a;
-		this.b = b;
-		this.piece = piece;
-	}
+    Move(Point a, Point b, char piece) {
+        this.a = a;
+        this.b = b;
+        this.piece = piece;
+    }
 }

@@ -9,14 +9,14 @@
 package de.cwde.freeshisen;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.util.Linkify;
 import android.view.Menu;
@@ -26,120 +26,120 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 
-public class ShisenShoActivity extends Activity {
-	private ShisenShoView view;
+public class ShisenShoActivity extends AppCompatActivity {
+    private ShisenShoView view;
 
-	/**
-	 * Called when the activity is first created.
-	 */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    /**
+     * Called when the activity is first created.
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		view = ShisenSho.app().getView();
-		ShisenSho.app().activity = this;
-		try {
-			setContentView(view);
-		} catch (IllegalStateException e) {
-			ViewGroup parentViewGroup = (ViewGroup) view.getParent();
-			if (parentViewGroup != null) {
-				parentViewGroup.removeAllViews();
-			}
-			setContentView(view);
-		}
-	}
+        view = ShisenSho.app().getView();
+        ShisenSho.app().activity = this;
+        try {
+            setContentView(view);
+        } catch (IllegalStateException e) {
+            ViewGroup parentViewGroup = (ViewGroup) view.getParent();
+            if (parentViewGroup != null) {
+                parentViewGroup.removeAllViews();
+            }
+            setContentView(view);
+        }
+    }
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (view != null) {
-			view.resumeTime();
-		}
-	}
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (view != null) {
+            view.resumeTime();
+        }
+    }
 
-	@Override
-	protected void onPause() {
-		if (view != null) {
-			view.pauseTime();
-		}
-		super.onPause();
-	}
+    @Override
+    protected void onPause() {
+        if (view != null) {
+            view.pauseTime();
+        }
+        super.onPause();
+    }
 
-	@Override
-	protected void onDestroy() {
-		if (view != null) {
-			ViewGroup vg = (ViewGroup) (view.getParent());
-			vg.removeView(view);
-		}
-		ShisenSho.app().activity = null;
-		super.onDestroy();
-	}
+    @Override
+    protected void onDestroy() {
+        if (view != null) {
+            ViewGroup vg = (ViewGroup) (view.getParent());
+            vg.removeView(view);
+        }
+        ShisenSho.app().activity = null;
+        super.onDestroy();
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu, menu);
-		return true;
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection
-		switch (item.getItemId()) {
-			case R.id.hint:
-			case R.id.undo:
-			case R.id.clean:
-				return view.onOptionsItemSelected(item);
-			case R.id.hiscore:
-				startActivity(new Intent("de.cwde.freeshisen.HISCORE", null));
-				return true;
-			case R.id.options:
-				startActivity(new Intent("de.cwde.freeshisen.SETTINGS", null));
-				return true;
-			case R.id.about:
-				onAboutActivate();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-		}
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.hint:
+            case R.id.undo:
+            case R.id.clean:
+                return view.onOptionsItemSelected(item);
+            case R.id.hiscore:
+                startActivity(new Intent("de.cwde.freeshisen.HISCORE", null));
+                return true;
+            case R.id.options:
+                startActivity(new Intent("de.cwde.freeshisen.SETTINGS", null));
+                return true;
+            case R.id.about:
+                onAboutActivate();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
-	@SuppressLint("SetTextI18n")
-	private void onAboutActivate() {
-		// Try to load the a package matching the name of our own package
-		PackageInfo pInfo;
-		try {
-			pInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
-			final String appname = getString(R.string.app_name);
-			final String aboutTitle = "About " + appname;
-			String versionString = appname + " " + pInfo.versionName;
-			String aboutText = getString(R.string.aboutText);
+    @SuppressLint("SetTextI18n")
+    private void onAboutActivate() {
+        // Try to load the a package matching the name of our own package
+        PackageInfo pInfo;
+        try {
+            pInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
+            final String appname = getString(R.string.app_name);
+            final String aboutTitle = "About " + appname;
+            String versionString = appname + " " + pInfo.versionName;
+            String aboutText = getString(R.string.aboutText);
 
-			// Set up the TextView
-			final TextView message = new TextView(this);
-			// We'll use a spannablestring to be able to make links clickable
-			final SpannableString s = new SpannableString(aboutText);
+            // Set up the TextView
+            final TextView message = new TextView(this);
+            // We'll use a spannablestring to be able to make links clickable
+            final SpannableString s = new SpannableString(aboutText);
 
-			// Set some padding
-			message.setPadding(5, 5, 5, 5);
-			// Set up the final string
-			message.setText(versionString + s);
-			// Now linkify the text
-			Linkify.addLinks(message, Linkify.ALL);
+            // Set some padding
+            message.setPadding(5, 5, 5, 5);
+            // Set up the final string
+            message.setText(versionString + s);
+            // Now linkify the text
+            Linkify.addLinks(message, Linkify.ALL);
 
-			new AlertDialog.Builder(this)
-					.setTitle(aboutTitle)
-					.setCancelable(true)
-					.setIcon(R.drawable.icon)
-					.setPositiveButton(android.R.string.ok, null)
-					.setView(message).create()
-					.show();
-		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle(aboutTitle)
+                    .setCancelable(true)
+                    .setIcon(R.drawable.icon)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .setView(message).create()
+                    .show();
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }

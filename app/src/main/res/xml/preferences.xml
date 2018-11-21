@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2017 knilch - freeshisen@cwde.de
   ~ Copyright (c) 2013 contact.proofofconcept@gmail.com
   ~
@@ -14,31 +13,31 @@
         android:entries="@array/sizes"
         android:entryValues="@array/size_values"
         android:key="pref_size"
-        android:title="@string/size"/>
+        android:title="@string/size" />
     <ListPreference
         android:defaultValue="@string/difficulty_default"
         android:dialogTitle="@string/difficulty"
         android:entries="@array/difficulties"
         android:entryValues="@array/difficulty_values"
         android:key="pref_diff"
-        android:title="@string/difficulty"/>
+        android:title="@string/difficulty" />
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="pref_grav"
         android:summaryOff="@string/gravity_pref_off"
         android:summaryOn="@string/gravity_pref_on"
-        android:title="@string/gravity"/>
+        android:title="@string/gravity" />
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="pref_time"
         android:summaryOff="@string/time_pref_off"
         android:summaryOn="@string/time_pref_on"
-        android:title="@string/time_counter"/>
+        android:title="@string/time_counter" />
     <ListPreference
         android:defaultValue="@string/tileset_default"
         android:dialogTitle="@string/tileset"
         android:entries="@array/tilesets"
         android:entryValues="@array/tilesets"
         android:key="pref_tile"
-        android:title="@string/tileset"/>
+        android:title="@string/tileset" />
 </PreferenceScreen>
