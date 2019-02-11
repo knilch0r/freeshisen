@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2018 knilch - freeshisen@cwde.de
   ~ Copyright (c) 2013 contact.proofofconcept@gmail.com
   ~
@@ -8,13 +7,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="de.cwde.freeshisen"
-          android:versionCode="18"
-          android:versionName="0.6.6">
-
-    <uses-sdk>
-        <!-- overridden by gradle scripts -->
-    </uses-sdk>
+    package="de.cwde.freeshisen">
 
     <application
         android:name="de.cwde.freeshisen.ShisenSho"
@@ -23,14 +16,14 @@
         android:label="@string/app_name">
         <meta-data
             android:name="android.max_aspect"
-            android:value="3.0"/>
+            android:value="3.0" />
 
         <activity
             android:name="de.cwde.freeshisen.ShisenShoActivity"
             android:screenOrientation="landscape">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -39,11 +32,11 @@
             android:screenOrientation="landscape">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.cwde.freeshisen.ShisenShoActivity"/>
+                android:value="de.cwde.freeshisen.ShisenShoActivity" />
 
             <intent-filter>
-                <action android:name="de.cwde.freeshisen.SETTINGS"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="de.cwde.freeshisen.SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
@@ -52,11 +45,11 @@
             android:screenOrientation="landscape">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.cwde.freeshisen.ShisenShoActivity"/>
+                android:value="de.cwde.freeshisen.ShisenShoActivity" />
 
             <intent-filter>
-                <action android:name="de.cwde.freeshisen.HISCORE"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="de.cwde.freeshisen.HISCORE" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
     </application>

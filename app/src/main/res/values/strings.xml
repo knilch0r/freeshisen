@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2017 knilch - freeshisen@cwde.de
   ~ Copyright (c) 2013 contact.proofofconcept@gmail.com
   ~
@@ -24,7 +23,7 @@ Other tilesets from libkmahjongg:\n
 &#169; Eugene Trounev, James L. Hammons, Robert Buchholz\n
 8bit tileset &#169; ELY M\n
 Distributed under GPL v2:\n
-http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt\n
+https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt\n
 Get the source code: https://github.com/knilch0r/freeshisen</string>
     <string name="size">Size</string>
     <string name="tileset">Tileset</string>
@@ -51,8 +50,8 @@ Get the source code: https://github.com/knilch0r/freeshisen</string>
     <string name="clearhiscore_confirm_title">Really clear best times?</string>
     <string name="clearhiscore_confirm_text">This will clear all saved times. Hit &quot;OK&quot; if you really want to do this.</string>
     <string name="prefchange_confirm_title">Preferences changed!</string>
-    <string name="prefchange_confirm_text">Some changes in Preferences will only have an effect if a new game is started.</string>
-    <string name="hiscore_title">Hiscore!</string>
+    <string name="prefchange_confirm_text">Some changes in preferences will only have an effect if a new game is started.</string>
+    <string name="hiscore_title">Highscore!</string>
     <string name="hiscore_text">You\'ve made the highscore list!</string>
 </resources>
 

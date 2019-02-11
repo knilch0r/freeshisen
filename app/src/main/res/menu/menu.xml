@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2017 knilch - freeshisen@cwde.de
   ~ Copyright (c) 2013 contact.proofofconcept@gmail.com
   ~
@@ -13,31 +12,37 @@
         android:id="@+id/hint"
         android:icon="@android:drawable/ic_menu_directions"
         android:title="@string/hint">
+
     </item>
     <item
         android:id="@+id/undo"
         android:icon="@android:drawable/ic_menu_revert"
         android:title="@string/undo">
+
     </item>
     <item
         android:id="@+id/clean"
         android:icon="@android:drawable/ic_menu_delete"
         android:title="@string/newgame">
+
     </item>
     <item
         android:id="@+id/options"
         android:icon="@android:drawable/ic_menu_preferences"
         android:title="@string/options">
+
     </item>
     <item
         android:id="@+id/hiscore"
         android:icon="@android:drawable/ic_menu_myplaces"
         android:title="@string/besttimes">
+
     </item>
     <item
         android:id="@+id/about"
         android:icon="@android:drawable/ic_menu_info_details"
         android:title="@string/about">
+
     </item>
 
 </menu>
